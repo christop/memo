@@ -1,0 +1,188 @@
+
+  SRCDUMP=$TMPDIR/${TMPID}.`echo $RANDOM | md5sum | cut -c 1-8`.dump
+  SRCDUMP=$TMPDIR/${TMPID}.debug.tmp
+  if [ -f $SRCDUMP ]; then rm $SRCDUMP ; fi
+
+# --------------------------------------------------------------------------- #
+  function write2src() { echo "$1" >> $SRCDUMP ; }
+# --------------------------------------------------------------------------- #
+
+
+# =========================================================================== #
+# MAIN MDSH CONVERT FUNCTION
+# =========================================================================== #
+
+  function mdsh2src() {
+
+# --------------------------------------------------------------------------- #
+# DEFINE PLACEHOLDER
+# --------------------------------------------------------------------------- #
+  TMPBREAK=NX${RANDOM}XL
+  MKLONG=`printf "X%.0s" {1..100}`
+
+# --------------------------------------------------------------------------- #
+# INCLUDE FUNCTIONS
+# --------------------------------------------------------------------------- #
+  source $FUNCTIONS
+
+# --------------------------------------------------------------------------- #
+# MAKE LOCAL IF NECESSARY
+# --------------------------------------------------------------------------- #
+  IFHTTP=`echo $1 | grep "http.\?://" | wc -l`
+  if [ $IFHTTP -ge 1 ]; then
+       URL=$1; NAME=`echo $1 | md5sum | cut -c 1-10`
+
+       RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $URL`
+
+       if [ $RESPONSE == '200' ]; then
+       wget --no-check-certificate \
+            -O ${TMPDIR}/${NAME}.mdsh $URL > /dev/null 2>&1
+       MDSH=${TMPDIR}/${NAME}.mdsh
+       else
+              echo $URL "does not exist! Bye."
+              exit 0;
+       fi
+  else 
+       MDSH=$1
+       if [ ! -f $MDSH ]; then echo; echo "We need a mdsh file!"
+                                           echo "e.g. $0 yourfile.mdsh"; 
+                                           echo
+       exit 0;
+       fi
+  fi
+
+# --------------------------------------------------------------------------- #
+# SAVE MDSH LINES TO PROTECT FROM PANDOC
+# --------------------------------------------------------------------------- #
+  BCKUPCOMM=$TMPDIR/${TMPID}.comments.list 
+  if [ -f $BCKUPCOMM ]; then rm $BCKUPCOMM ; fi
+  PROTECTED=$TMPDIR/${TMPID}.`echo $MDSH | md5sum | cut -c 1-8`.mdsh.prtctd
+  cp $MDSH $PROTECTED
+  
+  for COMMENTNUM in `grep -n "^%" $PROTECTED | #
+                     cut -d ":" -f 1`
+   do
+        LINENUM=$COMMENTNUM
+        COMMENT=`sed "${LINENUM}q;d" $MDSH`
+      COMMENTID=`echo $COMMENT | md5sum | cut -d " " -f 1`$MKLONG
+       sed -i "${LINENUM}s/^.*$/$COMMENTID/g" $PROTECTED 
+       echo "${COMMENTID}:${COMMENT}" >> $BCKUPCOMM
+  done
+
+# --------------------------------------------------------------------------- #
+# CONVERT MARKDOWN WITH PANDOC (CUSTOM FOOTNOTES/BIBREFS)
+# --------------------------------------------------------------------------- #
+  MDSHMOD=$TMPDIR/${TMPID}.`echo $MDSH | md5sum | cut -c 1-8`.mdsh
+  if [ -f $MDSHMOD ]; then rm $MDSHMOD ; fi
+
+  # TEMPORARY PROTECTORS (FOO)
+  # ---------------------------------
+    EMPTYLINE=EMPTY${RANDOM}LINE$MKLONG
+    BREAKFOO=BR${RANDOM}EAK
+    FN1FOO=FN${RANDOM}1 ; FN2FOO=FN${RANDOM}2
+    CICOMMON=CM$RANDOM
+    CI1FOO=${CICOMMON}CI${RANDOM}1 ; CI2FOO=CI${RANDOM}2
+    CP1FOO=${CICOMMON}CP${RANDOM}1 ; CP2FOO=CP${RANDOM}2
+
+  # THE GREAT ESCAPE
+  # ---------------------------------
+    FOOTNOTEOPEN=`echo $FOOTNOTEOPEN     | #
+                  sed 's/\\\/\\\\\\\/g'  | #
+                  sed 's/\//\\\\\//g'`
+    CITEOPEN=`echo $CITEOPEN             | #
+              sed 's/\\\/\\\\\\\/g'      | #
+              sed 's/\//\\\\\//g'`
+    CITEPOPEN=`echo $CITEPOPEN           | #
+               sed 's/\\\/\\\\\\\/g'     | #
+               sed 's/\//\\\\\//g'`
+
+  cat $PROTECTED                         | # USELESS USE OF CAT
+  sed "s/^ *$/$EMPTYLINE$BREAKFOO/g"     | # PROTECT EMPTY LINES
+  sed ":a;N;\$!ba;s/\n/$BREAKFOO/g"      | # REMOVE LINEBREAKS (TEMPORARY)
+  sed "s/\[\^\]{/\n$FN1FOO/g"            | # PROTECT (FOONOTE OPEN)
+  sed "/^$FN1FOO/s/}/\n$FN2FOO/"         | # PROTECT (FOOTNOTE CLOSE)
+  sed "s/\[@\[/\n$CP1FOO/g"              | # PROTECT (CITEP OPEN)
+  sed "s/\[@/\n$CI1FOO/g"                | # PROTECT (CITE OPEN)
+  sed "/^$CP1FOO/s/\]/$CP2FOO/"          | # PROTECT (CITEP OPTION OPEN)
+  sed "/^$CICOMMON/s/\]/$CI2FOO/"        | # PROTECT (CITE CLOSE)
+  sed "s/$BREAKFOO/\n/g"                 | # RESTORE LINEBREAKS
+  $PANDOCACTION                          | # MD TO TARGET MARKUP
+  sed "s/[ \t]*$FN1FOO/$FOOTNOTEOPEN/g"  | # SUBSTITUTE WITH TARGET MARKUP 
+  sed "s/[ \t]*$FN2FOO/$FOOTNOTECLOSE/g" | # SUBSTITUTE WITH TARGET MARKUP 
+  sed "s/[ \t]*$CI1FOO/$CITEOPEN/g"      | # SUBSTITUTE WITH TARGET MARKUP 
+  sed "s/[ \t]*$CI2FOO/$CITECLOSE/g"     | # SUBSTITUTE WITH TARGET MARKUP 
+  sed "s/[ \t]*$CP1FOO/$CITEPOPEN/g"     | # SUBSTITUTE WITH TARGET MARKUP 
+  sed "s/[ \t]*$CP2FOO/$CITEPCLOSE/g"    | # SUBSTITUTE WITH TARGET MARKUP 
+  tee > $MDSHMOD                           # WRITE TO FILE
+
+# --------------------------------------------------------------------------- #
+# RESTORE MDSH LINES 
+# --------------------------------------------------------------------------- #
+  sed -i 's/\\/\\\\/g' $BCKUPCOMM # PROTECT ESCAPES (aka. \v PROBLEM)
+
+  for COMMENTID in `cat $BCKUPCOMM | cut -d ":" -f 1 | sort -u`
+   do
+      COMMENT=`grep $COMMENTID $BCKUPCOMM   | #
+               head -n 1 | cut -d ":" -f 2- | #
+               sed 's/\//\\\\\//g'          | # ESCAPE CONTROL CHARACTER
+               sed 's/&/\\\\\&/g'`            # ESCAPE CONTROL CHARACTER
+      sed -i "s/$COMMENTID/\n$COMMENT\n/g" $MDSHMOD
+   done
+
+# --------------------------------------------------------------------------- #
+# SOME CLEAN UP
+# --------------------------------------------------------------------------- #
+# REMOVE LEADING BLANKS
+  sed -i "s/^[ \t]*//"         $MDSHMOD
+
+# --------------------------------------------------------------------------- #
+# PARSE COMMANDS 
+# --------------------------------------------------------------------------- #
+
+  for LINE in `cat "$MDSHMOD" | sed 's, ,DieW73NaS03J,g'`
+   do 
+      # --------------------------------------------------- # 
+      # RESTORE SPACES
+        LINE=`echo "$LINE" | sed 's,DieW73NaS03J, ,g'`
+      # --------------------------------------------------- #  
+
+      # CHECK IF LINE STARTS WITH A %
+        ISCMD=`echo $LINE | grep ^% | wc -l` 
+      # --------------------------------------------------- # 
+      # IF LINE STARTS WITH A %
+        if [ $ISCMD -ge 1 ]; then
+
+           CMD=`echo "$LINE" | \
+                cut -d "%" -f 2 | \
+                cut -d ":" -f 1 | \
+                sed 's/\[/ /g' | sed 's/\]/ /g' |\
+                sed 's, ,,g'`
+           ARG=`echo "$LINE" | cut -d ":" -f 2-`
+ 
+     # --------------------------------------------------- # 
+      # CHECK IF COMMAND EXISTS
+
+           CMDEXISTS=`grep "^function ${CMD}()" $FUNCTIONS |\
+                      wc -l`
+      # --------------------------------------------------- # 
+      # IF COMMAND EXISTS 
+        if [ $CMDEXISTS -ge 1 ]; then
+           # EXECUTE COMMAND
+             $CMD $ARG
+        fi
+      # --------------------------------------------------- # 
+      # IF LINE DOES NOT START WITH % (= SIMPLE MARKDOWN)
+        else
+      # --------------------------------------------------- # 
+      # APPEND LINE TO TEX FILE
+        echo "$LINE" >> $SRCDUMP
+        fi
+      # --------------------------------------------------- # 
+  done
+
+  sed -i "s/$EMPTYLINE/\n\n/g" $SRCDUMP  # RESTORE EMPTY LINES
+  sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
+
+  }
+# --------------------------------------------------------------------------- #
+
