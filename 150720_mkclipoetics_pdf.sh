@@ -4,11 +4,9 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=`echo $1 | cut -d ":" -f 2-`
-# MAIN="http://freeze.sh/etherpad/p/clipoetics.mdsh/6/export/txt"
   MAIN="http://freeze.sh/etherpad/export/_/clipoetics.mdsh/6"
   TMPDIR=. ; TMPID=XYZ ; export $TMPID
-  OUTDIR=../FREEZE
-# REFURL="http://freeze.sh/etherpad/p/references.bib/868/export/txt"
+  OUTDIR=FREEZE
   REFURL="http://freeze.sh/etherpad/export/_/references.bib/868"
   wget --no-check-certificate \
         -O ${TMPID}.bib $REFURL > /dev/null 2>&1
@@ -19,8 +17,8 @@
 # =========================================================================== #
 # CONFIGURATION                                                               #
 # --------------------------------------------------------------------------- #
-  FUNCTIONSBASIC=000001_basic.functions
-   FUNCTIONSPLUS=150720_A5.functions
+  FUNCTIONSBASIC=EDIT/sh/000001_basic.functions
+   FUNCTIONSPLUS=EDIT/sh/150720_pdf.functions
        FUNCTIONS=$TMPDIR/$TMPID.functions.tmp
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
@@ -50,11 +48,11 @@
 # WRITE TEX SOURCE
 # --------------------------------------------------------------------------- #
   echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{150720_A5}"                         >> $TMPTEX
+  echo "\usepackage{EDIT/tex/150720_A5}"                >> $TMPTEX
   # PDF/X COMPLIANCY
   echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
         > `dirname $TMPTEX`/pdfx-1a.xmp
-  cp ../lib/icc/FOGRA39L.icc `dirname $TMPTEX`
+  cp lib/icc/FOGRA39L.icc `dirname $TMPTEX`
   echo "\begin{document}"                               >> $TMPTEX
   cat   $SRCDUMP                                        >> $TMPTEX
   echo "\bibliographystyle{plain}"                      >> $TMPTEX
@@ -81,7 +79,7 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=${TMPID}.pdf
-  JACKET=../FREEZE/150725_jacket.pdf;
+  JACKET=FREEZE/150725_jacket.pdf;
   TMPTEX=${TMPID}final.tex
   LICENSE=${TMPID}license.pdf
   LURL="https://github.com/christop/licenses/raw/master/pdf/CC-BY-NC-SA_3.0.pdf"
@@ -89,10 +87,10 @@
         -O ${LICENSE} $LURL > /dev/null 2>&1
 
   echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{150720_A5}"                         >> $TMPTEX
+  echo "\usepackage{EDIT/tex/150720_A5}"                         >> $TMPTEX
   echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
         > `dirname $TMPTEX`/pdfx-1a.xmp
-  cp ../lib/icc/FOGRA39L.icc `dirname $TMPTEX`
+  cp lib/icc/FOGRA39L.icc `dirname $TMPTEX`
   echo "\begin{document}"                               >> $TMPTEX
   echo "\includepdf[scale=1,pages=1-2]{$JACKET}"        >> $TMPTEX
   echo "\includepdf[scale=1,pages=-]{$MAIN}"            >> $TMPTEX
@@ -104,7 +102,7 @@
   pdflatex -interaction=nonstopmode \
             $TMPTEX  # > /dev/null
 
-  mv ${TMPID}final.pdf ../FREEZE/150720_clipoetics.pdf
+  mv ${TMPID}final.pdf $OUTDIR/150720_clipoetics.pdf
 
 # =========================================================================== #
 # CLEAN UP
