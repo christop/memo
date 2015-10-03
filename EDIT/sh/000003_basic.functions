@@ -50,24 +50,86 @@
 }
 # --------------------------------------------------------------------------- #
 
+  QRDEKOSRC=EDIT/assets/151003_qrdeko-03.svg
+
   function mkqr() {
 # --------------------------------------------------------------------------- #
 # GENERATE QR CODE FOR INCLUSION
 # --------------------------------------------------------------------------- #
 
-  QRID=`echo $* | md5sum | cut -c 1-6`
+  QRID=`echo $* | md5sum | cut -c 1-5`
   QURL="http://lfkn.de/$QRID"
+
+  QRPDF=$TMPID${QRID}.pdf
+
+  SCALE="scale(0.1,-0.1)"
+  MOVE="translate(55,145)"
+  TRANSFORM="transform=\"$MOVE$SCALE\""
+  QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
+  QRDEKO=${TMPID}DEKO
+
+# SELECT LAYERS: ONE FOR EACH UNIQUE NAME
+# ---------------------------------------------------------------------------- #
+  sed ":a;N;\$!ba;s/\n/ /g" $QRDEKOSRC  | # REMOVE ALL LINEBREAKS
+  sed 's/<g/\n<g/g'                     | # RESTORE GROUP OPEN + NEWLINE
+  sed '/groupmode="layer"/s/<g/4Fgt7R/g'| # PLACEHOLDER FOR LAYERGROUP OPEN
+  sed ':a;N;$!ba;s/\n/ /g'              | # REMOVE ALL LINEBREAKS
+  sed 's/4Fgt7R/\n<g/g'                 | # RESTORE LAYERGROUP OPEN + NEWLINE
+  sed 's/display:none/display:inline/g' | # MAKE VISIBLE EVEN WHEN HIDDEN
+  tee head.tmp                          | # DUMP NOW TO EXTRACT HEAD LATER
+  tail -n +2                            | # REMOVE HEAD (=FIRST LINE)
+  sed 's/<\/svg>//g'                    | # REMOVE CLOSING TAG
+  grep -n ""                            | # NUMBER LINES
+  sed "s/^.*$/&|&/g"                    | # DOUBLE CONTENT FOR ANALYSIS
+  sed "s/:label/\nX1X/"                 | # MARK LABEL (=NAME)
+  grep -v ":label=\"XX_"                | # IGNORE XX LAYERS
+  grep  "^X1X"                          | # SELECT MARKED
+  shuf                                  | # SHUFFLE
+  sort -u -t\" -k1,2                    | # SELECT ONE FOR EACH LABEL
+  cut -d "|" -f 2-                      | # SELECT SECOND/UNTOUCHED CONTEN
+  sort -n -u -t: -k1,1                  | # SORT ACCORDING TO LINE NUMBER
+  cut -d ":" -f 2-                      | # REMOVE LINENUMBER
+  tee  > layers.tmp                       # WRITE TO FILE
+# ---------------------------------------------------------------------------- #
+
+  head -n 1 head.tmp     >  ${QRDEKO}.svg
+  cat layers.tmp | sed "s/VWXYZ/$QRTXT/g" >> ${QRDEKO}.svg
+  echo "</svg>"          >> ${QRDEKO}.svg
 
   echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
 
-  QRPDF=$TMPID${QRID}CROP.pdf
- #QRTXT="lfkn.de/$QRID"
-  QRTXT="$QRID"
+  inkscape --export-plain-svg=$TMPID${QRID}.svg \
+           $TMPID${QRID}.eps
+  sed -i "s/<\/svg>//"     ${QRDEKO}.svg
+  echo "<g $TRANSFORM>" >> ${QRDEKO}.svg
+  sed ':a;N;$!ba;s/\n/ /g' $TMPID${QRID}.svg | \
+  tr -s ' ' | sed 's/</\n&/g' | #
+  grep "^<path"         >> ${QRDEKO}.svg
+  echo "</g>"           >> ${QRDEKO}.svg
+  echo "</svg>"         >> ${QRDEKO}.svg
 
-  epstopdf $TMPID${QRID}.eps
-  rm $TMPID${QRID}.eps
-  pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
-  rm $TMPID${QRID}.pdf
+  inkscape --export-pdf=$QRPDF  \
+           --export-text-to-path \
+           ${QRDEKO}.svg
+
+# CLEAN UP
+  rm *.tmp $TMPID${QRID}.eps $TMPID${QRID}.svg ${QRDEKO}.svg
+
+
+
+
+# OLD AND SIMPLE
+# echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
+
+# QRPDF=$TMPID${QRID}CROP.pdf
+##QRTXT="lfkn.de/$QRID"
+# QRTXT="$QRID"
+
+# epstopdf $TMPID${QRID}.eps
+# rm $TMPID${QRID}.eps
+# pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
+# rm $TMPID${QRID}.pdf
+
 
   }
 # --------------------------------------------------------------------------- #
