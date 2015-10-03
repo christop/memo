@@ -15,10 +15,10 @@
    width="200"
    height="200"
    xml:space="preserve"
-   sodipodi:docname="qrdeko_03.svg"><metadata
+   sodipodi:docname="151003_qrdeko-03.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath18"><path
@@ -37,10 +37,10 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="6.9186191"
-     inkscape:cx="103.27572"
-     inkscape:cy="69.102426"
-     inkscape:current-layer="g3484"
+     inkscape:zoom="4.781707"
+     inkscape:cx="108.05924"
+     inkscape:cy="117.93364"
+     inkscape:current-layer="g3325"
      showguides="true"><sodipodi:guide
        position="67,130"
        orientation="0,63"
@@ -62,6 +62,16 @@
        d="m 67,70.000001 63,0 L 130,133 66.999999,133 z"
        id="rect3451"
        inkscape:connector-curvature="0" /></g><g
+     style="display:inline"
+     inkscape:label="BG"
+     inkscape:groupmode="layer"
+     id="g3360"
+     sodipodi:insensitive="true"><path
+       inkscape:connector-curvature="0"
+       id="path3362"
+       d="m -3,-9.999999 210,0 L 207,193 -3.000001,193 z"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:nodetypes="ccccc" /></g><g
      style="display:none"
      inkscape:label="005"
      inkscape:groupmode="layer"
@@ -1488,10 +1498,10 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="LABEL"
-     style="display:inline"><path
+     style="display:none"><path
    sodipodi:nodetypes="ccccc"
    style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   d="m 65,144 69,0 0,14 -69.000001,0 z"
+   d="m 65,144 69,0 0,15 -69.000001,0 z"
    id="path3463-0"
    inkscape:connector-curvature="0" /><text
    xml:space="preserve"
@@ -1504,6 +1514,7 @@
      id="tspan3004"
      x="66.208893"
      y="153.72">LFKN.DE/VWXYZ</tspan></text>
+
 
 
 
@@ -1531,6 +1542,7 @@
 
 
 
+
 </g><g
      inkscape:groupmode="layer"
      id="g3853"
@@ -1554,6 +1566,7 @@
 
 
 
+
 <path
    sodipodi:nodetypes="ccccc"
    style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -1570,6 +1583,7 @@
      x="65.06105"
      id="tspan3865"
      sodipodi:role="line">LFKN.DE</tspan></text>
+
 </g><g
      style="display:none"
      inkscape:label="LABEL"
@@ -1593,6 +1607,7 @@
 
 
 
+
 <path
    inkscape:connector-curvature="0"
    id="path3875"
@@ -1609,11 +1624,17 @@
      id="tspan3879"
      x="66.77565"
      y="63.986839">HTTP://LFKN.DE</tspan></text>
+
 </g><g
-     style="display:none"
+     style="display:inline"
      inkscape:label="LABEL"
      id="g3325"
-     inkscape:groupmode="layer"><text
+     inkscape:groupmode="layer"><path
+   sodipodi:nodetypes="ccccc"
+   style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+   d="m 65,52 69,0 0,13 -69.000001,0 z"
+   id="path3463-0-9"
+   inkscape:connector-curvature="0" /><text
    sodipodi:linespacing="125%"
    id="text3327"
    y="61.720001"
@@ -1624,6 +1645,7 @@
      x="66.208893"
      id="tspan3329"
      sodipodi:role="line">LFKN.DE/VWXYZ</tspan></text>
+
 
 
 
