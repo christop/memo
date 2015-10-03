@@ -1,26 +1,9 @@
 # --------------------------------------------------------------------------- #
 # S H A R E D
 # --------------------------------------------------------------------------- #
-# MOVED TO BASIC!
-# function mkqr() {
-
-# QRID=`echo $* | md5sum | cut -c 1-6`
-# QURL="http://lfkn.de/$QRID"
-
-# echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
-
-# QRPDF=$TMPID${QRID}CROP.pdf
-##QRTXT="lfkn.de/$QRID"
-# QRTXT="$QRID"
-
-# epstopdf $TMPID${QRID}.eps
-# rm $TMPID${QRID}.eps
-# pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
-# rm $TMPID${QRID}.pdf
 
 
 
-# }
 # --------------------------------------------------------------------------- #
 
 
