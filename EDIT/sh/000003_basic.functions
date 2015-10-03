@@ -59,14 +59,14 @@
 
   QRID=`echo $* | md5sum | cut -c 1-5`
   QURL="http://lfkn.de/$QRID"
+  QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
 
   QRPDF=$TMPID${QRID}.pdf
+  QRDEKO=${TMPID}DEKO
 
   SCALE="scale(0.1,-0.1)"
   MOVE="translate(55,145)"
   TRANSFORM="transform=\"$MOVE$SCALE\""
-  QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
-  QRDEKO=${TMPID}DEKO
 
 # SELECT LAYERS: ONE FOR EACH UNIQUE NAME
 # ---------------------------------------------------------------------------- #
@@ -94,13 +94,11 @@
 
   head -n 1 head.tmp     >  ${QRDEKO}.svg
   cat layers.tmp | sed "s/VWXYZ/$QRTXT/g" >> ${QRDEKO}.svg
-  echo "</svg>"          >> ${QRDEKO}.svg
 
   echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
 
   inkscape --export-plain-svg=$TMPID${QRID}.svg \
            $TMPID${QRID}.eps
-  sed -i "s/<\/svg>//"     ${QRDEKO}.svg
   echo "<g $TRANSFORM>" >> ${QRDEKO}.svg
   sed ':a;N;$!ba;s/\n/ /g' $TMPID${QRID}.svg | \
   tr -s ' ' | sed 's/</\n&/g' | #
@@ -114,22 +112,6 @@
 
 # CLEAN UP
   rm *.tmp $TMPID${QRID}.eps $TMPID${QRID}.svg ${QRDEKO}.svg
-
-
-
-
-# OLD AND SIMPLE
-# echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
-
-# QRPDF=$TMPID${QRID}CROP.pdf
-##QRTXT="lfkn.de/$QRID"
-# QRTXT="$QRID"
-
-# epstopdf $TMPID${QRID}.eps
-# rm $TMPID${QRID}.eps
-# pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
-# rm $TMPID${QRID}.pdf
-
 
   }
 # --------------------------------------------------------------------------- #
