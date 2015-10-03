@@ -11,7 +11,7 @@
 # SHARED
 # =========================================================================== #
 # --------------------------------------------------------------------------- #
-  function write2src() { echo "$1" >> $SRCDUMP ; }
+  function write2src() { echo "$*" >> $SRCDUMP ; }
 # --------------------------------------------------------------------------- #
 
   function getFile() {
@@ -48,6 +48,29 @@
   fi
 
 }
+# --------------------------------------------------------------------------- #
+
+  function mkqr() {
+# --------------------------------------------------------------------------- #
+# GENERATE QR CODE FOR INCLUSION
+# --------------------------------------------------------------------------- #
+
+  QRID=`echo $* | md5sum | cut -c 1-6`
+  QURL="http://lfkn.de/$QRID"
+
+  echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
+
+  QRPDF=$TMPID${QRID}CROP.pdf
+ #QRTXT="lfkn.de/$QRID"
+  QRTXT="$QRID"
+
+  epstopdf $TMPID${QRID}.eps
+  rm $TMPID${QRID}.eps
+  pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
+  rm $TMPID${QRID}.pdf
+
+  }
+# --------------------------------------------------------------------------- #
 
 # =========================================================================== #
 
@@ -58,7 +81,6 @@
 # =========================================================================== #
 # MAIN MDSH CONVERT FUNCTION
 # =========================================================================== #
-
 
   function mdsh2src() {
 
@@ -75,7 +97,7 @@
 # --------------------------------------------------------------------------- #
 # AND ACTION PLEASE! 
 # --------------------------------------------------------------------------- #
-  echo "--------------------------------------------------------------------"
+  #echo "--------------------------------------------------------------------"
 
 # --------------------------------------------------------------------------- #
 # PREPARE INPUT PARAMETERS 
@@ -217,25 +239,11 @@
 # --------------------------------------------------------------------------- #
 # MAKE MD5 HASH TO PREVENT (REPETITION)/RECURSION -> SKIP IF NECESSARY
 # --------------------------------------------------------------------------- #
-# MD5LAST=$MD5THIS ;  MD5THIS=`md5sum $MDSHMOD | cut -d " " -f 1`
-# touch ${TMPID}.included
-# TIMESINCLUDED=`grep $MD5THIS ${TMPID}.included | wc -l`
-# echo $MD5THIS >> ${TMPID}.included
-# echo $TIMESINCLUDED ; echo $MD5THIS
-
-# if [ X"$MD5LAST" == X"$MD5THIS" ] && 
-#    [ $TIMESINCLUDED -ge 5 ]; then
-#      echo "caught in a loop?"
-#      SKIP="YES"
-# else
-#      SKIP="NO"
-# fi
-
   MD5THIS=`md5sum $MDSHMOD | cut -d " " -f 1`
   touch ${TMPID}.included
   TIMESINCLUDED=`grep $MD5THIS ${TMPID}.included | wc -l`
   echo $MD5THIS >> ${TMPID}.included
-  echo $TIMESINCLUDED ; echo $MD5THIS
+  # echo $TIMESINCLUDED ; echo $MD5THIS
 
   if [ $TIMESINCLUDED -ge 5 ]; then
        echo "caught in a loop?"
@@ -243,7 +251,6 @@
   else
        SKIP="NO"
   fi
-
 
   if [ X"$SKIP" != XYES ]; then
 # --------------------------------------------------------------------------- #
@@ -322,8 +329,9 @@
       # --------------------------------------------------- # 
   done
 
-  echo "$INPUT converted"
-  echo "--------------------------------------------------------------------"
+ #echo "DONE"
+ #echo "$INPUT converted"
+ #echo "--------------------------------------------------------------------"
 
 # LET'S DO IT IN THE POST
 # --------------------------------------------------------------------------- #
@@ -349,7 +357,13 @@
   fi
 
   }
+
+
+
+
+
 # --------------------------------------------------------------------------- #
+# TODO: adjust ad-hoc function set
 
 function INCLUDE() {
 
@@ -408,4 +422,5 @@ function INCLUDE() {
 }
 
 # --------------------------------------------------------------------------- #
+
 

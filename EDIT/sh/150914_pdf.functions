@@ -1,4 +1,116 @@
 # --------------------------------------------------------------------------- #
+# S H A R E D
+# --------------------------------------------------------------------------- #
+# function mkqr() {
+
+# QRID=`echo $* | md5sum | cut -c 1-6`
+# QURL="http://lfkn.de/$QRID"
+
+# echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
+
+# QRPDF=$TMPID${QRID}CROP.pdf
+##QRTXT="lfkn.de/$QRID"
+# QRTXT="$QRID"
+
+# epstopdf $TMPID${QRID}.eps
+# rm $TMPID${QRID}.eps
+# pdfcrop $TMPID${QRID}.pdf $QRPDF > /dev/null 2>&1
+# rm $TMPID${QRID}.pdf
+
+
+
+# }
+# --------------------------------------------------------------------------- #
+
+
+
+
+
+# --------------------------------------------------------------------------- #
+
+function INCLUDE() {
+
+# TODOTODO: check, check, debug
+# mdsh2src $PARAMETERSWITHOUTFUNCTIONS # TODOTODO
+
+  echo "INCLUDE STARTS ====================================================="
+
+# EXTRACT OPTIONAL PARAMETERS
+# ---------------------------------------------------------
+  FUNCTIONSHERE=`echo $* | sed 's/ /\n/g' | #
+                 grep "\.functions$" | tail -n 1`
+
+  if [ `echo $FUNCTIONSHERE | wc -c` -gt 1 ];then
+  PARAMETERSWITHOUTFUNCTIONS=`echo $*        | #
+                              sed 's/ /\n/g' | #
+                              grep -v "\.functions$"`                                    # TODO: BETTER
+
+# ATTACH FUNCTIONS TO MAIN FUNCTIONS
+# ---------------------------------------------------------
+  if [ `ls $FUNCTIONSHERE 2>/dev/null | wc -l` -gt 0 ];then
+
+   FID=`date +%s%N`
+ # ATTACH AND MARK FUNCTIONS
+   echo "#  -- ${FID} -- START" >> $FUNCTIONS
+   cat  $FUNCTIONSHERE          >> $FUNCTIONS
+   echo "#  -- ${FID} -- END"   >> $FUNCTIONS
+   FUNCTIONSADDED="YES"
+ # SAVE FUNCTION ID (AS VARIABLE MAY BE OVERWRITTEN)
+   echo $FID >> ${TMPID}.fid
+   fi
+   else
+   FUNCTIONSADDED="NO"
+  fi
+
+# MAKE QR REFERENCE
+# --------------------------------------------------------
+  mkqr $*
+  write2src "HERE$QRID"
+
+# PROCESS INPUT !!!!!
+# --------------------------------------------------------
+  mdsh2src $*
+
+# ADD REFERENCE IF NOT SKIPPED
+# --------------------------------------------------------
+  if [ X"$SKIP" != XYES ]; then
+       sed -i "s,HERE$QRID,\\\qrmargin{$QRPDF}{$QRTXT}," $SRCDUMP
+  else
+       sed -i "s,HERE$QRID,,g" $SRCDUMP
+  fi
+
+# REMOVE ADDED FUNCTIONS
+# --------------------------------------------------------
+  if [ -f ${TMPID}.fid ]; then
+
+# LOAD LATEST FUNCTION ID
+  FID=`tail -n 1 ${TMPID}.fid`
+# REMOVE FROM FUNCTIONS
+  sed -i "/${FID} -- START$/,/${FID} -- END$/d" ${FUNCTIONS}
+# REMOVE FROM SAVED FUNCTIONS
+  sed -i "/$FID/d" ${TMPID}.fid
+# RELOAD FUNCTIONS
+  source $FUNCTIONS
+  
+  fi
+  
+  echo "INCLUDE ENDS  ======================================================"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------------------- #
+
 
 function UNCITE() {
 
@@ -169,12 +281,104 @@ function SPREAD() {
 
 function TITLE() {
 
-  write2src ""
-  write2src "starter: $*"
+  write2src "";write2src ""
+  echo $* | #
+  pandoc -r markdown -w latex | #
+  sed 's/^/\\\section{/' | sed 's/$/}/' >> $SRCDUMP
   write2src ""
 
 }
 
 # --------------------------------------------------------------------------- #
 
+function SCALEFONT() {
+
+  write2src "\relscale{$1}"
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function RESETFONT() {
+
+  write2src "\resetfont"
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function PDF() {
+
+  PDFSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+          grep "\.pdf$" | head -n 1`    # SELECT FIRST ENDING WITH .pdf 
+   PAGES=`echo $* | sed "s/#/\n#/g"   | # HASH TO NEWLINES
+          grep -v "^#"                | # 
+          sed 's/ /\n/g'              | #
+          sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+          grep -v "^[ ]*$" | tail -n 1` # 
+  if [ `echo $PAGES | wc -c` -le 1 ]; then
+        PAGES=-
+  fi
+  OPTIONS=`echo $* | sed "s/#/\n#/g"          | #
+           grep "^#" | tail -n 1              | #
+           cut -d "#" -f 2 | sed 's/^[ \t]*//'` # 
+  if [ `echo $OPTIONS | wc -c` -gt 1 ]; then
+        OPTIONS=",$OPTIONS"
+  else
+        echo "no options provided"
+  fi
+
+  PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.pdf
+  if [ ! -f $PDFGET ]; then
+        getFile $PDFSRC $PDFGET
+      # TODO/MAYBE: MAKE PDF-X CONFORM
+  else
+     echo "no need to download"
+    #sleep 2
+  fi
+  if [ -f $PDFGET ]; then
+    #write2src "\includepdf[scale=1,pages=$PAGES$OPTIONS]{$PDFGET}"
+     write2src "\pdfpage{$PDFGET}{$PAGES}{$OPTIONS}"
+  fi
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function SRCODE() {
+
+  SRCSRC=`echo $* | sed 's/ /\n/g'         | # SPACES TO NEWLINES
+          sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHARACTER EXTENSION
+          grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
+          head -n 1`                         # SELECT FIRST
+   LINES=`echo $* | sed "s/ /\n/g" | # SPACES TO NEWLINES
+          sed "/[^0-9\\-]/d"       | # NO LINES WITH MORE THAN NUMS AND -
+          tail -n 1`                 # LAST LINE ONLY
+  if [ `echo $LINES | wc -c` -gt 1 ]; then      # IF LINE OPTION IS SET
+        echo "lines: $LINES"
+        LINES=`echo $LINES | sed 's/-/,/'`
+        SELECTSRCLINES="sed -n \"${LINES}p\" "
+  else
+        SELECTSRCLINES="tee"
+  fi
+
+  SRCGET=${TMPID}`echo $SRCSRC | md5sum | cut -c 1-4`.txt
+  if [ ! -f $SRCGET ]; then
+        getFile $SRCSRC $SRCGET
+  else
+     echo "no need to download"
+    #sleep 2
+  fi
+  if [ -f $SRCGET ]; then
+     mkqr $*
+     write2src "\qrmargin{$QRPDF}{$QRTXT}"
+     write2src "\begin{verbatim}"
+     cat $SRCGET     | #
+     eval "$SELECTSRCLINES" >> $SRCDUMP
+     write2src "\end{verbatim}"
+  fi
+
+}
+
+# --------------------------------------------------------------------------- #
 
