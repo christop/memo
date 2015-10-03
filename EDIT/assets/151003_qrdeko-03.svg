@@ -37,10 +37,10 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="4.781707"
-     inkscape:cx="108.05924"
-     inkscape:cy="117.93364"
-     inkscape:current-layer="g3325"
+     inkscape:zoom="1.2745606"
+     inkscape:cx="105.26945"
+     inkscape:cy="147.00349"
+     inkscape:current-layer="g3360"
      showguides="true"><sodipodi:guide
        position="67,130"
        orientation="0,63"
@@ -65,11 +65,10 @@
      style="display:inline"
      inkscape:label="BG"
      inkscape:groupmode="layer"
-     id="g3360"
-     sodipodi:insensitive="true"><path
+     id="g3360"><path
        inkscape:connector-curvature="0"
        id="path3362"
-       d="m -3,-9.999999 210,0 L 207,193 -3.000001,193 z"
+       d="m 30,1e-6 137,0 L 167,200 29.999999,200 z"
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        sodipodi:nodetypes="ccccc" /></g><g
      style="display:none"
@@ -1518,6 +1517,7 @@
 
 
 
+
 </g><g
      style="display:none"
      inkscape:label="XX_LABEL"
@@ -1539,6 +1539,7 @@
      x="66.191483"
      id="tspan3303"
      sodipodi:role="line">VWXYZ</tspan></text>
+
 
 
 
@@ -1567,6 +1568,7 @@
 
 
 
+
 <path
    sodipodi:nodetypes="ccccc"
    style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -1583,6 +1585,7 @@
      x="65.06105"
      id="tspan3865"
      sodipodi:role="line">LFKN.DE</tspan></text>
+
 
 </g><g
      style="display:none"
@@ -1608,6 +1611,7 @@
 
 
 
+
 <path
    inkscape:connector-curvature="0"
    id="path3875"
@@ -1624,6 +1628,7 @@
      id="tspan3879"
      x="66.77565"
      y="63.986839">HTTP://LFKN.DE</tspan></text>
+
 
 </g><g
      style="display:inline"
@@ -1645,6 +1650,7 @@
      x="66.208893"
      id="tspan3329"
      sodipodi:role="line">LFKN.DE/VWXYZ</tspan></text>
+
 
 
 
