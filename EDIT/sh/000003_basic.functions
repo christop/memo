@@ -14,10 +14,10 @@
   function write2src() { echo "$*" >> $SRCDUMP ; }
 # --------------------------------------------------------------------------- #
 
-  function getFile() {
 # --------------------------------------------------------------------------- #
 # MAKE LOCAL IF NECESSARY
 # --------------------------------------------------------------------------- #
+  function getFile() {
 
   SOURCE=$1
   TARGET=$2
@@ -49,15 +49,14 @@
 
 }
 # --------------------------------------------------------------------------- #
-
-  QRDEKOSRC=EDIT/assets/151003_qrdeko-03.svg
-
-  function mkqr() {
 # --------------------------------------------------------------------------- #
 # GENERATE QR CODE FOR INCLUSION
 # --------------------------------------------------------------------------- #
+  QRDEKOSRC=EDIT/assets/151007_qrdeko-simple.svg
 
-  QRID=`echo $* | md5sum | cut -c 1-5`
+  function mkqr() {
+
+  QRID=`echo $* | md5sum | base64 | cut -c 1-5`
   QURL="http://lfkn.de/$QRID"
   QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
 
@@ -66,7 +65,8 @@
 
   SCALE="scale(0.1,-0.1)"
   MOVE="translate(55,145)"
-  TRANSFORM="transform=\"$MOVE$SCALE\""
+  TRANSFORMQR="transform=\"$MOVE$SCALE\""
+
 
 # SELECT LAYERS: ONE FOR EACH UNIQUE NAME
 # ---------------------------------------------------------------------------- #
@@ -92,19 +92,20 @@
   tee  > layers.tmp                       # WRITE TO FILE
 # ---------------------------------------------------------------------------- #
 
-  head -n 1 head.tmp     >  ${QRDEKO}.svg
+  head -n 1 head.tmp                      >  ${QRDEKO}.svg
   cat layers.tmp | sed "s/VWXYZ/$QRTXT/g" >> ${QRDEKO}.svg
 
   echo "$QURL" | qrencode -iv 1 -t EPS -o $TMPID${QRID}.eps
 
   inkscape --export-plain-svg=$TMPID${QRID}.svg \
            $TMPID${QRID}.eps
-  echo "<g $TRANSFORM>" >> ${QRDEKO}.svg
+
+  echo "<g $TRANSFORMQR>"  >> ${QRDEKO}.svg
   sed ':a;N;$!ba;s/\n/ /g' $TMPID${QRID}.svg | \
   tr -s ' ' | sed 's/</\n&/g' | #
-  grep "^<path"         >> ${QRDEKO}.svg
-  echo "</g>"           >> ${QRDEKO}.svg
-  echo "</svg>"         >> ${QRDEKO}.svg
+  grep "^<path"            >> ${QRDEKO}.svg
+  echo "</g>"              >> ${QRDEKO}.svg
+  echo "</svg>"            >> ${QRDEKO}.svg
 
   inkscape --export-pdf=$QRPDF  \
            --export-text-to-path \
@@ -116,12 +117,11 @@
   }
 # --------------------------------------------------------------------------- #
 
+function QR() {
+    QRMODE=$1
+  }
+
 # =========================================================================== #
-
-
-
-
-
 # =========================================================================== #
 # MAIN MDSH CONVERT FUNCTION
 # =========================================================================== #
