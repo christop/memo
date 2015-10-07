@@ -94,56 +94,6 @@ function INCLUDE() {
 
 
 
-
-# --------------------------------------------------------------------------- #
-
-
-function UNCITE() {
-
-  DUMP=${TMPID}.`echo $RANDOM$RANDOM | cut -c 1-4`.mdsh
-
-  INPUT=`echo $* | cut -d " " -f 1`; echo "input is: "$INPUT
-  LINES=`echo $* | sed "s/ /\n/g"             | # SPACES TO NEWLINES
-         sed "s/[^0-9\\-]//g"                 | # REMOVE ALL EXCEPT NUMS AND -
-         grep -v "^[ ]*$"                     | # REMOVE EMPTY
-         sed -e '/^[0-9]\+-*[0-9]*$/s/^/X/g'  | # MARK LINE OPTION 
-         grep "^X" | sed 's/^X//' | tail -n 1`  # SELECT LINE OPTION
-  if [ `echo $LINES | wc -c` -gt 1 ]; then      # IF LINE OPTION IS SET
-        echo "lines: $LINES"
-        LINES=`echo $LINES | sed 's/-/,/'`
-        SELECTLINES="sed -n \"${LINES}p\" "
-  else                                          # IF LINE OPTION IS NOT SET
-        SELECTLINES="tee"
-  fi
- 
-  IFHTTP=`echo $INPUT | grep "http.\?://" | wc -l`
-  if [ $IFHTTP -ge 1 ]; then
-       URL=$INPUT; NAME=`echo $INPUT | md5sum | cut -c 1-10`
-       RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $URL`
-       if [ $RESPONSE == '200' ]; then
-           #wget --no-check-certificate \
-           #     -O $DUMP $URL > /dev/null 2>&1
-
-            wget -O - -o /dev/null $URL | #
-            eval "$SELECTLINES"         | #
-            sed 's/^> //' > $DUMP
-            mdsh2src $DUMP 1-1000
-
-       else
-            echo "$URL does not exist! Skipping."
-       fi
-  else
-       MDSH=$INPUT
-       if [ `ls $MDSH 2>/dev/null | wc -l` -le 0 ];then
-       echo "no valid input provided"
-       else
-       RUN="YES"
-
-       fi
-  fi
-
-}
-
 # --------------------------------------------------------------------------- #
 
 function SRC() {
@@ -361,7 +311,8 @@ function SRCODE() {
         SELECTSRCLINES="tee"
   fi
 
-  SRCGET=${TMPID}`echo $SRCSRC | md5sum | cut -c 1-4`.txt
+  EXTENSION=`echo $SRCSRC | rev | cut -d "." -f 1 | rev`
+  SRCGET=${TMPID}`echo $SRCSRC | md5sum | cut -c 1-4`.$EXTENSION
   if [ ! -f $SRCGET ]; then
         getFile $SRCSRC $SRCGET
   else
@@ -369,15 +320,37 @@ function SRCODE() {
     #sleep 2
   fi
   if [ -f $SRCGET ]; then
+
+    if [ X"$QRMODE" != XOFF  ]; then
      mkqr $*
      write2src "\qrmargin{$QRPDF}{$QRTXT}"
-     write2src "\begin{verbatim}"
-     cat $SRCGET     | #
-     eval "$SELECTSRCLINES" >> $SRCDUMP
-     write2src "\end{verbatim}"
+    fi
+
+    INDENT=`cat $SRCGET            | # DISPLAY SRC
+            eval "$SELECTSRCLINES" | # SELECT LINES
+            sed '/^[ \t]*$/g'      | # IGNORE EMPTY LINES
+            sed -E 's/([^ ]).*//'  | # KEEP ONLY LEADING BLANK
+            sort -r                | # REVERESE SORT
+            tail -n 1              | # SELECT LAST (=SHORTEST)
+            wc -c`                   # COUNT
+
+     write2src "\begin{lstlisting}"
+     cat $SRCGET            | #
+     eval "$SELECTSRCLINES" | #
+     cut -c ${INDENT}-      | #
+     tee                    >> $SRCDUMP
+     write2src "\end{lstlisting}"
+
+     rm $SRCGET
   fi
 
 }
+
+
+
+
+
+
 
 # --------------------------------------------------------------------------- #
 
@@ -415,4 +388,75 @@ function CLEARTOLEFT(){
 }
 
 # --------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------------------- #
+
+
+function UNCITE() {
+
+  DUMP=${TMPID}.`echo $RANDOM$RANDOM | cut -c 1-4`.mdsh
+
+  INPUT=`echo $* | cut -d " " -f 1`; echo "input is: "$INPUT
+  LINES=`echo $* | sed "s/ /\n/g"             | # SPACES TO NEWLINES
+         sed "s/[^0-9\\-]//g"                 | # REMOVE ALL EXCEPT NUMS AND -
+         grep -v "^[ ]*$"                     | # REMOVE EMPTY
+         sed -e '/^[0-9]\+-*[0-9]*$/s/^/X/g'  | # MARK LINE OPTION 
+         grep "^X" | sed 's/^X//' | tail -n 1`  # SELECT LINE OPTION
+  if [ `echo $LINES | wc -c` -gt 1 ]; then      # IF LINE OPTION IS SET
+        echo "lines: $LINES"
+        LINES=`echo $LINES | sed 's/-/,/'`
+        SELECTLINES="sed -n \"${LINES}p\" "
+  else                                          # IF LINE OPTION IS NOT SET
+        SELECTLINES="tee"
+  fi
+ 
+  IFHTTP=`echo $INPUT | grep "http.\?://" | wc -l`
+  if [ $IFHTTP -ge 1 ]; then
+       URL=$INPUT; NAME=`echo $INPUT | md5sum | cut -c 1-10`
+       RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $URL`
+       if [ $RESPONSE == '200' ]; then
+           #wget --no-check-certificate \
+           #     -O $DUMP $URL > /dev/null 2>&1
+
+            wget -O - -o /dev/null $URL | #
+            eval "$SELECTLINES"         | #
+            sed 's/^> //' > $DUMP
+            mdsh2src $DUMP 1-1000
+
+       else
+            echo "$URL does not exist! Skipping."
+       fi
+  else
+       MDSH=$INPUT
+       if [ `ls $MDSH 2>/dev/null | wc -l` -le 0 ];then
+       echo "no valid input provided"
+       else
+       RUN="YES"
+
+       fi
+  fi
+
+}
 
