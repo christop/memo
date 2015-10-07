@@ -6,7 +6,10 @@
  #MAIN=JUNK/spread.mdsh
  #MAIN=http://freeze.sh/etherpad/export/_/dev.mdsh
  #MAIN=JUNK/dev3.mdsh
-  MAIN=JUNK/recursion.mdsh
+ #MAIN=JUNK/recursion.mdsh
+ #MAIN=JUNK/qrtest.mdsh
+ #MAIN=JUNK/lokal.mdsh
+  MAIN=http://freeze.sh/etherpad/export/_/memo.mdsh
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump
@@ -43,28 +46,30 @@
 # =========================================================================== #
 
 
-
-
-
-
 # --------------------------------------------------------------------------- #
 # ACTION HAPPENS HERE!
 # --------------------------------------------------------------------------- #
-
   mdsh2src $MAIN
 
-
-
-
-
-
-
-
   if [ `ls $SRCDUMP 2>/dev/null | wc -l` -gt 0 ]; then
+# --------------------------------------------------------------------------- #
+# WRITE TEX SOURCE
+# --------------------------------------------------------------------------- #
+  echo "\documentclass[8pt,cleardoubleempty]{scrbook}"  >  $TMPTEX
+  echo "\usepackage{EDIT/tex/151007_A5}"                >> $TMPTEX
+  echo "\begin{document}"                               >> $TMPTEX
+  cat   $SRCDUMP                                        >> $TMPTEX
+  echo "\end{document}"                                 >> $TMPTEX
 
-  cp $SRCDUMP debug.mdsh
+# --------------------------------------------------------------------------- #
+# MAKE PDF
+# --------------------------------------------------------------------------- #
+  pdflatex -interaction=nonstopmode \
+            $TMPTEX  # > /dev/null
+  cp ${TMPID}.pdf debug.pdf
 
-  rm $SRCDUMP
+
+  cp $TMPTEX debug.tex
 
   else 
 
@@ -76,10 +81,21 @@
 # =========================================================================== #
 # CLEAN UP
 
+  rm $SRCDUMP
   rm ${TMPID}*.[1-9]*.*
   rm ${TMPID}*.functions
   rm ${TMPID}*.included
+  rm ${TMPID}.tex
+  rm ${TMPID}.aux
+  rm ${TMPID}.pdf
+  rm ${TMPID}.log
+  rm ${TMPID}*.pdf
+  rm ${TMPID}*.txt
+  
+
+  if [ `ls ${TMPID}.fid 2>/dev/null | wc -l` -gt 0 ];then
   rm ${TMPID}.fid
+  fi
  #rm ${TMPID}*.pdf
 
 
