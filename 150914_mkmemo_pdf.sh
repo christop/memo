@@ -17,6 +17,11 @@
   SELECTLINES="tee"
   TMPTEX=${TMPID}.tex
 
+  REFURL="http://freeze.sh/etherpad/export/_/references.bib"
+  wget --no-check-certificate \
+        -O ${TMPID}.bib $REFURL > /dev/null 2>&1
+
+
  #DUMPUNPROCESSED=mdshmaster.dump
 
  #echo "converting $MAIN"
@@ -57,6 +62,8 @@
 # --------------------------------------------------------------------------- #
   echo "\documentclass[8pt,cleardoubleempty]{scrbook}"  >  $TMPTEX
   echo "\usepackage{EDIT/tex/151007_A5}"                >> $TMPTEX
+ #echo "\usepackage{EDIT/OLDEDITROOT/150731_A5}"        >> $TMPTEX
+  echo "\bibliography{${TMPID}.bib}"                    >> $TMPTEX
   echo "\begin{document}"                               >> $TMPTEX
   cat   $SRCDUMP                                        >> $TMPTEX
   echo "\end{document}"                                 >> $TMPTEX
@@ -66,9 +73,14 @@
 # --------------------------------------------------------------------------- #
   pdflatex -interaction=nonstopmode \
             $TMPTEX  # > /dev/null
+  biber `echo ${TMPTEX} | rev | cut -d "." -f 2- | rev`
+  pdflatex -interaction=nonstopmode \
+            $TMPTEX  # > /dev/null
+  pdflatex -interaction=nonstopmode \
+            $TMPTEX  # > /dev/null
+
+# D E B U G D E B U G D E B U G D E B U G D E B G D E B U D E B U G D E B U G #
   cp ${TMPID}.pdf debug.pdf
-
-
   cp $TMPTEX debug.tex
 
   else 
@@ -91,6 +103,13 @@
   rm ${TMPID}.log
   rm ${TMPID}*.pdf
   rm ${TMPID}*.txt
+  rm ${TMPID}*.bib
+# BIBER
+  rm ${TMPID}*.bbl
+  rm ${TMPID}*.bcf
+  rm ${TMPID}*.blg
+  rm ${TMPID}*.out
+  rm ${TMPID}*.run.xml
   
 
   if [ `ls ${TMPID}.fid 2>/dev/null | wc -l` -gt 0 ];then

@@ -1,13 +1,14 @@
 
  \usepackage[utf8]{inputenc}
- \usepackage[showframe]{geometry}
-%\usepackage{geometry}
+%\usepackage[showframe]{geometry}
+ \usepackage{geometry}
  \usepackage{pdfpages}
  \usepackage{scalefnt}
 % https://groups.google.com/forum/#!topic/pandoc-discuss/_tssxEsT0eg
  \usepackage{enumerate}
  \usepackage{twoopt,ifmtarg}
- \usepackage{natbib}
+
+%\usepackage{natbib}
  \usepackage{bibentry}
  \nobibliography*
 
@@ -91,6 +92,9 @@
                \textbf{\relscale{1.05}{#1}}}}}
 
 
+
+
+
 % FOOTNOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   \usepackage[hang,multiple]{footmisc}
   \renewcommand{\footnotelayout}{\raggedright}
@@ -111,9 +115,15 @@
        \vspace*{-3pt}
   }}
 
- \newif\iffootnote
- \let\Footnote\footnote
- \renewcommand\footnote[1]{\begingroup\footnotetrue\Footnote{#1}\endgroup}
+
+
+% DISABLED FOR BIBER
+% \newif\iffootnote
+% \let\Footnote\footnote
+% \renewcommand\footnote[1]{\begingroup\footnotetrue\Footnote{#1}\endgroup}
+
+
+
 
 % HEADLINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -138,39 +148,6 @@
 
  \subsectionfont{\fontfamily{lju}\selectfont}
  \subsectionfont{\relscale{1.2}\fontfamily{pju}\selectfont}
-
- \renewcommand\cite[1]{%
- \iffootnote 
-  { \mbox{\tiny\bibentry{#1}}}
- \else
-  \footnote{\bibentry{#1}}%
- \fi
- }
-
- \let\oldcitep\citealp
- \makeatletter
- \renewcommandtwoopt\citep[3][][]{%
- \iffootnote 
-  \begingroup\protected\def\harvardand{\&}%
-  \@ifmtarg{#1}%
-  { {\tiny\bibentry{#3}}}%
-  {\@ifmtarg{#2}%
-  { {\tiny\bibentry{#3}, #1}}%
-  { {\tiny\bibentry{#3}, #1, #2}}}%
-  \endgroup%
- \else
-  \begingroup\protected\def\harvardand{\&}%
-  \@ifmtarg{#1}%
-  {\footnote{\bibentry{#3}}}%
-  {\@ifmtarg{#2}%
-  {\footnote{\bibentry{#3}, #1}}%
-  {\footnote{\bibentry{#3}, #1, #2}}}%
-  \endgroup%
- \fi
- }
- \makeatother
- \protected\def\harvardand{and}
-
 
 
 
@@ -256,7 +233,7 @@
 % \emptypage
 % %\fi
   \clearpage
-  % http://tex.stackexchange.com/questions/6143/if-then-else-for-odd-page-even-page
+% http://tex.stackexchange.com/questions/6143/if-then-else-for-odd-page-even-page
   \ifthispageodd{}{\emptypage}
  }
 % -------------------------------------------------------------------- %
@@ -285,9 +262,143 @@
    }
 
 
+% SRCODE (DIFFERENT IF BEFORE CITATION BLOCK???!)
+% -------------------------------------------------------------------- %
+  \usepackage{listings}
+
+  \definecolor{darkblue}{cmyk}{1,0,0,0}
+  \definecolor{darkred}{cmyk}{0,1,0,0}
+  \definecolor{darkgreen}{cmyk}{1,0,1,0}
+  \definecolor{red}{cmyk}{0,0,1,0}
+
+  \lstloadlanguages{Bash}
+  \lstset{%
+    language=Bash,
+    basicstyle=\fontfamily{asc}\selectfont\footnotesize,
+  % commentstyle=\itshape\color{darkgreen},
+  % commentstyle=\fontfamily{vpi}\selectfont,
+    commentstyle=\scalefont{.7}\em,
+  % keywordstyle=\bfseries\color{darkblue},
+    keywordstyle=\em,
+    stringstyle=\color{darkred},
+    showspaces=false,
+    showtabs=false,
+    columns=fixed,
+  % numbers=left,
+    numbers=none,
+    frame=none,
+    numberstyle=\tiny,
+    breaklines=false,
+    showstringspaces=false,
+    xleftmargin=0cm
+  }%
 
 
-   
+%%\lstloadlanguages{C++}
+%%\lstloadlanguages{TeX}
+%\lstloadlanguages{Bash}
+%\lstset{%
+%% language=C++,
+%% language=TeX,
+%  language=Bash,
+%% basicstyle=\tiny\ttfamily,
+%  basicstyle=\tiny\ttfamily,
+%% commentstyle=\itshape\color{darkgreen},
+%% keywordstyle=\bfseries\color{darkblue},
+%  stringstyle=\color{darkred},
+%  showspaces=false,
+%  showtabs=false,
+%  columns=fixed,
+%  numbers=left,
+%  frame=none,
+%  numberstyle=\tiny,
+%  breaklines=true,
+%  showstringspaces=false,
+%  xleftmargin=0cm
+%}%
+
+
+
+% CITATION
+% -------------------------------------------------------------------- %
+% \usepackage{forloop}
+% \usepackage{environ}
+
+  \usepackage{csquotes}
+% \usepackage{btxdockit} % CLASH LSTLISTING????
+
+%\usepackage[bibstyle=fiwi,natbib=true,backend=biber]{biblatex}
+%\bibliography{../references.bib}
+% \usepackage[style=fiwi,
+%             citestyle=fiwi,
+%             backend=biber,
+%             natbib=true,
+%             citefilm=normal,
+%             series=false,
+%             publisher=true,germ=true,origyearwithyear=true,origyearsuperscript=true,dashed=true,partofcited=true,]{biblatex}
+ \usepackage[style=fiwi,natbib=true,backend=biber]{biblatex}
+
+% PROBLEM WITH SPACING AFTER FILMTITLE
+% OVERWRITE FORMATTING
+ %\DeclareFieldFormat[book]{title}{{{#1 XX}}}     % HAS EFFECT
+ %\DeclareFieldFormat[book]{title}{{{\emph{#1}}}} % HAS EFFECT
+ %\DeclareRobustCommand{\film}{}  % HAS EFFECT
+ \renewbibmacro*{director}{
+ %\ifpunct{\unspace}{}\printnames[director]{author}
+ \ifpunct{}{}\printnames[director]{author}
+ }
+ \DeclareFieldFormat{season}{ {\textsc\emph{season}} #1}
+ \DeclareFieldFormat{episode}{ {\textsc\emph{episode}} #1}
+
+% http://www.khirevich.com/latex/biblatex/
+% prints author names as small caps
+% \renewcommand{\mkbibnamefirst}[1]{\textsc{#1}}
+% \renewcommand{\mkbibnamelast}[1]{\textsc{#1}}
+% \renewcommand{\mkbibnameprefix}[1]{\textsc{#1}}
+% \renewcommand{\mkbibnameaffix}[1]{\textsc{#1}}
+
+ \newif\iffootnote
+ \let\Footnote\footnote
+ \renewcommand\footnote[1]{\begingroup\footnotetrue\Footnote{#1}\endgroup}
+
+ \renewcommand\cite[1]{%
+ \iffootnote 
+  { \mbox{\tiny\fullcite{#1}}}
+ \else
+  \footnote{\fullcite{#1}}%
+ \fi
+ }
+
+ \usepackage{twoopt,ifmtarg}
+ \let\oldcitep\citealp
+ \makeatletter
+ \renewcommandtwoopt\citep[3][][]{%
+ \iffootnote 
+  \begingroup\protected\def\harvardand{\&}%
+  \@ifmtarg{#1}%
+  { {\tiny\fullcite{#3}}}%
+  {\@ifmtarg{#2}%
+  { {\tiny\fullcite{#3}, #1}}%
+  { {\tiny\fullcite{#3}, #1, #2}}}%
+  \endgroup%
+ \else
+  \begingroup\protected\def\harvardand{\&}%
+  \@ifmtarg{#1}%
+  {\footnote{\fullcite{#3}}}%
+  {\@ifmtarg{#2}%
+  {\footnote{\fullcite{#3}, #1}}%
+  {\footnote{\fullcite{#3}, #1, #2}}}%
+  \endgroup%
+ \fi
+ }
+ \makeatother
+ \protected\def\harvardand{and}
+
+
+
+
+
+
 
 
 
