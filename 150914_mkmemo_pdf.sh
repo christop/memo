@@ -90,6 +90,7 @@
 # =========================================================================== #
 # CLEAN UP
 
+# SHOULD HAVE rmif FUNCTION
   rm $SRCDUMP
   rm ${TMPID}*.[1-9]*.*
   rm ${TMPID}*.functions
@@ -99,23 +100,20 @@
   rm ${TMPID}.pdf
   rm ${TMPID}.log
   rm ${TMPID}*.pdf
-  rm ${TMPID}*.txt
   rm ${TMPID}*.bib
   rm ${TMPID}*.wget
+  rm ${TMPID}SRC*.*
 # BIBER
   rm ${TMPID}*.bbl
   rm ${TMPID}*.bcf
   rm ${TMPID}*.blg
-  rm ${TMPID}*.out
+ #rm ${TMPID}*.out
   rm ${TMPID}*.run.xml
   
 
   if [ `ls ${TMPID}.fid 2>/dev/null | wc -l` -gt 0 ];then
   rm ${TMPID}.fid
   fi
- #rm ${TMPID}*.pdf
-
-
 
 exit 0;
 
