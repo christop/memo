@@ -396,6 +396,7 @@ function EMPTYLOG(){
 
   cat $WGETLOG              | #
   tr -d '\015'              | # CONVERT DOS END OF LINE (IN WGET -d MODE)
+  tr -s ' '                 | # SQUEEZE CONSECUTIVE SPACES
   sed "s/-/{-}/g"           | #
   sed "s/_/\\\\_/g"         | #
   sed "s/%/\\\\%/g"         | #
