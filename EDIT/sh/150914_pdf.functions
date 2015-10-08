@@ -410,6 +410,7 @@ function EMPTYLOG(){
   tee                       >> $SRCDUMP
 
   write2src "\end{logfile}"
+  write2src "\bigskip"
 
   rm $WGETLOG
 
