@@ -417,5 +417,48 @@ function FLUSHLOG(){
 }
 
 # --------------------------------------------------------------------------- #
+  SHORTURLBASE="http://lfkn.de"
+
+function INFO(){
+
+    REFCODE=$1
+  SHORTURL="${SHORTURLBASE}/${REFCODE}"
+   LONGURL=`curl -sIL $SHORTURL         | #
+            tr -d '\015'                | # CONFORM DOS END OF LINE
+            grep ^Location              | #
+            cut -d ":" -f 2-            | #
+            tail -n 1                   | #
+            sed 's,[ \t]*,,'            | # REMOVE ALL SPACES
+            sed 's,/$,,'                | # REMOVE TRAILING SLASH
+            sed "s,^${SHORTURLBASE}$,X,"` # DELETE SHORTURLBASE ONLY (-> PRODUCE 404)
+
+   echo $LONGURL
+
+  INFOSRC="${LONGURL}/info.txt"
+  INFOGET=${TMPID}`echo $LONGURL | md5sum | cut -c 1-4`.info
+
+  if [ ! -f $INFOGET ]; then
+      getFile "$INFOSRC" "$INFOGET"
+  else
+     echo "no need to download"
+  fi
+
+  if [ X$SUCCESS == XYES ]; then
+       write2src "\begin{logfile}"
+       cat $INFOGET >> $SRCDUMP
+       write2src "\end{logfile}"
+  else
+       echo "file does not exist"
+       write2src "\begin{logfile}"
+       write2src "no info file"
+       write2src "\end{logfile}"
+  fi
+
+}
+
+# --------------------------------------------------------------------------- #
+
+
+
 
 
