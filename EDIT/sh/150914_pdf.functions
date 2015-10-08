@@ -392,14 +392,19 @@ function CLEARTOLEFT(){
 function EMPTYLOG(){
 
   write2src "\begin{logfile}"
+  write2src "\textbf{Network Activity:}"
 
   cat $WGETLOG              | #
+  tr -d '\015'              | # CONVERT DOS END OF LINE (IN WGET -d MODE)
   sed "s/-/{-}/g"           | #
   sed "s/_/\\\\_/g"         | #
   sed "s/%/\\\\%/g"         | #
-# tr -s ' '                 | #
+  grep -v '\.\.\.\.\.\..*s$'| # IGNORE PROCESS LINES
+  grep -v "^Saving"         | #
+  grep -v " saved "         | #
   grep -v "^$"              | #
   sed "s/ /~/g"             | #
+ #sed "s/ / \\\\hfill~/g"   | #
   sed "s/^/\\\\seqsplit{/g" | #
   sed "s/$/}/g"             | #
   tee                       >> $SRCDUMP
