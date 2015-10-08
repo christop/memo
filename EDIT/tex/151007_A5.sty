@@ -70,6 +70,17 @@
   \newcommand{\rmstandard}{phv}
   \newcommand{\sfstandard}{phv}
 
+  \renewcommand{\ttdefault}{\ttstandard}
+  \renewcommand{\rmdefault}{\rmstandard}
+  \renewcommand{\sfdefault}{\sfstandard}
+
+
+  \usepackage{seqsplit}
+  \newenvironment{logfile}{\fontfamily{asc}\selectfont\tiny}{\par}
+
+
+
+
 % PROBLEMS WITH SCALEFONT PACKAGE
 % LINEHEIGHT
   \usepackage{setspace}
@@ -80,11 +91,6 @@
 
   \usepackage{relsize}
 
-
-  \renewcommand{\ttdefault}{\ttstandard}
-  \renewcommand{\rmdefault}{\rmstandard}
-  \renewcommand{\sfdefault}{\sfstandard}
-
   \let\OldTexttt\texttt
   \renewcommand{\texttt}[1]{%
   \OldTexttt{\fontfamily{asc}%
@@ -92,6 +98,7 @@
                \textbf{\relscale{1.05}{#1}}}}}
 
 
+ 
 
 
 

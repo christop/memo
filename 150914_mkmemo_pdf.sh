@@ -104,6 +104,7 @@
   rm ${TMPID}*.pdf
   rm ${TMPID}*.txt
   rm ${TMPID}*.bib
+  rm ${TMPID}*.wget
 # BIBER
   rm ${TMPID}*.bbl
   rm ${TMPID}*.bcf

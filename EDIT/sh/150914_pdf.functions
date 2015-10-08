@@ -389,8 +389,28 @@ function CLEARTOLEFT(){
 
 # --------------------------------------------------------------------------- #
 
+function EMPTYLOG(){
 
+  write2src "\begin{logfile}"
 
+  cat $WGETLOG              | #
+  sed "s/-/{-}/g"           | #
+  sed "s/_/\\\\_/g"         | #
+  sed "s/%/\\\\%/g"         | #
+# tr -s ' '                 | #
+  grep -v "^$"              | #
+  sed "s/ /~/g"             | #
+  sed "s/^/\\\\seqsplit{/g" | #
+  sed "s/$/}/g"             | #
+  tee                       >> $SRCDUMP
+
+  write2src "\end{logfile}"
+
+  rm $WGETLOG
+
+}
+
+# --------------------------------------------------------------------------- #
 
 
 

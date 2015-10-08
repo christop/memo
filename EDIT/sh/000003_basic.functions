@@ -17,6 +17,8 @@
 # --------------------------------------------------------------------------- #
 # MAKE LOCAL IF NECESSARY
 # --------------------------------------------------------------------------- #
+  WGETLOG=${TMPID}.wget
+
   function getFile() {
 
   SOURCE=$1
@@ -31,7 +33,7 @@
        RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $URL`
        if [ $RESPONSE == '200' ]; then
             wget --no-check-certificate \
-                 -O $TARGET $URL > /dev/null 2>&1
+                 -O $TARGET $URL >> $WGETLOG 2>&1 # > /dev/null 2>&1
             SUCCESS="YES"
        else
             echo "$URL does not exist! Skipping."
