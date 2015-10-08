@@ -388,7 +388,7 @@ function CLEARTOLEFT(){
 
 # --------------------------------------------------------------------------- #
 
-function EMPTYLOG(){
+function FLUSHLOG(){
 
   write2src "\begin{logfile}"
   write2src "\textbf{Network Activity:}"
