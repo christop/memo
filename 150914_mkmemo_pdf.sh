@@ -3,8 +3,8 @@
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.                                #
 # --------------------------------------------------------------------------- #
 
- #MAIN=JUNK/lokal.mdsh
-  MAIN=http://freeze.sh/etherpad/export/_/memo.mdsh
+  MAIN=JUNK/lokal.mdsh
+ #MAIN=http://freeze.sh/etherpad/export/_/memo.mdsh
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump
@@ -65,6 +65,14 @@
   cat   $SRCDUMP                                        >> $TMPTEX
   echo "\end{document}"                                 >> $TMPTEX
 
+
+# --------------------------------------------------------------------------- #
+# MODIFY SRC BEFORE COMPILING
+# --------------------------------------------------------------------------- #
+ #ORDINALS:\newcommand{\ts}{\textsuperscript}
+ #echo "14th 345chd 3rd rd 1st 2nd ddnd" | #
+ #sed -e 's/\(\([0-9]\)\+\)\(st\|nd\|rd\|th\)\+/\1\\ts{\3}/g'
+
 # --------------------------------------------------------------------------- #
 # MAKE PDF
 # --------------------------------------------------------------------------- #
@@ -97,11 +105,12 @@
   rm ${TMPID}*.included
   rm ${TMPID}.tex
   rm ${TMPID}.aux
-  rm ${TMPID}.pdf
+ #rm ${TMPID}.pdf
   rm ${TMPID}.log
   rm ${TMPID}*.pdf
   rm ${TMPID}*.bib
   rm ${TMPID}*.wget
+  rm ${TMPID}*.info
   rm ${TMPID}SRC*.*
 # BIBER
   rm ${TMPID}*.bbl
