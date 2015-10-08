@@ -80,8 +80,6 @@
                           {\par}
 
 
-
-
 % PROBLEMS WITH SCALEFONT PACKAGE
 % LINEHEIGHT
   \usepackage{setspace}
@@ -97,10 +95,6 @@
   \OldTexttt{\fontfamily{asc}%
               \selectfont{%
                \textbf{\relscale{1.05}{#1}}}}}
-
-
- 
-
 
 
 % FOOTNOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,15 +116,6 @@
       \rule{\textwidth}{0.5pt}{
        \vspace*{-3pt}
   }}
-
-
-
-% DISABLED FOR BIBER
-% \newif\iffootnote
-% \let\Footnote\footnote
-% \renewcommand\footnote[1]{\begingroup\footnotetrue\Footnote{#1}\endgroup}
-
-
 
 
 % HEADLINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -167,12 +152,12 @@
      \AddToShipoutPicture*{%
       \setlength{\unitlength}{.1\paperwidth}%
        \ifodd\value{page}%
-        \put(0.2,12.5){%
-         \includegraphics[width=2.5\marginparwidth]
+        \put(0.3,12.2){%
+         \includegraphics[width=\marginparwidth]
           {#1}}
            \else
-            \put(8.1,12.5){%
-             \includegraphics[width=2.5\marginparwidth]
+            \put(8.1,12.2){%
+             \includegraphics[width=\marginparwidth]
               {#1}}
                \fi
    }}\makeatother
