@@ -23,9 +23,7 @@
 
   SOURCE=$1
   TARGET=$2
-
-  echo $SOURCE
-  echo $TARGET
+  echo "$SOURCE -> $TARGET"
 
   IFHTTP=`echo $SOURCE | grep "http.\?://" | wc -l`
   if [ $IFHTTP -ge 1 ]; then
@@ -167,30 +165,12 @@ function QR() {
 # --------------------------------------------------------------------------- #
 # MAKE LOCAL IF NECESSARY
 # --------------------------------------------------------------------------- #
-  DUMP=${TMPID}.${TMPID2}.mdsh
-  IFHTTP=`echo $INPUT | grep "http.\?://" | wc -l`
-  if [ $IFHTTP -ge 1 ]; then
-       URL=$INPUT; NAME=`echo $INPUT | md5sum | cut -c 1-10`
-       RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $URL`
-       if [ $RESPONSE == '200' ]; then
-            wget --no-check-certificate \
-                 -O $DUMP $URL > /dev/null 2>&1
-            MDSH=${DUMP}
-            RUN="YES"
-       else
-            echo "$URL does not exist! Skipping."
-            RUN="NO"
-       fi
-  else 
-       MDSH=$INPUT
-       if [ `ls $MDSH 2>/dev/null | wc -l` -le 0 ];then
-       echo "no valid input provided"
-       RUN="NO"
-       else
+  MDSH=${TMPID}.${TMPID2}.mdsh
+  getFile $INPUT $MDSH
+  if [ X$SUCCESS == XYES ];then
        RUN="YES"
-       cp $MDSH $DUMP
-       MDSH=${DUMP}
-       fi
+  else
+       RUN="NO"    
   fi
 
 # =========================================================================== #

@@ -3,11 +3,6 @@
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.                                #
 # --------------------------------------------------------------------------- #
 
- #MAIN=JUNK/spread.mdsh
- #MAIN=http://freeze.sh/etherpad/export/_/dev.mdsh
- #MAIN=JUNK/dev3.mdsh
- #MAIN=JUNK/recursion.mdsh
- #MAIN=JUNK/qrtest.mdsh
  #MAIN=JUNK/lokal.mdsh
   MAIN=http://freeze.sh/etherpad/export/_/memo.mdsh
 
@@ -17,23 +12,25 @@
   SELECTLINES="tee"
   TMPTEX=${TMPID}.tex
 
-  REFURL="http://freeze.sh/etherpad/export/_/references.bib"
-  wget --no-check-certificate \
-        -O ${TMPID}.bib $REFURL > /dev/null 2>&1
-
-
- #DUMPUNPROCESSED=mdshmaster.dump
-
- #echo "converting $MAIN"
-
 # =========================================================================== #
 # CONFIGURATION                                                               #
+# --------------------------------------------------------------------------- #
+# INCLUDE/COMBINE FUNCTIONS
 # --------------------------------------------------------------------------- #
   FUNCTIONSBASIC=EDIT/sh/000003_basic.functions
    FUNCTIONSPLUS=EDIT/sh/150914_pdf.functions
        FUNCTIONS=$TMPID.functions
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
+
+# GET BIBREF FILE
+# --------------------------------------------------------------------------- #
+  REFURL="http://freeze.sh/etherpad/export/_/references.bib"
+  # wget --no-check-certificate \
+  #      -O ${TMPID}.bib $REFURL > /dev/null 2>&1
+  getFile $REFURL ${TMPID}.bib
+
+
 
 # --------------------------------------------------------------------------- #
   PANDOCACTION="pandoc --ascii -r markdown -w latex"
