@@ -7,6 +7,7 @@
 % https://groups.google.com/forum/#!topic/pandoc-discuss/_tssxEsT0eg
  \usepackage{enumerate}
  \usepackage{twoopt,ifmtarg}
+ \usepackage{EDIT/tex/151014_listing}
 
 %\usepackage{natbib}
  \usepackage{bibentry}
@@ -253,63 +254,6 @@
      \includepdf{#1}
     }
    }
-
-
-% SRCODE (DIFFERENT IF BEFORE CITATION BLOCK???!)
-% -------------------------------------------------------------------- %
-  \usepackage{listings}
-
-  \definecolor{darkblue}{cmyk}{1,0,0,0}
-  \definecolor{darkred}{cmyk}{0,1,0,0}
-  \definecolor{darkgreen}{cmyk}{1,0,1,0}
-  \definecolor{red}{cmyk}{0,0,1,0}
-
-  \lstloadlanguages{Bash}
-  \lstset{%
-    language=Bash,
-    basicstyle=\fontfamily{asc}\selectfont\footnotesize,
-  % commentstyle=\itshape\color{darkgreen},
-  % commentstyle=\fontfamily{vpi}\selectfont,
-    commentstyle=\scalefont{.7}\em,
-  % keywordstyle=\bfseries\color{darkblue},
-    keywordstyle=\em,
-    stringstyle=\color{darkred},
-    showspaces=false,
-    showtabs=false,
-    columns=fixed,
-  % numbers=left,
-    numbers=none,
-    frame=none,
-    numberstyle=\tiny,
-    breaklines=false,
-    showstringspaces=false,
-    xleftmargin=0cm
-  }%
-
-
-%%\lstloadlanguages{C++}
-%%\lstloadlanguages{TeX}
-%\lstloadlanguages{Bash}
-%\lstset{%
-%% language=C++,
-%% language=TeX,
-%  language=Bash,
-%% basicstyle=\tiny\ttfamily,
-%  basicstyle=\tiny\ttfamily,
-%% commentstyle=\itshape\color{darkgreen},
-%% keywordstyle=\bfseries\color{darkblue},
-%  stringstyle=\color{darkred},
-%  showspaces=false,
-%  showtabs=false,
-%  columns=fixed,
-%  numbers=left,
-%  frame=none,
-%  numberstyle=\tiny,
-%  breaklines=true,
-%  showstringspaces=false,
-%  xleftmargin=0cm
-%}%
-
 
 
 % CITATION
