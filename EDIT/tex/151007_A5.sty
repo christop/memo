@@ -1,5 +1,7 @@
 
  \usepackage[utf8]{inputenc}
+ \DeclareUnicodeCharacter{00A0}{ }
+
 %\usepackage[showframe]{geometry}
  \usepackage{geometry}
  \usepackage{pdfpages}
@@ -333,12 +335,29 @@
 
 
 
+% http://tex.stackexchange.com/questions/88616/fbox-around-type-area
 
+% \usepackage{xparse}
 
+% \newsavebox{\fminipagebox}
+% \NewDocumentEnvironment{fminipage}{m O{\fboxsep}}
+%  {\par\kern#2\noindent\begin{lrbox}{\fminipagebox}
+%    \begin{minipage}{#1}\ignorespaces}
+%  {\end{minipage}\end{lrbox}%
+%   \makebox[#1]{%
+%     \kern\dimexpr-\fboxsep-\fboxrule\relax
+%     \fbox{\usebox{\fminipagebox}}%
+%     \kern\dimexpr-\fboxsep-\fboxrule\relax
+%   }\par\kern#2
+%  }
 
-
-
-
+  \newenvironment{marginblock}{%
+   \ifthispageodd{
+    \begin{tabular}{ll}  \hspace{-5mm} & } % SHIFT FOR ODD
+    {\begin{tabular}{ll} \hspace{-1mm} & } % SHIFT FOR EVEN
+      \begin{minipage}{.7\marginparwidth}  %
+       \tiny\ifthispageodd{\flushright}{\flushleft}
+     }{\end{minipage}\end{tabular}}
 
 
 %% -------------------------------------------------------------------- %
