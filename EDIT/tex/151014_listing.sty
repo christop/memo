@@ -1,33 +1,110 @@
-% SRCODE (DIFFERENT IF BEFORE CITATION BLOCK???!)
+% SRCODE
 % -------------------------------------------------------------------- %
   \usepackage{listings}
+  \usepackage{EDIT/tex/151015_lstdefineBash}
+  \usepackage{EDIT/tex/151015_lstdefineTeX}
+% http://tex.stackexchange.com/questions/63353/how-to-properly-display-backticks-in-verbatim-environment
+  \usepackage{upquote}
 
-  \definecolor{darkblue}{cmyk}{1,0,0,0}
+  \newcommand{\lstsetBash}{\lstset{language=Bash+}}
+  \newcommand{\lstsetTeX}{\lstset{language=TeX+}}
+
+
+% ------------------------------------------- %
+  \definecolor{cyan}{cmyk}{1,0,0,0}
   \definecolor{darkred}{cmyk}{0,1,0,0}
   \definecolor{darkgreen}{cmyk}{1,0,1,0}
-  \definecolor{red}{cmyk}{0,0,1,0}
+  \definecolor{red}{cmyk}{0,1,1,0}
+  \definecolor{yellow}{cmyk}{0,0,1,0}
+% ------------------------------------------- %
 
-  \lstloadlanguages{Bash}
-  \lstset{%
-    language=Bash,
+  \newcommand{\kwa}{\color{cyan}}
+  \newcommand{\kwb}{\color{red}}
+  \newcommand{\kwc}{\color{yellow}}
+
+
+% \lstloadlanguages{Bash}
+% \lstset{%
+%   basicstyle=\fontfamily{grm}\selectfont\footnotesize,
+%   commentstyle=\scalefont{.9},
+%   keywordstyle=\bf,
+%  %stringstyle=\color{darkred},
+%   stringstyle=\fontfamily{asc}\selectfont\em,
+%   showspaces=false,
+%   showtabs=false,
+%   columns=fixed,
+%   numbers=none,
+%   frame=none,
+%   numberstyle=\tiny,
+%   breaklines=false,
+%   showstringspaces=false,
+%   xleftmargin=1mm
+% }%
+
+
+  \lstset{
     basicstyle=\fontfamily{asc}\selectfont\footnotesize,
-  % commentstyle=\itshape\color{darkgreen},
-  % commentstyle=\fontfamily{vpi}\selectfont,
-    commentstyle=\scalefont{.7}\em,
-  % keywordstyle=\bfseries\color{darkblue},
-    keywordstyle=\em,
+    commentstyle=\color{darkgreen},
+    keywordstyle = \kwa,
+    keywordstyle = [2]{\kwb},
+    keywordstyle = [3]{\kwc},
     stringstyle=\color{darkred},
+   %directivestyle=\bfseries\color{red}, % ?????
     showspaces=false,
     showtabs=false,
     columns=fixed,
-  % numbers=left,
     numbers=none,
     frame=none,
     numberstyle=\tiny,
     breaklines=false,
     showstringspaces=false,
     xleftmargin=0cm
-  }%
+  }
+
+
+
+
+
+
+
+
+
+%\lstdefinelanguage{Bash+}{%
+%  language     = Bash,
+%  morekeywords = { rl,head,tail,ls,grep,
+%                   cut,tr,rev,wc,md5sum,nawk,mv,
+%                   cp,rm,pdftk,sort,uniq,convert,composite,
+%	           java,touch,inkscape,epstopdf,
+%	           pdf2svg,egrep,shuf,find,
+%	           autotrace,pdflatex,date,
+%	           biber,bibtex,makeindex,dot,ps2pdf
+%        }
+%}
+
+%\newcommand{\lstsetBash}{
+%\lstset{language=Bash,
+%        morekeywords={
+%        rl,head,tail,ls,grep,
+%        cut,tr,rev,wc,md5sum,nawk,mv,
+%        cp,rm,pdftk,sort,uniq,convert,composite,
+%	java,touch,inkscape,epstopdf,
+%	pdf2svg,egrep,shuf,find,
+%	autotrace,pdflatex,date,
+%	biber,bibtex,makeindex,dot,ps2pdf
+%        }}
+%}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 %%\lstloadlanguages{C++}
