@@ -53,12 +53,15 @@
 # GENERATE QR CODE FOR INCLUSION
 # --------------------------------------------------------------------------- #
   QRDEKOSRC=EDIT/assets/151007_qrdeko-simple.svg
+   QRURLLOG=${TMPID}.qrurls
 
   function mkqr() {
 
   QRID=`echo $* | md5sum | base64 | cut -c 1-5`
   QURL="http://lfkn.de/$QRID"
   QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
+
+  echo $QURL >> $QRURLLOG
 
   QRPDF=$TMPID${QRID}.pdf
   QRDEKO=${TMPID}DEKO
