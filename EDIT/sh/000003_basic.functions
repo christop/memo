@@ -230,15 +230,16 @@ function QR() {
 
   # THE GREAT ESCAPE
   # ---------------------------------
-    FNOESC=`echo $FOOTNOTEOPEN     | #
-            sed 's/\\\/\\\\\\\/g'  | #
-            sed 's/\//\\\\\//g'`
-    CTOESC=`echo $CITEOPEN         | #
-            sed 's/\\\/\\\\\\\/g'  | #
-            sed 's/\//\\\\\//g'`
-    CPOESC=`echo $CITEPOPEN        | #
-            sed 's/\\\/\\\\\\\/g'  | #
-            sed 's/\//\\\\\//g'`
+    ESC=ES${RANDOM}C
+    FNOESC=$ESC`echo $FOOTNOTEOPEN     | #
+                sed 's/\\\/\\\\\\\/g'  | #
+                sed 's/\//\\\\\//g'`
+    CTOESC=$ESC`echo $CITEOPEN         | #
+                sed 's/\\\/\\\\\\\/g'  | #
+                sed 's/\//\\\\\//g'`
+    CPOESC=$ESC`echo $CITEPOPEN        | #
+                sed 's/\\\/\\\\\\\/g'  | #
+                sed 's/\//\\\\\//g'`
 
   cat $PROTECTED                         | # USELESS USE OF CAT
   eval "$SELECTLINES"                    | # CUSTOM COMMAND TO SELEC TLINES
@@ -367,10 +368,10 @@ function QR() {
   sed -i "s/$EMPTYLINE/\n\n/g" $SRCDUMP  # RESTORE EMPTY LINES
   sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
   sed -i -e :a  \
-      -i -e "\$!N;s/\n*[ \t]*$APND/ /;ta" \
-      -i -e 'P;D'                    $SRCDUMP  # APPEND ??????????
-  sed -i "s/$APND//g"                $SRCDUMP  # REMOVE REST OF APPEND IDS
-  sed -i "s/[ \t]*$FNOESC/$FNOESC/g" $SRCDUMP
+      -i -e "\$!N;s/\n*[ \t]*$APND//;ta" \
+      -i -e 'P;D'                    $SRCDUMP  # APPEND & RM APPEND IDS
+  sed -i "s/[ \t]*$APND//g"          $SRCDUMP  # RM REMAINING APPEND IDS +SPACE
+  sed -i "s/[ \t]*$ESC//g"           $SRCDUMP  # RM ESC IDS +SPACE 
 
 # CLEANUP
 # --------------------------------------------------------------------------- #
