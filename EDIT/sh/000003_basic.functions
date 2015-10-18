@@ -121,7 +121,27 @@
 # --------------------------------------------------------------------------- #
 
 function QR() {
-    QRMODE=$1
+
+  QRKEY="$*"
+
+  if [ X"$1" == XON   ] ||
+     [ X"$1" == XOFF  ]
+   then
+        QRMODE=$1
+        echo "QRMODE: $QRMODE"
+   else
+    if [ X"$QRMODE" != XOFF  ]; then
+        QRSEED=`echo "$QRKEY" | md5sum | base64 | cut -c 1-5`
+        echo "insert QR (QRSEED: $QRSEED)"
+        mkqr $QRSEED
+        write2src "\qrmargin{$QRPDF}{$QRTXT}"
+     else
+        echo "QRSEED: $QRSEED (but QRMODE: $QRMODE)"
+    fi
+  fi
+
+   sleep 4 # TIME TO DEBUG
+
   }
 
 # =========================================================================== #
