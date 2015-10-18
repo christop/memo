@@ -61,15 +61,17 @@
   QURL="http://lfkn.de/$QRID"
   QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
 
-  echo $QURL >> $QRURLLOG
-
   QRPDF=$TMPID${QRID}.pdf
   QRDEKO=${TMPID}DEKO
+
+
+  if [ ! -f $QRPDF ]; then
 
   SCALE="scale(0.1,-0.1)"
   MOVE="translate(55,145)"
   TRANSFORMQR="transform=\"$MOVE$SCALE\""
 
+  echo $QURL >> $QRURLLOG
 
 # SELECT LAYERS: ONE FOR EACH UNIQUE NAME
 # ---------------------------------------------------------------------------- #
@@ -117,6 +119,9 @@
 # CLEAN UP
   rm *.tmp $TMPID${QRID}.eps $TMPID${QRID}.svg ${QRDEKO}.svg
 
+  else
+       echo "qr graphic for $QURL already generated!"
+  fi
   }
 # --------------------------------------------------------------------------- #
 
@@ -140,7 +145,7 @@ function QR() {
     fi
   fi
 
-   sleep 4 # TIME TO DEBUG
+  # sleep 4 # TIME TO DEBUG
 
   }
 
