@@ -56,10 +56,15 @@ function INCLUDE() {
 # --------------------------------------------------------
   mdsh2src $*
 
+
+  echo $SKIP
+  sleep 5
+
 # ADD REFERENCE IF NOT SKIPPED
 # --------------------------------------------------------
-  if [ X"$SKIP"   != XYES ] &&
-     [ X"$QRMODE" != XOFF  ]; then
+  if [ X"$SKIP"   != "XYES" ] &&
+     [ Y"$RUN"    == "YYES" ] &&
+     [ X"$QRMODE" != "XOFF" ]; then
        sed -i "s,HERE$QRID,\\\qrmargin{$QRPDF}{$QRTXT}," \
                $SRCDUMP
   else
@@ -148,12 +153,12 @@ function SPREAD() {
                  grep "^width="                   | # EXTRACT WIDTH
                  cut -d "\"" -f 2                 | # EXTRACT WIDTH VALUE
                  head -n 1`                         # FIRST WIDTH ONLY
-    LAYERNAMES=`sed ":a;N;\$!ba;s/\n//g" $SVGTMP  | # SVG WITHOUT LINEBREAKS
-                sed 's/nkscape:label/\n&/g'       | # EXTRACT LAYER NAME
-                grep "^nkscape:label"             | # EXTRACT LAYER NAME
-                cut -d "\"" -f 2                  | # EXTRACT LAYER NAME
-                grep -v XX_                       | # IGNORE XX_LAYERS
-                sort -u`                            # SORT AND UNIQ
+     LAYERNAMES=`sed ":a;N;\$!ba;s/\n//g" $SVGTMP | # SVG WITHOUT LINEBREAKS
+                 sed 's/nkscape:label/\n&/g'      | # EXTRACT LAYER NAME
+                 grep "^nkscape:label"            | # EXTRACT LAYER NAME
+                 cut -d "\"" -f 2                 | # EXTRACT LAYER NAME
+                 grep -v XX_                      | # IGNORE XX_LAYERS
+                 sort -u`                           # SORT AND UNIQ
 
     BFOO=NL`echo ${RANDOM} | cut -c 1`F00
     SFOO=SP`echo ${RANDOM} | cut -c 1`F0O
@@ -211,15 +216,17 @@ function SPREAD() {
   # ----------------------------------------------------------------------- #
     pdftk ${TMPID}_*.pdf cat output $PDF
   # ----------------------------------------------------------------------- #
+  # INCLUDE IN DOCUMENT
+  # ----------------------------------------------------------------------- #
+    write2src "\spread{$PDF}{-}"
+
+  # ----------------------------------------------------------------------- #
   # CLEAN UP 
   # ----------------------------------------------------------------------- #
     rm ${SPRTMP} ${TMPID}_*.pdf $SVGTMP
 
-
-
-
-    fi
-  fi
+   fi
+ fi
 }
 
 # --------------------------------------------------------------------------- #
@@ -350,10 +357,11 @@ function SRCODE() {
 
 function QUAVERBATIM() {
 
+  # TODO: NOT WORKING FOR TWO PERIODS IN FILENAME?
+
  #LPRTCT="Y"
   SPRTCT=SP`echo $RANDOM | cut -c 1-4`CE
   BPRTCT=BR`echo $RANDOM | cut -c 1-4`AK
-
 
   TXTSRC=`echo $* | sed 's/ /\n/g'         | # SPACES TO NEWLINES
           sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHARACTER EXTENSION
@@ -565,6 +573,32 @@ function INFO(){
 
 # --------------------------------------------------------------------------- #
 
+
+function TABLEOFCONTENTS(){
+
+  write2src "\cleardoublepage"
+  write2src "\setcounter{tocdepth}{0}"
+  write2src "\tableofcontents"
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function KEYWORDEX() {
+
+  # KEYWORDIFY?
+
+  KEYWORDS=$1
+
+
+
+
+
+
+
+}
+
+# --------------------------------------------------------------------------- #
 
 
 

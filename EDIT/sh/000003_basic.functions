@@ -299,10 +299,10 @@ function QR() {
   touch ${TMPID}.included
   TIMESINCLUDED=`grep $MD5THIS ${TMPID}.included | wc -l`
   echo $MD5THIS >> ${TMPID}.included
-  # echo $TIMESINCLUDED ; echo $MD5THIS
+ #echo $TIMESINCLUDED ; echo $MD5THIS
 
   if [ $TIMESINCLUDED -ge 5 ]; then
-       echo "caught in a loop?"
+       echo "Skipping! (caught in a loop)"
        SKIP="YES"
   else
        SKIP="NO"
