@@ -70,7 +70,8 @@
 
   \renewcommand{\encodingdefault}{T1}
 
-  \newcommand{\ttstandard}{asc}
+ %\newcommand{\ttstandard}{asc}
+  \newcommand{\ttstandard}{grm}
   \newcommand{\rmstandard}{phv}
   \newcommand{\sfstandard}{phv}
 
@@ -99,6 +100,31 @@
   \OldTexttt{\fontfamily{asc}%
               \selectfont{%
                \textbf{\relscale{1.05}{#1}}}}}
+
+
+
+
+% TABLE OF CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \usepackage{tocloft}
+ \setlength{\cftbeforetoctitleskip}{-4em}
+ \setlength{\cftaftertoctitleskip}{1.5em}
+ \setlength{\cftbeforechapskip}{.6em}
+
+% \cftsetindents{chapter}{0pt}{0em}
+% \renewcommand\cftpartnumwidth{0cm}
+%%\renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries\MakeUppercase}
+% \renewcommand{\cftchappagefont}{\footnotesize\fontfamily{ocr}\selectfont}
+
+%http://tex.stackexchange.com/questions/28516/how-to-change-the-title-of-toc
+%\addto\captionsenglish{\renewcommand{\contentsname}{}}
+ \renewcommand{\contentsname}{}
+
+ \tocloftpagestyle{empty}
+
+
+
+
+
 
 
 % FOOTNOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -258,6 +284,21 @@
      \includepdf{#1}
     }
    }
+
+% -------------------------------------------------------------------- %
+   \newcommand\spread[2]{%
+   \cleartoleft
+   \includepdf[pagecommand={\thispagestyle{fancy}},%
+               scale=1,pages=#2]{#1}
+  }
+% -------------------------------------------------------------------- %
+
+
+
+
+% https://groups.google.com/forum/#!topic/pandoc-discuss/O-N0H1eBnVU
+  \let\oldhref=\href 
+  \renewcommand{\href}[2]{#2\footnote{#1}}
 
 
 % CITATION
