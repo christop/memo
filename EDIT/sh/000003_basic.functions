@@ -212,12 +212,23 @@ function QR() {
      [ `wc -l $MDSH | cut -d " " -f 1` -gt 0 ]; then
  
 # --------------------------------------------------------------------------- #
-# CORRECT MARKUP (CONFORM WITH PANDOC MARKDOWN (ETHERPAD PROBLEMS))
+# PRE-PROCESSING
 # --------------------------------------------------------------------------- #
+
+# CORRECT MARKUP (CONFORM WITH PANDOC MARKDOWN (ETHERPAD PROBLEMS))
+# TODO EXTENSIVE TESTING !!!!!
 # sed -i '/^\*-/s/\*//'                 $MDSH # CORRECT LISTS
 # sed -i '/^\*[ \t]*-/s/\*[ \t]*/    /' $MDSH # CORRECT LISTS
 # sed -i 's/^[ \t]*\*[ \t]*$//g'        $MDSH # CORRECT LISTS
 # sed -i '/^[ \t]*\*/s/\*/- /g'         $MDSH # CORRECT LISTS
+
+# MOVE (% TO NEW LINE = ALLOW INLINE COMMANDS
+  sed -i 's/(% /\n!!!% /g' $MDSH
+  sed -i '/^!!!%/s/)/\n/'  $MDSH
+  sed -i 's/^!!!%/%/'      $MDSH
+
+
+
 
 
 # --------------------------------------------------------------------------- #
@@ -389,7 +400,7 @@ function QR() {
  #echo "$INPUT converted"
  #echo "--------------------------------------------------------------------"
 
-# LET'S DO IT IN THE POST
+# POST-PROCESSING
 # --------------------------------------------------------------------------- #
   sed -i "s/$EMPTYLINE/\n\n/g" $SRCDUMP  # RESTORE EMPTY LINES
   sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
