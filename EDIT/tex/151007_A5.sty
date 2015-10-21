@@ -322,18 +322,49 @@
 
 % -------------------------------------------------------------------- %
 
+
+% \usepackage{marginnote}
+%  \reversemarginpar
+%   \newcommand\qrmargin[2]{%
+%    \marginpar{
+%      ~ \\ % NOTHING NEEDED
+%      \vspace{-10mm}\\
+%       \includegraphics[width=\marginparwidth]{#1}
+%        \smallskip
+%   }\vspace{-2\baselineskip}
+%  }
+
+% VERTICAL SPACE HACK
+% http://tex.stackexchange.com/questions/61627/prevent-action-if-top-of-page
+  \newcommand\vspacenotonpagetop{%
+     \par % make sure we end a paragraph
+     \vskip10pt % space above the rule
+     \leaders\vrule width \textwidth\vskip0pt % rule thickness is 0pt
+     \nointerlineskip % disable interline glue here
+     \vskip10pt % space below the rule
+  }
   \usepackage{marginnote}
    \reversemarginpar
     \newcommand\qrmargin[2]{%
-     \marginpar{
-      ~ \\ % NOTHING NEEDED
-      \vspace{-10mm}\\
-       \includegraphics[width=\marginparwidth]{#1}
-        \smallskip
-    }
+     \vspacenotonpagetop
+      \marginpar{
+        ~ \\ % NOTHING NEEDED
+        \vspace{-15mm}\\
+         \includegraphics[width=\marginparwidth]{#1}
+          \smallskip
+    }\vspace{-1.5\baselineskip}
    }
 
- \usepackage{afterpage}
+
+
+
+
+
+
+
+% -------------------------------------------------------------------- %
+
+  \usepackage{afterpage}
    \newcommand\fullpagefloat[1]{%
     \afterpage{
      \includepdf{#1}
