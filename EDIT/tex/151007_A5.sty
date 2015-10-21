@@ -15,6 +15,16 @@
 % https://en.wikibooks.org/wiki/LaTeX/Special_Characters
   \usepackage{pifont}
 
+% PROBLEMS WITH SCALEFONT PACKAGE
+% LINEHEIGHT
+  \usepackage{setspace}
+ %\singlespacing
+ %\onehalfspacing
+ %\doublespacing
+  \setstretch{1.3}
+
+  \usepackage{relsize}
+
 
 % http://tex.stackexchange.com/questions/167823/multiply-define-a-label-on-purpose
 
@@ -98,7 +108,6 @@
 
   \renewcommand{\encodingdefault}{T1}
 
- %\newcommand{\ttstandard}{asc}
   \newcommand{\ttstandard}{grm}
   \newcommand{\rmstandard}{phv}
   \newcommand{\sfstandard}{phv}
@@ -107,27 +116,27 @@
   \renewcommand{\rmdefault}{\rmstandard}
   \renewcommand{\sfdefault}{\sfstandard}
 
+  \let\OldTexttt\texttt
+  \renewcommand{\texttt}[1]{%
+  \OldTexttt{\fontfamily{\ttstandard}%
+              \selectfont{%
+               \textbf{\relscale{1.05}{#1}}}}}
+
+ %\DeclareTextFontCommand{\emph}
+ %{\fontfamily{pju}\selectfont\relscale{1.15}}
+
+  \DeclareTextFontCommand{\emph}
+  {\fontfamily{pju}\fontshape{it}\selectfont\relscale{1.2}}
+
+
+
 
   \usepackage{seqsplit}
   \newenvironment{logfile}{\fontfamily{asc}\selectfont\tiny}
                           {\par}
 
 
-% PROBLEMS WITH SCALEFONT PACKAGE
-% LINEHEIGHT
-  \usepackage{setspace}
- %\singlespacing
- %\onehalfspacing
- %\doublespacing
-  \setstretch{1.3}
 
-  \usepackage{relsize}
-
-  \let\OldTexttt\texttt
-  \renewcommand{\texttt}[1]{%
-  \OldTexttt{\fontfamily{\ttstandard}%
-              \selectfont{%
-               \textbf{\relscale{1.05}{#1}}}}}
 
 
 
