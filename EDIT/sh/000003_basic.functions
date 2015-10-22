@@ -227,10 +227,6 @@ function QR() {
   sed -i '/^!!!%/s/)/\n/'  $MDSH
   sed -i 's/^!!!%/%/'      $MDSH
 
-
-
-
-
 # --------------------------------------------------------------------------- #
 # SAVE MDSH LINES TO PROTECT FROM PANDOC
 # --------------------------------------------------------------------------- #
@@ -250,6 +246,7 @@ function QR() {
        echo "${COMMENTID}:${COMMENT}" >> $BCKUPCOMM
   done
   fi
+
 
 # --------------------------------------------------------------------------- #
 # CONVERT MARKDOWN WITH PANDOC (CUSTOM FOOTNOTES/BIBREFS)
@@ -336,6 +333,7 @@ function QR() {
    done
   fi
 
+
 ## --------------------------------------------------------------------------- #
 ## COLLECT BEFORE PROCESSING NOT WORKING LIKE THAT
 ## --------------------------------------------------------------------------- #
@@ -363,7 +361,7 @@ function QR() {
       # --------------------------------------------------- #  
 
       # CHECK IF LINE STARTS WITH A %
-        ISCMD=`echo $LINE | grep ^% | wc -l` 
+        ISCMD=`echo $LINE | grep "^%[ \t]*[A-Z]*:" | wc -l` 
       # --------------------------------------------------- # 
       # IF LINE STARTS WITH A %
         if [ $ISCMD -ge 1 ]; then
@@ -374,8 +372,7 @@ function QR() {
                 sed 's/\[/ /g' | sed 's/\]/ /g' |\
                 sed 's, ,,g'`
            ARG=`echo "$LINE" | cut -d ":" -f 2-`
- 
-     # --------------------------------------------------- # 
+      # --------------------------------------------------- # 
       # CHECK IF COMMAND EXISTS
 
            CMDEXISTS=`grep "^function ${CMD}()" $FUNCTIONS |\
