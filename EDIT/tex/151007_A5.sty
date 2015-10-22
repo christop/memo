@@ -1,5 +1,5 @@
 
- \usepackage[utf8x]{inputenc}
+ \usepackage[utf8]{inputenc}
 %\usepackage{ucs}
 
 %\usepackage[showframe]{geometry}
@@ -122,11 +122,23 @@
               \selectfont{%
                \textbf{\relscale{1.05}{#1}}}}}
 
+
+
  %\DeclareTextFontCommand{\emph}
  %{\fontfamily{pju}\selectfont\relscale{1.15}}
 
-  \DeclareTextFontCommand{\emph}
-  {\fontfamily{pju}\fontshape{it}\selectfont\relscale{1.2}}
+ %\DeclareTextFontCommand{\emph}
+ %{\fontfamily{pju}\fontshape{it}\selectfont\relscale{1.2}}
+
+  \let\OldEmph\emph
+  \renewcommand{\emph}[1]{%
+  \OldEmph{\fontfamily{\ttstandard}%
+            \selectfont{%
+             \textbf{\relscale{1.05}{#1}}}}}
+
+ % http://tex.stackexchange.com/questions/171681/detect-whether-im-in-a-footnote
+
+
 
 
 
@@ -187,12 +199,11 @@
 
 % HEADLINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \usepackage{sectsty}
+  \usepackage{sectsty}
 
- \renewcommand*{\chapterheadstartvskip}{\vspace{10pt}}
- \renewcommand*{\chapterheadendvskip}{\vspace{.5cm plus 5pt minus 5pt}}
+  \renewcommand*{\chapterheadstartvskip}{\vspace{10pt}}
+  \renewcommand*{\chapterheadendvskip}{\vspace{.5cm plus 5pt minus 5pt}}
  
-  
 % ! TeX capacity exceeded, sorry [text input levels=15].
 % \@filef@und ->TMP20151017732.aux          
 % l.5 \new@tpo@label{1}{1}           
@@ -205,7 +216,6 @@
   \renewcommand*\thechapter{}
   \renewcommand*\thesection{}
   \renewcommand*\thesubsection{}
-
 
   \renewcommand\section[1]{
    \bigskip
@@ -383,8 +393,8 @@
 
 
 % https://groups.google.com/forum/#!topic/pandoc-discuss/O-N0H1eBnVU
-  %\let\oldhref=\href 
-  %\renewcommand{\href}[2]{#2\footnote{#1}}
+  \let\oldhref=\href 
+  \renewcommand{\href}[2]{#2\footnote{#1}}
 
 
 % CITATION
