@@ -61,6 +61,14 @@
   \usepackage{bibentry}
   \nobibliography*
 
+% DON'T START CHAPTER ON NEW PAGE AUTOMATICALLY
+  \usepackage{etoolbox}
+  \makeatletter
+  \patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+  \makeatother
+
+
+
 % --------------------------------------------------------------------------- %
 % FORMAT
 % --------------------------------------------------------------------------- %
