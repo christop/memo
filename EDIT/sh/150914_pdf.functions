@@ -56,10 +56,6 @@ function INCLUDE() {
 # --------------------------------------------------------
   mdsh2src $*
 
-
-  echo $SKIP
-  sleep 5
-
 # ADD REFERENCE IF NOT SKIPPED
 # --------------------------------------------------------
   if [ X"$SKIP"   != "XYES" ] &&
@@ -233,10 +229,15 @@ function SPREAD() {
 
 function TITLE() {
 
-  write2src "";write2src ""
-  echo $* | #
+  NBSPACE="N${RANDOM}B"
+
+  echo -e "\n\n\n\n" >> $SRCDUMP
+  echo "$*" | # KEEP (MULTIPLE) SPACES
+  sed -e "s/\([a-zA-Z_*]\)\( \)\([a-zA-Z_*]\)/\1 $NBSPACE \3/g" | #
   pandoc -r markdown -w latex | #
-  sed 's/^/\\\section{/' | sed 's/$/}/' >> $SRCDUMP
+  sed "s/[ ]*${NBSPACE}[ ]*/~/g"  | #
+  sed ':a;N;$!ba;s/\n/ /g'            | #      
+  sed 's/^/\\chapter{/' | sed 's/$/}/' >> $SRCDUMP
   write2src ""
 
 }
@@ -432,6 +433,20 @@ function VFILL(){
 
 # --------------------------------------------------------------------------- #
 
+function MEDSKIP(){
+
+  write2src "\medskip"
+}
+
+# --------------------------------------------------------------------------- #
+
+function SMALLSKIP(){
+
+  write2src "\smallskip"
+}
+
+# --------------------------------------------------------------------------- #
+
 function EMPTYPAGE(){
 
   write2src "\emptypage"
@@ -573,12 +588,29 @@ function INFO(){
 
 # --------------------------------------------------------------------------- #
 
-
 function TABLEOFCONTENTS(){
 
   write2src "\cleardoublepage"
   write2src "\setcounter{tocdepth}{0}"
   write2src "\tableofcontents"
+  write2src "\newpage"
+}
+
+# --------------------------------------------------------------------------- #
+
+function TOCITEM(){
+
+  TOCTITLE=`echo $* | pandoc -r markdown -w latex`
+
+  if [ `echo $TOCTITLE | grep ":" | wc -l` -gt 0 ]; then
+  F1=`echo $TOCTITLE | cut -d ":" -f 1`
+  F2=`echo $TOCTITLE | cut -d ":" -f 2-`
+  TOCTITLE="\underline{\textsc{$F1}}: $F2"
+  fi
+
+
+
+  write2src "\addcontentsline{toc}{chapter}{$TOCTITLE}"
 
 }
 
@@ -590,16 +622,46 @@ function KEYWORDEX() {
 
   KEYWORDS=$1
 
+}
 
+# --------------------------------------------------------------------------- #
 
+function REF() {
 
-
-
+  REFID=`echo $*             | # WHAT? 
+         sed 's/^[ \t]*//'   | # REMOVE LEADING WHITESPACE
+         sed 's/[ \t]*$//'   | # REMOVE TRAILING WHITESPACE
+         md5sum | cut -c 1-10` # CREATE UNIQUE ID
+          
+ #write2src "place $REFID"
+  write2src "\label{$REFID}"
 
 }
 
 # --------------------------------------------------------------------------- #
 
 
+function REFREF() {
+
+  REFID=`echo $*             | # WHAT? 
+         sed 's/^[ \t]*//'   | # REMOVE LEADING WHITESPACE
+         sed 's/[ \t]*$//'   | # REMOVE TRAILING WHITESPACE
+         md5sum | cut -c 1-10` # CREATE UNIQUE ID
+          
+ #write2src "reference to $REFID"
+ #write2src "(\P \ding{220} ~ p.\pageref{$REFID})"
+  write2src "(\ding{222} p. \pageref{$REFID})"
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function BY(){
+
+  write2src "{\by{$*}}"
+
+}
+
+# --------------------------------------------------------------------------- #
 
 
