@@ -129,12 +129,13 @@
 
 function QR() {
 
-  QRKEY="$*"
+  QRKEY=`echo "$*" | tr -s ' ' | sed 's/^[ \t]*//'`
+      O=`echo $QRKEY | cut -d " " -f 1`
 
-  if [ X"$1" == XON   ] ||
-     [ X"$1" == XOFF  ]
+  if [ X"$O" == XON   ] ||
+     [ X"$O" == XOFF  ]
    then
-        QRMODE=$1
+        QRMODE=$O
         echo "QRMODE: $QRMODE"
    else
     if [ X"$QRMODE" != XOFF  ]; then
