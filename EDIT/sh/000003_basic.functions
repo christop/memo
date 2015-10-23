@@ -381,7 +381,7 @@ function QR() {
       # IF COMMAND EXISTS 
         if [ $CMDEXISTS -ge 1 ]; then
            # EXECUTE COMMAND
-             $CMD $ARG
+             $CMD "$ARG"
         fi
       # --------------------------------------------------- # 
       # IF LINE DOES NOT START WITH % (= SIMPLE MARKDOWN)
