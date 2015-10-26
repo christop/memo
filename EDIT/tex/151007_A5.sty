@@ -39,6 +39,20 @@
   \setlist{noitemsep}
 
 
+  \makeatletter
+  \renewenvironment{quote}
+                 {\list{}{\listparindent=2pt%whatever you need
+                          \itemindent    \listparindent
+                          \leftmargin=15pt%  whatever you need
+                          \rightmargin=30pt%whatever you need
+                          \topsep=5pt%%%%%  whatever you need
+                          \parsep        \z@ \@plus\p@}%
+                  \item\relax}
+                 {\endlist}
+  \makeatother
+
+
+
 
 % http://tex.stackexchange.com/questions/167823/multiply-define-a-label-on-purpose
   \makeatletter
@@ -130,7 +144,7 @@
   \renewcommand\section[1]{\bodytextfalse\Section*{#1}\bodytexttrue}
   \let\Subsection\subsection
   \renewcommand\subsection[1]{\bodytextfalse\Subsection*{#1}\bodytexttrue}
-  \let\Subsubsection\section
+  \let\Subsubsection\subsubsection
   \renewcommand\subsubsection[1]{\bodytextfalse\Subsubsection*{#1}\bodytexttrue}
 % TODO: HEADER/FOOTER/TOC
 
@@ -184,7 +198,7 @@
 
 % PACKAGE TITLESEC
  %\titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
-  \titlespacing\section{0pt}{20pt plus 30pt minus 15pt}{10pt plus 5pt minus 5pt}
+  \titlespacing\section{0pt}{20pt plus 30pt minus 15pt}{2pt plus 3pt minus 0pt}
 
 
 % CONDITIONAL FONT STUFF
@@ -216,7 +230,7 @@
 % AUTHOR SUBLINE (% BY: xyz)
   \newcommand\by[1]{%
   \small{by #1}
-  \vspace{10pt plus 20pt minus 20pt}
+  \vspace{10pt plus 20pt minus 5pt}
   }
 
 
@@ -238,6 +252,15 @@
        \tiny\ifthispageodd{\flushright}{\flushleft}
      }{\end{minipage}\end{tabular}}
 
+  \newenvironment{marginlicenseblock}{%
+  \vspace{-.5cm}
+   \ifthispageodd{
+    \begin{tabular}{ll}  \hspace{-5mm} & } % SHIFT FOR ODD
+    {\begin{tabular}{ll} \hspace{-1mm} & } % SHIFT FOR EVEN
+      \begin{minipage}{.64\marginparwidth}  %
+%      \scalefont{.5}\ifthispageodd{\flushright}{\flushleft}
+        \ifthispageodd{\flushright}{\flushleft}
+     }{\end{minipage}\end{tabular}}
 
 
 % --------------------------------------------------------------------------- %
@@ -383,7 +406,7 @@
         ~ \\ % NOTHING NEEDED
         \vspace{-15mm}\\
          \includegraphics[width=\marginparwidth]{#1}
-          \smallskip
+          \smallskip\smallskip
     }\vspace{-1.5\baselineskip}
    }
 
