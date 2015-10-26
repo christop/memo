@@ -400,7 +400,7 @@ function QR() {
 
 # POST-PROCESSING
 # --------------------------------------------------------------------------- #
-  sed -i "s/$EMPTYLINE/\n\n/g" $SRCDUMP  # RESTORE EMPTY LINES
+  sed -i "s/$EMPTYLINE/ /g"    $SRCDUMP  # RESTORE EMPTY LINES
   sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
   sed -i -e :a  \
       -i -e "\$!N;s/\n*[ \t]*$APND//;ta" \
