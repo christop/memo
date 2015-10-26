@@ -534,21 +534,38 @@ function FLUSHQRURLS(){
 
 function INFO(){
 
-    REFCODE=$1
-  SHORTURL="${SHORTURLBASE}/${REFCODE}"
-   LONGURL=`curl -sIL $SHORTURL         | # CURL URL
-            tr -d '\015'                | # CONFORM DOS END OF LINE
-            grep ^Location              | # SELECT LOCATION
-            cut -d ":" -f 2-            | # CUT SECOND FIELD
-            tail -n 1                   | # SELECT LAST LINE
-            sed 's,[ \t]*,,'            | # REMOVE ALL SPACES
-            sed 's,/$,,'                | # REMOVE TRAILING SLASH
-            sed "s,^${SHORTURLBASE}$,X,"` # DELETE SHORTURLBASE ONLY (-> PRODUCE 404)
-      LHERE=L`echo $RANDOM | cut -c 1-3`N
-      BHERE=B`echo $RANDOM | cut -c 1-3`R
+  REFCODE=`echo $1 | sed 's/ //g'`
 
-  INFOSRC="${LONGURL}/info.txt"
-  INFOGET=${TMPID}`echo $LONGURL | md5sum | cut -c 1-4`.info
+  echo $REFCODE
+
+  IFHTTP=`echo $REFCODE | grep "http.\?://" | wc -l`
+  if [ $IFHTTP -ge 1 ]; then
+
+    INFOSRC="$REFCODE"
+    INFOGET=${TMPID}`echo $REFCODE | md5sum | cut -c 1-4`.info
+    echo "NOT SHORTURLED: $INFOSRC"
+
+  else
+
+    SHORTURL="${SHORTURLBASE}/${REFCODE}"
+     LONGURL=`curl -sIL $SHORTURL         | # CURL URL
+              tr -d '\015'                | # CONFORM DOS END OF LINE
+              grep ^Location              | # SELECT LOCATION
+              cut -d ":" -f 2-            | # CUT SECOND FIELD
+              tail -n 1                   | # SELECT LAST LINE
+              sed 's,[ \t]*,,'            | # REMOVE ALL SPACES
+              sed 's,/$,,'                | # REMOVE TRAILING SLASH
+              sed "s,^${SHORTURLBASE}$,X,"` # DELETE SHORTURLBASE ONLY (-> PRODUCE 404)
+    INFOSRC="${LONGURL}/info.txt"
+    INFOGET=${TMPID}`echo $LONGURL | md5sum | cut -c 1-4`.info
+
+  fi
+
+  echo "SHORTURL: $SHORTURL"
+  echo "LONGURL: $LONGURL"
+  echo "INFOSRC: $INFOSRC"
+  LHERE=L`echo $RANDOM | cut -c 1-3`N
+  BHERE=B`echo $RANDOM | cut -c 1-3`R
 
   if [ ! -f $INFOGET ]; then
       getFile "$INFOSRC" "$INFOGET"
@@ -560,13 +577,14 @@ function INFO(){
 
      write2src "\marginpar{\begin{marginblock}"
 
-     for SECTION in INFO LICENSE COPYRIGHT_HOLDER
+     for SECTION in SHORT_INFO
+    #for SECTION in SHORT_INFO LICENSE COPYRIGHT_HOLDER
       do
        SECTION=`echo $SECTION | sed 's/_/ /g'`
-       cat $INFOGET             | # USELESS USE OF CAT
+       cat $INFOGET              | # USELESS USE OF CAT
        sed -e :a \
            -e '$!N;s/\n[ \t]*=/ /;ta' \
-           -e 'P;D'             | # APPEND UNDERLINE TO PREVIOUS LINE
+           -e 'P;D'              | # APPEND UNDERLINE TO PREVIOUS LINE
        sed -n "/${SECTION}[ \t]*=*$/,\$p" | # PRINT FROM REGEX TO END OF FILE
        sed "s/^[ \t]*$/$LHERE/g" | # REMOVE EMPTY LINES
        sed "/=\?=$/s/^/\n/"      | # ADD NEWLINE AT START IF ENDS WITH ==
@@ -575,10 +593,10 @@ function INFO(){
        grep -v "^[ \t]*$SECTION[ \t]*=*$" | # IGNORE SECTION LINES
        sed "s/$/$BHERE/"          | # PROTECT LINEBREAKS HERE
        pandoc -r markdown -w latex | # FROM MARKDOWN TO LATEX
-       sed ':a;N;$!ba;s/\n/ /g' | # REMOVE LINEBREAKS
-       sed "s/$BHERE/\n/g"      | # RESTORE LINEBREAKS
-       tee >> $SRCDUMP            # WRITE TO FILE
-       write2src "" # EMPTY LINE
+       sed ':a;N;$!ba;s/\n/ /g'  | # REMOVE LINEBREAKS
+       sed "s/$BHERE/\n/g"       | # RESTORE LINEBREAKS
+       tee >> $SRCDUMP             # WRITE TO FILE
+       write2src ""                # EMPTY LINE
      done
        write2src "\end{marginblock}}"
 
@@ -586,9 +604,6 @@ function INFO(){
       #sleep 5
   else
        echo "file does not exist"
-      #write2src "\marginpar{\begin{marginblock}"
-      #cat JUNK/info.txt >> $SRCDUMP
-      #write2src "\end{marginblock}}"
   fi
 
 }
