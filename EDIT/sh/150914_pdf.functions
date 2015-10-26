@@ -64,7 +64,7 @@ function INCLUDE() {
        sed -i "s,HERE$QRID,\\\qrmargin{$QRPDF}{$QRTXT}," \
                $SRCDUMP
   else
-        sed -i "s,HERE$QRID,,g" $SRCDUMP
+        sed -i "/^HERE${QRID}$/d" $SRCDUMP
   fi
 
 # REMOVE ADDED FUNCTIONS
@@ -235,8 +235,8 @@ function TITLE() {
   echo "$*" | # KEEP (MULTIPLE) SPACES
   sed -e "s/\([a-zA-Z_*]\)\( \)\([a-zA-Z_*]\)/\1 $NBSPACE \3/g" | #
   pandoc -r markdown -w latex | #
+  sed ':a;N;$!ba;s/\n/ /g'      | #      
   sed "s/[ ]*${NBSPACE}[ ]*/~/g"  | #
-  sed ':a;N;$!ba;s/\n/ /g'            | #      
   sed 's/^/\\chapter{/' | sed 's/$/}/' >> $SRCDUMP
   write2src ""
 
@@ -429,6 +429,13 @@ function NEWPAGE(){
 function VFILL(){
 
   write2src "\vfill"
+}
+
+# --------------------------------------------------------------------------- #
+
+function BIGSKIP(){
+
+  write2src "\bigskip"
 }
 
 # --------------------------------------------------------------------------- #
