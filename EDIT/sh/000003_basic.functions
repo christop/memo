@@ -224,9 +224,9 @@ function QR() {
 # sed -i '/^[ \t]*\*/s/\*/- /g'         $MDSH # CORRECT LISTS
 
 # MOVE (% TO NEW LINE = ALLOW INLINE COMMANDS
-  sed -i 's/(% /\n!!!% /g'     $MDSH
-  sed -i "/^!!!%/s/)/\n$APND/" $MDSH
-  sed -i 's/^!!!%/%/'          $MDSH
+  sed -i '/^%/!s/(% /\n!!!% /g' $MDSH
+  sed -i "/^!!!%/s/)/\n$APND/"  $MDSH
+  sed -i 's/^!!!%/%/'           $MDSH
 
 # --------------------------------------------------------------------------- #
 # SAVE MDSH LINES TO PROTECT FROM PANDOC
