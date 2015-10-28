@@ -37,10 +37,10 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="4.0417934"
-     inkscape:cx="97.208132"
-     inkscape:cy="38.989106"
-     inkscape:current-layer="layer4"
+     inkscape:zoom="1.7599805"
+     inkscape:cx="102.45973"
+     inkscape:cy="96.451965"
+     inkscape:current-layer="g3241"
      showguides="true"><sodipodi:guide
        position="67,130"
        orientation="0,63"
@@ -75,18 +75,20 @@
        id="rect3451"
        inkscape:connector-curvature="0" /></g><g
      style="display:inline"
-     inkscape:label="BG"
+     inkscape:label="XX_BG"
      inkscape:groupmode="layer"
-     id="g3360"><path
+     id="g3360"
+     sodipodi:insensitive="true"><path
        inkscape:connector-curvature="0"
        id="path3362"
-       d="m 30,1e-6 137,0 L 167,200 29.999999,200 z"
+       d="m 30,40.000001 137,0 L 167,170 29.999999,170 z"
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        sodipodi:nodetypes="ccccc" /></g><g
      id="g3365"
      inkscape:groupmode="layer"
      inkscape:label="FRAME"
-     style="display:inline"><path
+     style="display:inline"
+     sodipodi:insensitive="true"><path
        sodipodi:nodetypes="ccccc"
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="m 61,64.000001 75,0 L 136,139 60.999999,139 z"
@@ -1037,22 +1039,17 @@
          style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" /></g></g><g
      inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="LABEL"
-     style="display:inline"><path
-   sodipodi:nodetypes="ccccc"
-   style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   d="m 65,144 69,0 0,15 -69.000001,0 z"
-   id="path3463-0"
-   inkscape:connector-curvature="0" /><text
+     inkscape:label="XX_LABEL"
+     style="display:none"><text
    xml:space="preserve"
-   style="font-size:9.86944389px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Source Code Pro;-inkscape-font-specification:Sans"
-   x="59.733646"
+   style="font-size:8px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:OCRA;-inkscape-font-specification:OCRA Medium"
+   x="61.733646"
    y="153.6273"
    id="text3002"
    sodipodi:linespacing="125%"><tspan
      sodipodi:role="line"
      id="tspan3004"
-     x="59.733646"
+     x="61.733646"
      y="153.6273">LFKN.DE/VWXYZ</tspan></text>
 
 
@@ -1063,4 +1060,58 @@
 
 
 
+
+
+
+
+<text
+   sodipodi:linespacing="125%"
+   id="text3237"
+   y="58.627296"
+   x="61.733646"
+   style="font-size:8px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:OCRA;-inkscape-font-specification:OCRA Medium"
+   xml:space="preserve"><tspan
+     y="58.627296"
+     x="61.733646"
+     id="tspan3239"
+     sodipodi:role="line">LFKN.DE/VWXYZ</tspan></text>
+</g><g
+     style="display:inline"
+     inkscape:label="LABEL"
+     id="g3241"
+     inkscape:groupmode="layer"><text
+   sodipodi:linespacing="125%"
+   id="text3243"
+   y="155.19429"
+   x="61.406082"
+   style="font-size:14px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:6px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:OCRA;-inkscape-font-specification:OCRA Medium"
+   xml:space="preserve"><tspan
+     y="155.19429"
+     x="61.406082"
+     id="tspan3245"
+     sodipodi:role="line">VWXYZ</tspan></text>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<text
+   xml:space="preserve"
+   style="font-size:14px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:125%;letter-spacing:6px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:OCRA;-inkscape-font-specification:OCRA Medium"
+   x="61.406082"
+   y="57.19429"
+   id="text3282"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     id="tspan3284"
+     x="61.406082"
+     y="57.19429">VWXYZ</tspan></text>
 </g></svg>
