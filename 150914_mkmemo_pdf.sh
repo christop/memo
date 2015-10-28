@@ -4,7 +4,7 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=JUNK/lokal.mdsh
- #MAIN=http://freeze.sh/etherpad/export/_/memo.mdsh
+
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump
@@ -23,6 +23,7 @@
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
 
+# --------------------------------------------------------------------------- #
 # GET BIBREF FILE
 # --------------------------------------------------------------------------- #
   REFURL="http://freeze.sh/etherpad/export/_/references.bib"
@@ -30,10 +31,10 @@
   #      -O ${TMPID}.bib $REFURL > /dev/null 2>&1
   getFile $REFURL ${TMPID}.bib
 
-
-
 # --------------------------------------------------------------------------- #
-  PANDOCACTION="pandoc --ascii -r markdown -w latex"
+# DEFINITIONS SPECIFIC TO OUTPUT
+# --------------------------------------------------------------------------- #
+  PANDOCACTION="pandoc --ascii -V links-as-notes -r markdown -w latex"
 # --------------------------------------------------------------------------- #
 # FOOTNOTES
 # \footnote{the end is near, the text is here}
@@ -47,11 +48,13 @@
   CITEPOPEN="\citep[" ; CITEPCLOSE="]{"
 # =========================================================================== #
 
-
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # --------------------------------------------------------------------------- #
-# ACTION HAPPENS HERE!
+# ACTION STARTS HERE!
 # --------------------------------------------------------------------------- #
   mdsh2src $MAIN
+
+
 
   if [ `ls $SRCDUMP 2>/dev/null | wc -l` -gt 0 ]; then
 # --------------------------------------------------------------------------- #
@@ -64,14 +67,16 @@
   echo "\begin{document}"                               >> $TMPTEX
   cat   $SRCDUMP                                        >> $TMPTEX
   echo "\end{document}"                                 >> $TMPTEX
-
-
+ 
 # --------------------------------------------------------------------------- #
 # MODIFY SRC BEFORE COMPILING
 # --------------------------------------------------------------------------- #
  #ORDINALS:\newcommand{\ts}{\textsuperscript}
  #echo "14th 345chd 3rd rd 1st 2nd ddnd" | #
  #sed -e 's/\(\([0-9]\)\+\)\(st\|nd\|rd\|th\)\+/\1\\ts{\3}/g'
+
+  sed -i "s/--\\\textgreater{}/\\\ding{222}/g" $TMPTEX
+
 
 # --------------------------------------------------------------------------- #
 # MAKE PDF
@@ -111,6 +116,8 @@
   rm ${TMPID}*.bib
   rm ${TMPID}*.wget
   rm ${TMPID}*.info
+  rm ${TMPID}*.toc
+  rm ${TMPID}*.qrurls
   rm ${TMPID}SRC*.*
 # BIBER
   rm ${TMPID}*.bbl
