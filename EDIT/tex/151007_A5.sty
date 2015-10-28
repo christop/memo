@@ -89,14 +89,14 @@
 % A5 + CROP (online-druck.biz)
  \geometry{paperwidth=154mm,paperheight=216mm}
 
- \setlength\oddsidemargin{.05\paperwidth}
- \setlength\evensidemargin{-.03\paperwidth}
  \setlength\topmargin{-.07\paperheight}
- \setlength\textheight{.77\paperheight}
- \setlength\textwidth{.65\paperwidth}
+ \setlength\oddsidemargin{.09\paperwidth}
+ \setlength\evensidemargin{-.04\paperwidth}
+ \setlength\textheight{.76\paperheight}
+ \setlength\textwidth{.62\paperwidth}
 
  \setlength\marginparwidth{2.5cm}
- \setlength\marginparsep{1mm}
+ \setlength\marginparsep{3mm}
 
 
 
@@ -131,7 +131,7 @@
                             {\ENDITEMIZE\end{samepage}}
 
 % --------------------------------------------------------------------------- %
-% CONDITIONS
+% C O N D I T I O N S
 % --------------------------------------------------------------------------- %
 
 % IF BODYTEXT WORKAROUND; TO DO BETTER
@@ -280,13 +280,13 @@
  %\fancyfoot[RO,LE]{\thepage}
  %\fancyfoot[RE,LO]{\thepage}
 
-  \fancyfoot[LO]{\hspace{-15mm} {\footnotesize\thepage}}
-  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-15mm}}
+  \fancyfoot[LO]{\hspace{-18mm} {\footnotesize\thepage}}
+  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-18mm}}
 
 % http://tex.stackexchange.com/questions/114956/how-to-insert-footer-in-first-pages-of-chapter 
   \fancypagestyle{plain}{%
-  \fancyfoot[LO]{\hspace{-15mm} {\footnotesize\thepage}}
-  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-15mm}}
+  \fancyfoot[LO]{\hspace{-18mm} {\footnotesize\thepage}}
+  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-18mm}}
   }
 
 
@@ -557,8 +557,8 @@
    }
 
 % -------------------------------------------------------------------- %
-   \newcommand\spread[2]{%
-   \cleartoleft
+   \newcommand\spread[3]{%
+   #3
    \includepdf[pagecommand={\thispagestyle{fancy}},%
                scale=1,pages=#2]{#1}
   }
@@ -568,6 +568,12 @@
                scale=1,pages=#2#3]{#1}
   }
 % -------------------------------------------------------------------- %
+   \makeatletter
+    \newcommand{\fullpageoverlay}[1]{
+     \AddToShipoutPicture*{%
+      \includegraphics[width=\paperwidth]
+          {#1}
+     }}\makeatother
 
 
 
