@@ -37,10 +37,10 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.363281"
-     inkscape:cx="94.506545"
-     inkscape:cy="120.12382"
-     inkscape:current-layer="g3746"
+     inkscape:zoom="0.72266615"
+     inkscape:cx="118.9528"
+     inkscape:cy="62.706315"
+     inkscape:current-layer="g4544"
      showguides="false"
      inkscape:snap-global="false"><sodipodi:guide
        position="67,130"
@@ -1059,6 +1059,7 @@
      sodipodi:role="line"
      id="tspan5350">p.159</tspan></text>
 
+
 <text
    sodipodi:linespacing="100%"
    id="text5366"
@@ -1092,6 +1093,7 @@
      x="139.81837"
      sodipodi:role="line">License</tspan></text>
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text5380"
@@ -1105,14 +1107,15 @@
      x="103.47564"
      sodipodi:role="line">GFDL 1.3</tspan></text>
 
+
 <path
    sodipodi:nodetypes="cc"
    inkscape:connector-curvature="0"
    id="path5384"
    d="m 104.1116,39.40961 33.89689,0"
    style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /></g><g
-     style="display:inline"
-     inkscape:label="GFDL_1-3"
+     style="display:none"
+     inkscape:label="GFDL_1.3"
      id="g3746"
      inkscape:groupmode="layer">
 
@@ -1129,7 +1132,7 @@
 <text
    transform="scale(1.0005075,0.99949275)"
    xml:space="preserve"
-   style="font-size:16.00000006000000141px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:120%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk;text-indent:0;text-decoration:none;text-transform:none;direction:ltr;block-progression:tb;baseline-shift:baseline;color:#000000;fill-rule:nonzero;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+   style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:end;text-decoration:none;line-height:120.00000477%;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:end;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk"
    x="137.81938"
    y="85.839203"
    id="text3756"
@@ -1140,24 +1143,25 @@
      id="tspan3758">use, study,</tspan><tspan
      sodipodi:role="line"
      x="142.22563"
-     y="101.8392"
+     y="105.0392"
      id="tspan3760">change,improve </tspan><tspan
      sodipodi:role="line"
      x="142.22563"
-     y="117.8392"
+     y="124.2392"
      id="tspan3762">according to </tspan><tspan
      sodipodi:role="line"
      x="142.22563"
-     y="133.8392"
+     y="143.43921"
      id="tspan3764">the GNU Free </tspan><tspan
      sodipodi:role="line"
      x="142.22563"
-     y="149.8392"
+     y="162.63921"
      id="tspan3766">Documentation </tspan><tspan
      sodipodi:role="line"
      x="137.81938"
-     y="165.8392"
+     y="181.8392"
      id="tspan3768">License</tspan></text>
+
 
 <text
    transform="scale(1.0005075,0.99949275)"
@@ -1172,24 +1176,41 @@
      y="55.238724"
      id="tspan3772">GFDL 1.3</tspan></text>
 
+
 <path
    style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
    d="m 102.1116,58.40961 34.89689,0"
    id="path3774"
    inkscape:connector-curvature="0"
-   sodipodi:nodetypes="cc" /><path
-   style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   d="m 160.10892,37.487078 c 0,4.456258 -3.61251,8.068769 -8.06877,8.068769 -4.45626,0 -8.06877,-3.612511 -8.06877,-8.068769 0,-4.456258 3.61251,-8.068769 8.06877,-8.068769 4.45626,0 8.06877,3.612511 8.06877,8.068769 z"
-   id="path3317"
-   inkscape:connector-curvature="0" /><path
-   id="path3320"
-   d="m 168.91121,47.75642 c 0,2.025572 -1.64205,3.667623 -3.66762,3.667623 -2.02557,0 -3.66762,-1.642051 -3.66762,-3.667623 0,-2.025572 1.64205,-3.667623 3.66762,-3.667623 2.02557,0 3.66762,1.642051 3.66762,3.667623 z"
-   style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   inkscape:connector-curvature="0" /></g><g
+   sodipodi:nodetypes="cc" /></g><g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="DEKO"
+     style="display:none"><path
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 160.10892,37.487079 c 0,4.456258 -3.61251,8.068769 -8.06877,8.068769 -4.45626,0 -8.06877,-3.612511 -8.06877,-8.068769 0,-4.456258 3.61251,-8.068769 8.06877,-8.068769 4.45626,0 8.06877,3.612511 8.06877,8.068769 z"
+       id="path3317"
+       inkscape:connector-curvature="0" /><path
+       id="path3320"
+       d="m 168.91121,47.756421 c 0,2.025572 -1.64205,3.667623 -3.66762,3.667623 -2.02557,0 -3.66762,-1.642051 -3.66762,-3.667623 0,-2.025572 1.64205,-3.667623 3.66762,-3.667623 2.02557,0 3.66762,1.642051 3.66762,3.667623 z"
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:connector-curvature="0" /></g><g
+     inkscape:label="DEKO"
+     id="g3344"
+     inkscape:groupmode="layer"
+     style="display:none"><path
+       inkscape:connector-curvature="0"
+       id="path3346"
+       d="m 161.0846,172.48191 c 2.22813,3.85924 0.90586,8.79402 -2.95338,11.02215 -3.85923,2.22813 -8.79401,0.90586 -11.02214,-2.95338 -2.22813,-3.85922 -0.90586,-8.794 2.95338,-11.02213 3.85923,-2.22813 8.79401,-0.90586 11.02214,2.95336 z"
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" /><path
+       inkscape:connector-curvature="0"
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 173.84228,176.97429 c 1.01278,1.75419 0.41175,3.99727 -1.34244,5.01006 -1.7542,1.01278 -3.99728,0.41175 -5.01007,-1.34244 -1.01279,-1.75421 -0.41175,-3.99729 1.34244,-5.01007 1.7542,-1.01279 3.99728,-0.41176 5.01007,1.34245 z"
+       id="path3348" /></g><g
      inkscape:groupmode="layer"
      id="g4544"
-     inkscape:label="FAL_1-3"
-     style="display:none">
+     inkscape:label="FAL_1.3"
+     style="display:inline">
 
 
 
@@ -1226,6 +1247,7 @@
      sodipodi:role="line"
      id="tspan4576">Free Art License</tspan></text>
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text4564"
@@ -1239,18 +1261,15 @@
      x="136.88947"
      sodipodi:role="line">FAL 1.3</tspan></text>
 
+
 <path
    sodipodi:nodetypes="cc"
    inkscape:connector-curvature="0"
    id="path4568"
    d="m 109.1116,58.40961 27.89689,0"
-   style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /><path
-   style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   d="m 181.18054,67.232069 c 0,2.8358 -2.29887,5.13467 -5.13467,5.13467 -2.8358,0 -5.13467,-2.29887 -5.13467,-5.13467 0,-2.8358 2.29887,-5.13467 5.13467,-5.13467 2.8358,0 5.13467,2.29887 5.13467,5.13467 z"
-   id="path3286"
-   inkscape:connector-curvature="0" /></g><g
+   style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /></g><g
      style="display:none"
-     inkscape:label="CC-BY-SA_3-0"
+     inkscape:label="CC-BY-SA_3.0"
      id="g4578"
      inkscape:groupmode="layer">
 
@@ -1300,6 +1319,7 @@
      id="tspan4598"
      dx="0 0 0 0 0 -1.973418 0 0 0 0 0 -1.973418">Share Alike License</tspan></text>
 
+
 <text
    transform="scale(1.0005075,0.99949275)"
    xml:space="preserve"
@@ -1312,6 +1332,7 @@
      x="136.88947"
      y="55.238724"
      id="tspan4592">CC-BY-SA 3.0</tspan></text>
+
 
 <path
    style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -1334,8 +1355,102 @@
      sodipodi:role="line"
      id="tspan4752-3">!</tspan></text>
 
+
+</g><g
+     inkscape:groupmode="layer"
+     id="g3287"
+     inkscape:label="CC-BY-SA-NC_3.0"
+     style="display:none">
+
+
+
+
+
+
+
+
+
+
+
+<text
+   sodipodi:linespacing="100%"
+   id="text3289"
+   y="75.834129"
+   x="137.81938"
+   style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk"
+   xml:space="preserve"
+   transform="scale(1.0005075,0.99949275)"><tspan
+     id="tspan3291"
+     y="75.834129"
+     x="137.81938"
+     sodipodi:role="line">use, study,</tspan><tspan
+     id="tspan3293"
+     y="91.834129"
+     x="142.22563"
+     sodipodi:role="line">change,improve </tspan><tspan
+     id="tspan3295"
+     y="107.83413"
+     x="142.22563"
+     sodipodi:role="line">according to the </tspan><tspan
+     dx="0 0 0 0 0 0 0 0 -2.7627852"
+     y="123.83413"
+     x="137.81938"
+     sodipodi:role="line"
+     id="tspan3297">Creative Commons</tspan><tspan
+     dx="0 0 0 -2.3681016"
+     id="tspan3299"
+     y="139.83414"
+     x="137.81938"
+     sodipodi:role="line">By Attribution</tspan><tspan
+     dx="0 0 0 0 0 -1.973418 0 0 0 0 0 -1.973418"
+     id="tspan3301"
+     y="155.83414"
+     x="142.22563"
+     sodipodi:role="line">Share Alike </tspan><tspan
+     y="171.83414"
+     x="137.81938"
+     sodipodi:role="line"
+     id="tspan3317">Non Commercial</tspan><tspan
+     y="187.83414"
+     x="137.81938"
+     sodipodi:role="line"
+     id="tspan3319">License</tspan></text>
+
+
+<text
+   sodipodi:linespacing="93.000001%"
+   id="text3303"
+   y="45.23365"
+   x="136.88947"
+   style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;line-height:93.00000072%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk Bold"
+   xml:space="preserve"
+   transform="scale(1.0005075,0.99949275)"><tspan
+     id="tspan3305"
+     y="45.23365"
+     x="136.88947"
+     sodipodi:role="line">CC-BY-SA-NC 3.0</tspan></text>
+
+
 <path
+   sodipodi:nodetypes="cc"
+   inkscape:connector-curvature="0"
+   id="path3307"
+   d="m 65.1116,48.40961 71.89689,0"
+   style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /><path
    style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-   d="m 173.98942,182.01073 c 0,1.57612 -1.2777,2.85382 -2.85382,2.85382 -1.57612,0 -2.85382,-1.2777 -2.85382,-2.85382 0,-1.57612 1.2777,-2.85382 2.85382,-2.85382 1.57612,0 2.85382,1.2777 2.85382,2.85382 z"
-   id="path4611"
-   inkscape:connector-curvature="0" /></g></svg>
+   d="m 268.12505,-7.2347461 c 0,5.62726 -4.56181,10.18906 -10.18906,10.18906 -5.62728,0 -10.18906,-4.5618 -10.18906,-10.18906 0,-5.6272609 4.56178,-10.1890609 10.18906,-10.1890609 5.62725,0 10.18906,4.5618 10.18906,10.1890609 z"
+   id="path3309"
+   inkscape:connector-curvature="0" /><text
+   xml:space="preserve"
+   style="font-size:16.30249786px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk Bold"
+   x="245.54277"
+   y="-1.5207685"
+   id="text3311"
+   sodipodi:linespacing="100%"><tspan
+     id="tspan3313"
+     sodipodi:role="line"
+     x="245.54277"
+     y="-1.5207685">!</tspan></text>
+
+
+</g></svg>
