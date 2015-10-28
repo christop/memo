@@ -130,11 +130,50 @@ function SPREAD() {
 
   CROP=10.63 # 3mm in px
 
-  SVGSRC=$1
-  SVGTMP=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.svg
-     PDF=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.pdf
+  SVGSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+          grep "\.svg$" | head -n 1`    # SELECT FIRST ENDING WITH .pdf 
+   PAGES=`echo $* | sed "s/#/\n#/g"   | # HASH TO NEWLINES
+          grep -v "^#"                | # 
+          sed 's/ /\n/g'              | #
+          sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+          grep -v "^[ ]*$" | tail -n 1` # 
+  if [ `echo $PAGES | wc -c` -le 1 ]; then
+        PAGES=-
+  else
+        P1=`echo $PAGES | cut -d "-" -f 1`
+  fi
 
-  SPRTMP=$TMPID.`echo $SVGTMP | md5sum | cut -c 1-4`.tmp
+ #echo "SRC:   $SVGSRC"
+ #echo "PAGES: $PAGES"
+ #echo "P1:    $P1"
+  
+  if [ `python -c "print 0$P1 / 2.0" | #
+        cut -d "." -f 2` -lt 5 ]; then
+       #echo "page is even"
+        PAGECOMMAND="\cleartoright"
+  else
+       #echo "page is odd"
+        PAGECOMMAND="\cleartoleft"
+  fi
+
+  if [ X"$QRMODE" != XOFF  ]; then
+          mkqr $*
+          write2src "\newpage"
+          QROVERLAY="\qroverlay{$QRPDF}{$QRTXT}" 
+  else
+          QROVERLAY="" 
+  fi
+
+     PDF=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.pdf
+  SVGTMP=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.svg
+  SPRTMP=${TMPID}.`echo $SVGTMP | md5sum | cut -c 1-4`.tmp
+   MACRO="% something went wrong with $SVGSRC"
+
+  if [ -f $PDF ]; then
+
+       echo "$PDF exists"
+       MACRO="\spread{$PDF}{$PAGES}{$PAGECOMMAND$QROVERLAY}"
+  else
 
   ISSVG=`echo $SVGSRC | grep "\.svg$" | wc -l`
   if [ $ISSVG -gt 0 ]; then
@@ -207,14 +246,16 @@ function SPREAD() {
             COUNT=`expr $COUNT + 1`
         done
     done
+
   # ----------------------------------------------------------------------- #
   # MAKE MULTIPAGE PDF
   # ----------------------------------------------------------------------- #
     pdftk ${TMPID}_*.pdf cat output $PDF
+
   # ----------------------------------------------------------------------- #
   # INCLUDE IN DOCUMENT
   # ----------------------------------------------------------------------- #
-    write2src "\spread{$PDF}{-}"
+    MACRO="\spread{$PDF}{$PAGES}{$PAGECOMMAND$QROVERLAY}"
 
   # ----------------------------------------------------------------------- #
   # CLEAN UP 
@@ -222,7 +263,11 @@ function SPREAD() {
     rm ${SPRTMP} ${TMPID}_*.pdf $SVGTMP
 
    fi
+  fi
  fi
+
+ write2src "$MACRO"
+
 }
 
 # --------------------------------------------------------------------------- #
@@ -689,18 +734,17 @@ function BY(){
 function LICENSE(){
 
   LICENSE=`echo $* | cut -d " " -f 1`
-  VERSION=`echo $* | cut -d " " -f 2`
+  VERSION=`echo $* | cut -d " " -f 2 | cut -d "(" -f 2 | cut -d ")" -f 1`
 
-  LCNSSRC=EDIT/assets/151025_licenses.svg
-  LCNSPDF=lcnscheck.pdf
+  LNAME="${LICENSE}_${VERSION}"
+  LID=`echo $LNAME | md5sum | cut -c 1-6`
 
-
-
-# if [ ! -f $LCNSPDF ]; then
+  BADGESRC=EDIT/assets/151025_licenses.svg
+  BADGEPDF=${TMPID}${LID}`echo $RANDOM | cut -c 1-2`.pdf
 
 # SELECT LAYERS: ONE FOR EACH UNIQUE NAME
 # ---------------------------------------------------------------------------- #
-  sed ":a;N;\$!ba;s/\n/ /g" $LCNSSRC    | # REMOVE ALL LINEBREAKS
+  sed ":a;N;\$!ba;s/\n/ /g" $BADGESRC   | # REMOVE ALL LINEBREAKS
   sed 's/<g/\n<g/g'                     | # RESTORE GROUP OPEN + NEWLINE
   sed '/groupmode="layer"/s/<g/4Fgt7R/g'| # PLACEHOLDER FOR LAYERGROUP OPEN
   sed ':a;N;$!ba;s/\n/ /g'              | # REMOVE ALL LINEBREAKS
@@ -714,9 +758,9 @@ function LICENSE(){
   sed "s/:label/\nX1X/"                 | # MARK LABEL (=NAME)
   grep -v ":label=\"XX_"                | # IGNORE XX LAYERS
   grep  "^X1X"                          | # SELECT MARKED
-  grep ":label=\"GFDL"                            | #
- #shuf                                  | # SHUFFLE
- #sort -u -t\" -k1,2                    | # SELECT ONE FOR EACH LABEL
+  egrep ":label=\"$LNAME|:label=\"DEKO" | #
+  shuf                                  | # SHUFFLE
+  sort -u -t\" -k1,2                    | # SELECT ONE FOR EACH LABEL
   cut -d "|" -f 2-                      | # SELECT SECOND/UNTOUCHED CONTEN
   sort -n -u -t: -k1,1                  | # SORT ACCORDING TO LINE NUMBER
   cut -d ":" -f 2-                      | # REMOVE LINENUMBER
@@ -727,27 +771,69 @@ function LICENSE(){
   cat layers.tmp      >> ${TMPID}ll.svg
   echo '</svg>'       >> ${TMPID}ll.svg
 
-  inkscape --export-pdf=$LCNSPDF \
+  inkscape --export-pdf=$BADGEPDF \
            ${TMPID}ll.svg
 
   rm ${TMPID}ll.svg head.tmp layers.tmp
 
-
-# fi
-
-
-  write2src "\qrmargin{$LCNSPDF}{sfs}"
+  write2src "\qrmargin{$BADGEPDF}{sfs}"
   write2src "\marginpar{\begin{marginlicenseblock}"
-  write2src "\ding{222} \scalefont{.7}p.\pageref{license}"
- #write2src "$LICENSE"
+  write2src "\ding{222} \scalefont{.7}p.\pageref{$LID}"
   write2src "\end{marginlicenseblock}\vspace{.8cm}}"
 
   # TODO:
   # REMEMBER LICENSE AND INSERT WITH REFERENCE AT THE END
 
+  echo $LNAME >> $TMPID.licenses
 
 
 }
 
 # --------------------------------------------------------------------------- #
+
+function FLUSHLICENSES(){
+
+  # CC-BY-SA_3.0:http://github.com/christop/licenses/pdf/CC-BY-SA_3.0.pdf
+  # CC-BY-SA-NC_3.0:http://github.com/christop/licenses/pdf/CC-BY-SA-NC_3.0.pdf
+  # FAL_1.3:http://github.com/christop/licenses/pdf/FAL_1.3.pdf
+  # GFDL_1.3:http://github.com/christop/licenses/pdf/GFDL_1.3.pdf
+
+
+    for LNAME in `cat $TMPID.licenses | sort -u`
+     do
+        LPDFURL=`grep $LNAME $FUNCTIONS | tail -n 1 | cut -d ":" -f 2-`
+        LID=`echo $LNAME | md5sum | cut -c 1-6`
+        write2src "\newpage"
+        echo "$LNAME $LPDFURL" | sed "s/_/\\\_/g" >> $SRCDUMP
+        write2src "\label{$LID}"
+   done
+
+}
+
+
+# --------------------------------------------------------------------------- #
+
+function MKSIDENOTE(){
+
+   SISEP="% --------------"
+  
+   SISEPNUM=`grep -n "$SISEP" $SRCDUMP | #
+             tail -n 1                 | #
+             cut -d ":" -f 1`
+
+   sed "1,${SISEPNUM}d" $SRCDUMP | # PRINT FROM LINENUM TO END
+   grep -v "^% MKSIDEBAR"        | #
+   sed "s/%//"                   | #
+   sed "s/^[ ]*//"               | # REMOVE ALL LEADING BLANKS (= PROBLEM FOR INDENTED CODE)
+   tee                           > super.tmp
+
+   write2src "\marginpar{\begin{marginblock}"
+   mdsh2src super.tmp
+   write2src "\end{marginblock}\vspace{.8cm}}"
+
+   rm super.tmp
+
+}
+
+
 
