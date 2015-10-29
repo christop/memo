@@ -620,7 +620,7 @@ function INFO(){
       do
        SECTION=`echo $SECTION | sed 's/_/ /g'`
        cat $INFOGET                | # USELESS USE OF CAT
-       sed "s/^%.*$//"            | # REPLACE COMMENTS WITH EMPTY LINE
+       sed "s/^%.*$//"             | # REPLACE COMMENTS WITH EMPTY LINE
        sed -e :a \
            -e '$!N;s/\n[ \t]*=/ /;ta' \
            -e 'P;D'                | # APPEND UNDERLINE TO PREVIOUS LINE
@@ -628,12 +628,13 @@ function INFO(){
        sed "s/^[ \t]*$/$LHERE/g"   | # REMOVE EMPTY LINES
        sed "/=\?=$/s/^/\n/"        | # ADD NEWLINE AT START IF ENDS WITH ==
        sed  '1,/^$/!d'             | # FIRST PARAGRAPH ONLY
-       sed "s/$LHERE/ /"           | # RESTORE EMPTY LINES
        grep -v "^[ \t]*$SECTION[ \t]*=*$" | # IGNORE SECTION LINES
+       sed ':a;N;$!ba;s/\n/ /g'    | # REMOVE LINEBREAKS
        sed "s/$/$BHERE/"           | # PROTECT LINEBREAKS HERE
        pandoc -r markdown -w latex | # FROM MARKDOWN TO LATEX
        sed ':a;N;$!ba;s/\n/ /g'    | # REMOVE LINEBREAKS
        sed "s/$BHERE/\n/g"         | # RESTORE LINEBREAKS
+       sed "s/$LHERE/ /g"          | # RESTORE EMPTY LINES
        sed 's/ /\n/g'              | #
        sed -e '/^http.\{20\}/s/^/\\urlsplit{/' \
            -e '/^\\urlsplit/s/$/}/'| #
