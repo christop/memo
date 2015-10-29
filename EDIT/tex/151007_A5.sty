@@ -183,7 +183,7 @@
                \textbf{\relscale{1.05}{#1}}}}}
 
   \newcommand\urlsplit[1]{\seqsplit{\tt\tiny #1}}
-  \newcommand\urlf[1]{{\scalefont{.7}\tt #1}}
+  \newcommand\urlf[1]{{\scalefont{.8}\tt #1}}
 
 
 
@@ -263,9 +263,12 @@
     \begin{tabular}{ll}  \hspace{-4mm} & } % SHIFT FOR ODD
     {\begin{tabular}{ll} \hspace{1mm} & } % SHIFT FOR EVEN
       \begin{minipage}{.6\marginparwidth}  %
+     \setlength{\parskip}{.6\baselineskip}
       \setstretch{1.2}
        \tiny\ifthispageodd{\flushright}{\flushleft}
      }{\end{minipage}\end{tabular}}
+
+
 
  \newenvironment{marginlicenseblock}{%
   \vspace{-.5cm}
