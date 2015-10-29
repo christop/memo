@@ -175,11 +175,16 @@
   \renewcommand{\rmdefault}{\rmstandard}
   \renewcommand{\sfdefault}{\sfstandard}
 
+
   \let\OldTexttt\texttt
   \renewcommand{\texttt}[1]{%
   \OldTexttt{\fontfamily{\ttstandard}%
               \selectfont{%
                \textbf{\relscale{1.05}{#1}}}}}
+
+  \newcommand\urlsplit[1]{\seqsplit{\tt\tiny #1}}
+  \newcommand\urlf[1]{{\scalefont{.7}\tt #1}}
+
 
 
 % HEADLINES
@@ -247,13 +252,22 @@
 
   \newenvironment{marginblock}{%
    \ifthispageodd{
-    \begin{tabular}{ll}  \hspace{-4mm} & } % SHIFT FOR ODD
+    \begin{tabular}{ll}  \hspace{-7mm} & } % SHIFT FOR ODD
     {\begin{tabular}{ll} \hspace{-2mm} & } % SHIFT FOR EVEN
       \begin{minipage}{.7\marginparwidth}  %
        \tiny\ifthispageodd{\flushright}{\flushleft}
      }{\end{minipage}\end{tabular}}
 
-  \newenvironment{marginlicenseblock}{%
+  \newenvironment{margininfo}{%
+   \ifthispageodd{
+    \begin{tabular}{ll}  \hspace{-4mm} & } % SHIFT FOR ODD
+    {\begin{tabular}{ll} \hspace{1mm} & } % SHIFT FOR EVEN
+      \begin{minipage}{.6\marginparwidth}  %
+      \setstretch{1.2}
+       \tiny\ifthispageodd{\flushright}{\flushleft}
+     }{\end{minipage}\end{tabular}}
+
+ \newenvironment{marginlicenseblock}{%
   \vspace{-.5cm}
    \ifthispageodd{
     \begin{tabular}{ll}  \hspace{-5mm} & } % SHIFT FOR ODD
