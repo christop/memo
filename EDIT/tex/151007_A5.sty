@@ -586,9 +586,9 @@
   }
 % -------------------------------------------------------------------- %
    \makeatletter
-    \newcommand{\fullpageoverlay}[1]{
+    \newcommand{\superimpose}[2]{
      \AddToShipoutPicture*{%
-      \includegraphics[width=\paperwidth]
+      \includegraphics[width=\paperwidth,page=#2]
           {#1}
      }}\makeatother
 
