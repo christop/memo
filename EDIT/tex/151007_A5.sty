@@ -587,9 +587,10 @@
 % -------------------------------------------------------------------- %
    \makeatletter
     \newcommand{\superimpose}[2]{
-     \AddToShipoutPicture*{%
-      \includegraphics[width=\paperwidth,page=#2]
-          {#1}
+     \AddThispageHook{
+      \AddToShipoutPicture*{%
+       \includegraphics[width=\paperwidth,page=#2]
+          {#1}}
      }}\makeatother
 
 
