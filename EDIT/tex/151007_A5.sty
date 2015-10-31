@@ -585,6 +585,11 @@
                scale=1,pages=#2#3]{#1}
   }
 % -------------------------------------------------------------------- %
+   \newcommand\pdfpageplus[4]{%
+   \includepdf[pagecommand={\thispagestyle{fancy}#4},%
+               scale=1,pages=#2#3]{#1}
+  }
+% -------------------------------------------------------------------- %
    \makeatletter
     \newcommand{\superimpose}[2]{
      \AddThispageHook{
