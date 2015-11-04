@@ -591,12 +591,13 @@
   }
 % -------------------------------------------------------------------- %
    \makeatletter
-    \newcommand{\superimpose}[2]{
-     \AddThispageHook{
-      \AddToShipoutPicture*{%
-       \includegraphics[width=\paperwidth,page=#2]
-          {#1}}
-     }}\makeatother
+    \newcommand{\superimpose}[2]{%
+    %\newpage%
+      \AddThispageHook{%
+       \AddToShipoutPicture*{%
+        \includegraphics[width=\paperwidth,page=#2]
+          {#1}}%
+    }}\makeatother
 
 
 
