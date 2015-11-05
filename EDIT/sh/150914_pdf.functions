@@ -135,7 +135,8 @@ function INCLUDE() {
 # MAKE QR REFERENCE
 # --------------------------------------------------------
   mkqr $*
-  write2src "HERE$QRID"
+  QRIDINC=$QRID
+  write2src "HEREQR$QRIDINC"
 
 # PROCESS INPUT !!!!!
 # --------------------------------------------------------
@@ -146,11 +147,13 @@ function INCLUDE() {
   if [ X"$SKIP"   != "XYES" ] &&
      [ Y"$RUN"    == "YYES" ] &&
      [ X"$QRMODE" != "XOFF" ]; then
-       sed -i "s,HERE$QRID,\\\qrmargin{$QRPDF}{$QRTXT}," \
+       sed -i "s,HEREQR$QRIDINC,\\\qrmargin{$QRPDF}{$QRTXT}," \
                $SRCDUMP
   else
-        sed -i "/^HERE${QRID}$/d" $SRCDUMP
+       sed -i "/^HEREQR${QRIDINC}$/d" $SRCDUMP
   fi
+
+  sed -i "/^HEREQR.*$/d" $SRCDUMP # EMERGENCY REMOVE
 
 # REMOVE ADDED FUNCTIONS
 # --------------------------------------------------------
@@ -567,6 +570,9 @@ function FLUSHLOG(){
 
 function FLUSHQRURLS(){
 
+  write2src "\bigskip"
+  write2src "URLS:"
+  write2src ""
 
   for SHORTURL in `cat $QRURLLOG`
    do
@@ -579,9 +585,9 @@ function FLUSHQRURLS(){
               sed 's,/$,,'                | # REMOVE TRAILING SLASH
               sed "s,^${SHORTURLBASE}$,,"`  # DELETE SHORTURLBASE ONLY
      if [ `echo $LONGURL | wc -c` -ge 2 ]; then
-           echo "$SHORTURL -> $LONGURL"
+           write2src "$SHORTURL -> $LONGURL"
       else
-           echo "$SHORTURL NOT SET!"
+           write2src "$SHORTURL NOT SET!"
      fi
   done
 
