@@ -809,19 +809,30 @@ function LICENSE(){
 
 function FLUSHLICENSES(){
 
-  # CC-BY-SA_3.0:http://github.com/christop/licenses/pdf/CC-BY-SA_3.0.pdf
-  # CC-BY-SA-NC_3.0:http://github.com/christop/licenses/pdf/CC-BY-SA-NC_3.0.pdf
-  # FAL_1.3:http://github.com/christop/licenses/pdf/FAL_1.3.pdf
-  # GFDL_1.3:http://github.com/christop/licenses/pdf/GFDL_1.3.pdf
+   GITBASEURL="https://github.com/christop/licenses/raw"
 
+ #      FAL_1.3:d31e37d/pdf/FAL_1.3.pdf
+ #      GPL_2.0:07f63bc/pdf/GPL_2.0.pdf
+ #      GPL_3.0:407d3a2/pdf/GPL_3.0.pdf
+ #     GFDL_1.2:2f159f8/pdf/GFDL_1.2.pdf
+ #     GFDL_1.3:8c8aeae/pdf/GFDL_1.3.pdf
+ # CC-BY-SA_2.5:3cea07b/pdf/CC-BY-SA_2.5.pdf
+ # CC-BY-SA_3.0:362006e/pdf/CC-BY-SA_3.0.pdf
+
+    write2src "\emptypage"
+    write2src "\cleartoright"
 
     for LNAME in `cat $TMPID.licenses | sort -u`
      do
-        LPDFURL=`grep $LNAME $FUNCTIONS | tail -n 1 | cut -d ":" -f 2-`
+        LPDFURL=$GITBASEURL/`grep $LNAME $FUNCTIONS | #
+                             tail -n 1 | cut -d ":" -f 2-`
         LID=`echo $LNAME | md5sum | cut -c 1-6`
-        write2src "\newpage"
-        echo "$LNAME $LPDFURL" | sed "s/_/\\\_/g" >> $SRCDUMP
-        write2src "\label{$LID}"
+        OPTIONS=",scale=.9,offset=10 0"
+        getFile $LPDFURL ${TMPID}${LID}.pdf
+     if [ -f ${TMPID}${LID}.pdf ]; then
+        write2src "\cleartoright"
+        write2src "\pdfpageplus{${TMPID}${LID}.pdf}{1}{$OPTIONS}{\label{$LID}}"
+     fi
    done
 
 }
