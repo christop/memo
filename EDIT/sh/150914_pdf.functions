@@ -747,8 +747,13 @@ function LICENSE(){
   LICENSE=`echo $* | cut -d " " -f 1`
   VERSION=`echo $* | cut -d " " -f 2 | cut -d "(" -f 2 | cut -d ")" -f 1`
 
-  LNAME="${LICENSE}_${VERSION}"
+ #LNAME="${LICENSE}_${VERSION}"
+  LNAME=`echo $* | #
+         sed 's/[ ]*(/_/g' | #
+         sed 's/)//g' | #
+         sed 's,[ ]*/[ ]*,_,g'`
   LID=`echo $LNAME | md5sum | cut -c 1-6`
+
 
   BADGESRC=EDIT/assets/151025_licenses.svg
   BADGEPDF=${TMPID}${LID}`echo $RANDOM | cut -c 1-2`.pdf
@@ -781,22 +786,32 @@ function LICENSE(){
   head -n 1 head.tmp  >  ${TMPID}ll.svg
   cat layers.tmp      >> ${TMPID}ll.svg
   echo '</svg>'       >> ${TMPID}ll.svg
-
   inkscape --export-pdf=$BADGEPDF \
            ${TMPID}ll.svg
-
   rm ${TMPID}ll.svg head.tmp layers.tmp
+
+  LREF=""
+  for L in `echo $* | #
+            sed 's/[ ]*(/_/g' | #
+            sed 's/)//g' | #
+            sed 's,[ ]*/[ ]*,\n,g' | #
+            sort -u`
+   do
+      LID=`echo $L | md5sum | cut -c 1-6`
+      LREF="${LREF},\pageref{$LID}"
+  done
+
+  LREF=`echo $LREF | sed 's/^,//'`
 
   write2src "\qrmargin{$BADGEPDF}{sfs}"
   write2src "\marginpar{\begin{marginlicenseblock}"
-  write2src "{\relscale{.7}\ding{222}\relscale{1.2} p.\pageref{$LID}~}"
+  write2src "{\relscale{.7}\ding{222}\relscale{1.2} p.${LREF}~}"
   write2src "\end{marginlicenseblock}\vspace{.8cm}}"
 
-  # TODO:
-  # REMEMBER LICENSE AND INSERT WITH REFERENCE AT THE END
-
-  echo $LNAME >> $TMPID.licenses
-
+  echo $* | #
+  sed 's/[ ]*(/_/g' | #
+  sed 's/)//g' | #
+  sed 's,[ ]*/[ ]*,\n,g' >> $TMPID.licenses
 
 }
 
