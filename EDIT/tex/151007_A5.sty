@@ -134,6 +134,17 @@
   \bodytexttrue%
   \endgroup}
 
+%% IF QUOTE/QUOTATION
+%  \newif\ifquote
+%  \let\QUOTEA\quote
+%  \let\QUOTEE\endquote
+% %\let\origquote\quote
+% %\let\endorigquote\endquote
+%  \renewenvironment{quote}{%
+%  \QUOTEA XXXX
+%  }%
+% {\QUOTEE}
+
 % --------------------------------------------------------------------------- %
 %  P A G E   C O M M A N D S
 % --------------------------------------------------------------------------- %
@@ -370,8 +381,8 @@
 % =========================================================================== %
   \newcommand{\setstandardquote}{ % DEFINE STANDARD QUOTE ENVIRONMENT
 % ........................................................................... %
-   \makeatletter
-   \renewenvironment{quote}
+    \makeatletter
+    \renewenvironment{quote}
                   {\list{}{\listparindent=2pt%whatever you need
                            \itemindent    \listparindent
                            \leftmargin=15pt%  whatever you need
@@ -381,7 +392,7 @@
                           }%
                    \item\relax}
                   {\endlist}
-   \makeatother
+    \makeatother
 % ........................................................................... %
   }
 % =========================================================================== %
@@ -407,13 +418,13 @@
   \pagestyle{fancy}
   \fancyhead{} % CLEAR DEFAULT
   \fancyfoot{} % CLEAR DEFAULT
-  \fancyfoot[LO]{\vspace{1mm}\\ \hspace{-13mm} {\scriptsize\thepage}}
-  \fancyfoot[RE]{\vspace{1mm}\\ {\scriptsize\thepage} \hspace{-13mm}}
+  \fancyfoot[LO]{\vspace{1mm} \hspace{-13mm} {\scriptsize\thepage}}
+  \fancyfoot[RE]{\vspace{1mm} {\scriptsize\thepage} \hspace{-13mm}}
 
 % http://tex.stackexchange.com/questions/114956/how-to-insert-footer-in-first-pages-of-chapter 
   \fancypagestyle{plain}{%
-  \fancyfoot[LO]{\vspace{1mm}\\ \hspace{-13mm} {\scriptsize\thepage}}
-  \fancyfoot[RE]{\vspace{1mm}\\ {\scriptsize\thepage} \hspace{-13mm}}
+  \fancyfoot[LO]{\vspace{1mm} \hspace{-13mm} {\scriptsize\thepage}}
+  \fancyfoot[RE]{\vspace{1mm} {\scriptsize\thepage} \hspace{-13mm}}
   }
 
   \renewcommand{\headrulewidth}{0pt}
