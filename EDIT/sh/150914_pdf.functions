@@ -827,7 +827,7 @@ function FLUSHLICENSES(){
         LPDFURL=$GITBASEURL/`grep $LNAME $FUNCTIONS | #
                              tail -n 1 | cut -d ":" -f 2-`
         LID=`echo $LNAME | md5sum | cut -c 1-6`
-        OPTIONS=",scale=.9,offset=10 0"
+        OPTIONS=",scale=.9,offset=15 5"
         getFile $LPDFURL ${TMPID}${LID}.pdf
      if [ -f ${TMPID}${LID}.pdf ]; then
         write2src "\cleartoright"
