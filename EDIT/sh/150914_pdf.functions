@@ -227,21 +227,16 @@ function SPREAD() {
         PAGES=-
   else
         P1=`echo $PAGES | cut -d "-" -f 1`
+        if [ `python -c "print $P1 / 2.0" | #
+              cut -d "." -f 2` -lt 5 ]; then
+             #echo "page is even"
+              PAGECOMMAND="\cleartoright"
+        else
+             #echo "page is odd"
+              PAGECOMMAND="\cleartoleft"
+        fi
   fi
-
- #echo "SRC:   $SVGSRC"
- #echo "PAGES: $PAGES"
- #echo "P1:    $P1"
   
-  if [ `python -c "print 0$P1 / 2.0" | #
-        cut -d "." -f 2` -lt 5 ]; then
-       #echo "page is even"
-        PAGECOMMAND="\cleartoright"
-  else
-       #echo "page is odd"
-        PAGECOMMAND="\cleartoleft"
-  fi
-
   if [ X"$QRMODE" != XOFF  ]; then
           mkqr $*
           write2src "\newpage"
