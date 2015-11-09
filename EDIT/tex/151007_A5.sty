@@ -353,7 +353,7 @@
    \renewcommand\urlf[1]{{\scalefont{.8}\tt ##1}}
    \renewcommand{\embody}{\fontfamily{pju}\fontshape{it}%
                           \selectfont\relscale{1.2}}
-
+   \fontsize{8pt}{8pt}
 % ........................................................................... %
   }
 % =========================================================================== %
@@ -447,9 +447,9 @@
 
 % INCLUDE GRAPHICS ....
 % --------------------------------------------------------------------------- %
-   \newcommand\fullpagefloat[1]{%
+   \newcommand\fullpagefloat[2]{%
     \afterpage{
-     \includepdf{#1}
+     \includepdf[pages=#2]{#1}
     }
    }
 % --------------------------------------------------------------------------- %
@@ -529,6 +529,7 @@
  % RELOAD ORIGINAL LISTING/SOURCE CODE CONFIGURATION
  % WIDOW CONFIGURATION
  % FOOTNOTESEP (<- WHITESPACE)
+   \resetfont
   }
 
 % +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %

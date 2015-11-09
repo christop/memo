@@ -915,3 +915,59 @@ function SUPERIMPOSE() {
 
 # --------------------------------------------------------------------------- #
 
+function PDFASAP() {
+
+  SVGSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+          grep "\.svg$" | head -n 1`    # SELECT FIRST ENDING WITH .pdf 
+   PAGES=`echo $* | sed "s/#/\n#/g"   | # HASH TO NEWLINES
+          grep -v "^#"                | # 
+          sed 's/ /\n/g'              | #
+          sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+          grep -v "^[ ]*$" | tail -n 1` # 
+  if [ `echo $PAGES | wc -c` -le 1 ]; then
+        PAGES=1
+  else
+        P1=`echo $PAGES | cut -d "-" -f 1`
+  fi
+
+     PDF=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.pdf
+  SVGTMP=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.svg
+   MACRO="% something went wrong with $SVGSRC"
+
+  if [ -f $PDF ]; then
+
+       echo "$PDF exists"
+       MACRO="\fullpagefloat{$PDF}{$P1}"
+
+  else
+
+  ISSVG=`echo $SVGSRC | grep "\.svg$" | wc -l`
+  if [ $ISSVG -gt 0 ]; then
+
+    getFile $SVGSRC $SVGTMP
+    echo $PDF
+
+    if [ "X$SUCCESS" == "XYES" ]; then
+
+    svglayers2pdfpages $SVGTMP $PDF
+
+  # ----------------------------------------------------------------------- #
+  # INCLUDE IN DOCUMENT
+  # ----------------------------------------------------------------------- #
+    MACRO="\fullpagefloat{$PDF}{$P1}"
+
+   fi
+  fi
+ fi
+
+ write2src "$MACRO"
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function RESETALL() {
+  write2src "\resetall"
+}
+# --------------------------------------------------------------------------- #
+
