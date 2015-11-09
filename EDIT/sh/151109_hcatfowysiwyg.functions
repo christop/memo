@@ -1,5 +1,4 @@
 
-
   write2src "\renewcommand*{\rmdefault}{pju}\normalfont"
   write2src "\renewcommand*{\embody}{\fontfamily{grm}\selectfont\relscale{.85}}"
   write2src "\renewcommand{\texttt}[1]{%
@@ -7,18 +6,10 @@
               \seqsplit{#1}}}"
   write2src "\fontsize{11pt}{11pt}\selectfont"
   write2src "\chapterfont{\fontfamily{pgd}\selectfont}"
-
-# QSEP=`echo $RANDOM | md5sum | base64 | # CREATE RANDOM STRING
-#       sed 's/[^a-z]//g' | cut -c 1-8`  # NO DIGITS/ 8 ONLY
-# write2src "\newskip\\$QSEP"
-# write2src "\\${QSEP}amount=200pt plus 50pt minus 10pt"
-
-
   QSEP=`echo $RANDOM | md5sum | base64 | # CREATE RANDOM STRING
         sed 's/[^a-z]//g' | cut -c 1-8`  # NO DIGITS/ 8 ONLY
   write2src "\newcommand\\$QSEP{\vspace{0pt plus 5pt minus 5pt}}"
   write2src "\setlength{\parskip}{2pt plus 4pt minus 0pt}"
-
   write2src "\makeatletter
              \renewenvironment{quote}
                    {\list{}{\listparindent=2pt
@@ -31,17 +22,10 @@
                     \item\relax}
                    {\endlist}
              \makeatother"
-
  # \usepackage{etoolbox}
    write2src "\AtBeginEnvironment{quote}{
               \\$QSEP\fontfamily{grm}\selectfont\relscale{.8}}"
    write2src "\AtEndEnvironment{quote}{\\$QSEP}"
-
-#  write2src "\newenvironment{figlettext}
-#            {\setstretch{.8}\VerbatimEnvironment
-#             \begin{Verbatim}[fontsize=\scalefont{.6},fontseries=b]}
-#            {\end{Verbatim}}"
-
    write2src "\newenvironment{figlettext}
              {\addtolength{\baselineskip}{\fill}%
               \addtolength{\parskip}{\fill}%
@@ -51,14 +35,6 @@
 
    write2src "\addtolength{\skip\footins}{\fill}"
    write2src "\raggedbottom"
-
-
-  #write2src "\newcommand{\addstretch}[1]{\addtolength{#1}{\fill}}"
-  #write2src "\addstretch{\footnotesep}"
-  #write2src "\addstretch{\baselineskip}"
-  #write2src "\setlength{\footnotesep}{10pt plus 100pt minus 0pt}"
-
-
 
 # --------------------------------------------------------------------------- #
 
