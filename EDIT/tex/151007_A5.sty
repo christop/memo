@@ -218,6 +218,14 @@
 % --------------------------------------------------------------------------- %
 %  C I T A T I O N
 % --------------------------------------------------------------------------- %
+ %\makeatletter
+ %\DeclareCiteCommand{\fullcite}{%
+ % YY
+ %}\makeatother
+
+  \AtEveryCitekey{\clearfield{url}}
+  \AtEveryCitekey{\clearfield{note}}
+
   \renewbibmacro*{director}{
   \ifpunct{}{}\printnames[director]{author}
   }
