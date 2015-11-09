@@ -789,7 +789,7 @@ function LICENSE(){
 
   write2src "\qrmargin{$BADGEPDF}{sfs}"
   write2src "\marginpar{\begin{marginlicenseblock}"
-  write2src "\ding{222} \scalefont{.7}p.\pageref{$LID}"
+  write2src "{\relscale{.7}\ding{222}\relscale{1.2} p.\pageref{$LID}~}"
   write2src "\end{marginlicenseblock}\vspace{.8cm}}"
 
   # TODO:
