@@ -29,6 +29,7 @@
   \usepackage{tocloft}
   \usepackage{csquotes}
   \usepackage{fancyhdr}
+  \usepackage{fancyvrb}
   \usepackage{twoopt,ifmtarg}
   \usepackage[style=fiwi,natbib=true,backend=biber]{biblatex}
   \usepackage{bibentry}
@@ -398,13 +399,13 @@
   \pagestyle{fancy}
   \fancyhead{} % CLEAR DEFAULT
   \fancyfoot{} % CLEAR DEFAULT
-  \fancyfoot[LO]{\hspace{-12mm} {\footnotesize\thepage}}
-  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-12mm}}
+  \fancyfoot[LO]{\vspace{1mm}\\ \hspace{-13mm} {\scriptsize\thepage}}
+  \fancyfoot[RE]{\vspace{1mm}\\ {\scriptsize\thepage} \hspace{-13mm}}
 
 % http://tex.stackexchange.com/questions/114956/how-to-insert-footer-in-first-pages-of-chapter 
   \fancypagestyle{plain}{%
-  \fancyfoot[LO]{\hspace{-12mm} {\footnotesize\thepage}}
-  \fancyfoot[RE]{{\footnotesize\thepage} \hspace{-12mm}}
+  \fancyfoot[LO]{\vspace{1mm}\\ \hspace{-13mm} {\scriptsize\thepage}}
+  \fancyfoot[RE]{\vspace{1mm}\\ {\scriptsize\thepage} \hspace{-13mm}}
   }
 
   \renewcommand{\headrulewidth}{0pt}
@@ -501,10 +502,14 @@
   \newcommand{\resetall}{
    \setstandardfonts
    \setstandarddimensions
+  % ADD MEDSKIP ETC TO WHITESPACE
    \setstandardwhitespace
    \setstandardheadings
    \setstandardquote
    \setstandarditemize
+ % RELOAD ORIGINAL LISTING/SOURCE CODE CONFIGURATION
+ % WIDOW CONFIGURATION
+ % FOOTNOTESEP (<- WHITESPACE)
   }
 
 % +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
