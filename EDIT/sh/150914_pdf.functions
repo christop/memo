@@ -364,6 +364,7 @@ function PDF() {
 function SRCODE() {
 
   SRCSRC=`echo $* | sed 's/ /\n/g'         | # SPACES TO NEWLINES
+          sed "/\.functions$/s/^/XXX/g"    | # MARK LINES WITH .functions EXTENSION
           sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHARACTER EXTENSION
           grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
           head -n 1`                         # SELECT FIRST
