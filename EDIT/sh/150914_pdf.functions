@@ -404,9 +404,10 @@ function SRCODE() {
             wc -c`                   # COUNT
 
      write2src "\begin{lstlisting}"
-     cat $SRCGET            | #
-     eval "$SELECTSRCLINES" | #
-     cut -c ${INDENT}-      | #
+     cat $SRCGET                        | #
+     eval "$SELECTSRCLINES"             | #
+     cut -c ${INDENT}-                  | #
+     sed 's/^[ \t]*$/°\\emptylinelst°/' | # REPLACE EMPTY LINES WITH COMMAND
      tee                    >> $SRCDUMP
      write2src "\end{lstlisting}"
   fi
