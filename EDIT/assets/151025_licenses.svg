@@ -37,9 +37,9 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.4833407"
-     inkscape:cx="-40.935485"
-     inkscape:cy="157.10293"
+     inkscape:zoom="1.7751264"
+     inkscape:cx="83.884661"
+     inkscape:cy="95.776823"
      inkscape:current-layer="layer2"
      showguides="false"
      inkscape:snap-global="false"><sodipodi:guide
@@ -1062,6 +1062,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="100%"
    id="text5366"
@@ -1098,6 +1099,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text5380"
@@ -1110,6 +1112,7 @@
      y="35.228577"
      x="103.47564"
      sodipodi:role="line">GFDL 1.3</tspan></text>
+
 
 
 
@@ -1171,6 +1174,7 @@
 
 
 
+
 <text
    transform="scale(1.0005075,0.99949275)"
    xml:space="preserve"
@@ -1183,6 +1187,7 @@
      x="136.88947"
      y="55.238724"
      id="tspan3772">GFDL 1.3</tspan></text>
+
 
 
 
@@ -1244,6 +1249,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text3346"
@@ -1256,6 +1262,7 @@
      y="55.238724"
      x="136.88947"
      sodipodi:role="line">GFDL 1.2</tspan></text>
+
 
 
 
@@ -1333,6 +1340,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text4564"
@@ -1345,6 +1353,7 @@
      y="55.238724"
      x="136.88947"
      sodipodi:role="line">FAL 1.3</tspan></text>
+
 
 
 
@@ -1409,6 +1418,7 @@
 
 
 
+
 <text
    transform="scale(1.0005075,0.99949275)"
    xml:space="preserve"
@@ -1421,6 +1431,7 @@
      x="136.88947"
      y="55.238724"
      id="tspan4592">CC-BY-SA 3.0</tspan></text>
+
 
 
 
@@ -1445,6 +1456,7 @@
      x="245.54277"
      sodipodi:role="line"
      id="tspan4752-3">!</tspan></text>
+
 
 
 
@@ -1504,6 +1516,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text3318"
@@ -1516,6 +1529,7 @@
      y="55.238724"
      x="136.88947"
      sodipodi:role="line">CC-BY-SA 2.5</tspan></text>
+
 
 
 
@@ -1591,6 +1605,7 @@
 
 
 
+
 <text
    sodipodi:linespacing="93.000001%"
    id="text3303"
@@ -1603,6 +1618,7 @@
      y="45.23365"
      x="136.88947"
      sodipodi:role="line">CC-BY-SA-NC 3.0</tspan></text>
+
 
 
 
@@ -1631,10 +1647,53 @@
 
 
 
+
 </g><g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="GPL_2.0_GFDL_1.2_FAL_1.3"><path
-       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="m 122.69602,82.023064 c 0,14.892997 -12.07316,26.966156 -26.966162,26.966156 -14.892997,0 -26.966158,-12.073159 -26.966158,-26.966156 0,-14.892998 12.073161,-26.966158 26.966158,-26.966158 14.893002,0 26.966162,12.07316 26.966162,26.966158 z"
-       id="path3324" /></g></svg>
+     inkscape:label="GPL_2.0_GFDL_1.2_FAL_1.3"
+     style="display:inline"><path
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 2.2533607,2.2675993 196.0423693,0 0,195.4790307 -196.0423693,0 z"
+       id="rect3402" /><text
+       sodipodi:linespacing="100%"
+       id="text3289-3"
+       y="75.834129"
+       x="137.81938"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk"
+       xml:space="preserve"
+       transform="scale(1.0005075,0.99949275)"><tspan
+         id="tspan3291-2"
+         y="75.834129"
+         x="137.81938"
+         sodipodi:role="line">use, study,</tspan><tspan
+         id="tspan3293-8"
+         y="91.834129"
+         x="142.22563"
+         sodipodi:role="line">change,improve </tspan><tspan
+         id="tspan3295-6"
+         y="107.83413"
+         x="142.22563"
+         sodipodi:role="line">according to the </tspan><tspan
+         y="123.83413"
+         x="137.81938"
+         sodipodi:role="line"
+         id="tspan3319-5">GPL, GFDL, FAL</tspan></text>
+<text
+       sodipodi:linespacing="93.000001%"
+       id="text3303-3"
+       y="-149.54095"
+       x="153.22385"
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:end;line-height:93.00000072%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:HK Grotesk;-inkscape-font-specification:HK Grotesk Bold"
+       xml:space="preserve"
+       transform="matrix(0,1.0005075,-0.99949275,0,0,0)"><tspan
+         id="tspan3305-1"
+         y="-149.54095"
+         x="153.22385"
+         sodipodi:role="line">GPL 2.0 / GFDL 1.2 / FAL 1.3</tspan></text>
+<path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3307-2"
+       d="m 146.26622,42.454275 0,110.896895"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline" /></g></svg>
