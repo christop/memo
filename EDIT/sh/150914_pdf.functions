@@ -983,3 +983,27 @@ function RESETALL() {
 }
 # --------------------------------------------------------------------------- #
 
+function SWAP(){ 
+ 
+  FROM=`echo $* | cut -d " " -f 1   | # 
+        sed 's/ //g' | sed 's/"//g' | sed 's/\\\/\\\\\\\/g'` 
+    TO=`echo $* | cut -d " " -f 2   | # 
+        sed 's/ //g' | sed 's/"//g' | sed 's/\\\/\\\\\\\/g'` 
+   
+  # tac $SRCDUMP              | # 
+  # sed -n "/$INCLUDEID/,\$p" | # 
+  # tac  > ${SRCDUMP}.tmp 
+ 
+  # cat $SRCDUMP | # 
+  # sed -n "/$INCLUDEID/,\$p" | # 
+  # sed '1d' | # 
+  # sed "s/$FROM/$TO/g" >> ${SRCDUMP}.tmp 
+ 
+  # mv ${SRCDUMP}.tmp $SRCDUMP 
+
+   sed -i "s/\b$FROM\b/$TO/g" ${SRCDUMP}
+
+}
+
+# --------------------------------------------------------------------------- #
+ 
