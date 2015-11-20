@@ -34,7 +34,10 @@
   \usepackage[style=fiwi,natbib=true,backend=biber]{biblatex}
   \usepackage{bibentry}
   \nobibliography*
-
+  \usepackage[activate={true,nocompatibility},
+              final,tracking=true,kerning=true,
+              spacing=true,factor=1100,
+              stretch=10,shrink=10]{microtype}
 
 % --------------------------------------------------------------------------- %
 %  B A S I C 
@@ -149,6 +152,7 @@
   \def\rotif{
   \ifodd\value{page} 90 
   \else -90 \fi}
+
 
 % --------------------------------------------------------------------------- %
 %  P A G E   C O M M A N D S
