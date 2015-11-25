@@ -479,14 +479,61 @@
                scale=1,pages=#2#3]{#1}
   }
 % --------------------------------------------------------------------------- %
-   \makeatletter
-    \newcommand{\superimpose}[2]{%
-    %\newpage%
-      \AddThispageHook{%
-       \AddToShipoutPicture*{%
-        \includegraphics[width=\paperwidth,page=#2]
-          {#1}}%
-    }}\makeatother
+%  \makeatletter
+%   \newcommand{\superimpose}[2]{%
+%   %\newpage%
+%     \AddThispageHook{%
+%      \AddToShipoutPicture*{%
+%       \includegraphics[width=\paperwidth,page=#2]
+%         {#1}}%
+%   }}\makeatother
+
+% \newif\ifdosuperimpose
+% \newcounter{imposepage}
+
+% \makeatletter
+%  \newcommand{\superimpose}[3]{%
+%  \dosuperimposetrue
+%  \setcounter{imposepage}{#2}
+%  \AddEverypageHook{\AddToShipoutPicture*{%
+%  \ifnum\value{imposepage} > #3 \dosuperimposefalse\fi
+%   \ifdosuperimpose
+%    \includegraphics[width=\paperwidth,%
+%                      page=\arabic{imposepage}]{#1}
+%  \fi}\stepcounter{imposepage}
+% }}\makeatother
+
+  \usepackage{bophook}
+
+  \newif\ifdoimpose
+  \newcounter{imposethis}
+  \newcounter{stopimpose}
+  \newcounter{didimpose}
+
+  \makeatletter
+  \newcommand{\superimpose}[3]{
+  \doimposetrue                                  % SET IMPOSE TRUE
+  \setcounter{imposethis}{#2}                    % PAGE TO START
+  \addtocounter{imposethis}{-1}                  % COMPENSATE PAGE HOOK
+  \setcounter{stopimpose}{#3}                    % PAGE TO STOP
+ % - FIRST  ---------                            % FOR THE VERY FIRST TIME
+  \AddThispageHook{\AddToShipoutPicture*{%       %
+  \includegraphics[width=\paperwidth,%           % INCLUDE PDF 
+                   page=\arabic{imposethis}]{#1}%% 
+  }}%                                            %
+  \setcounter{didimpose}{\value{page}}%          % REMEMBER IF DONE
+  \stepcounter{imposethis}%                      % INCREASE COUNTER
+ % - REPEAT ---------                            % KEEP ON
+ %\AddEverypageHook{\AddToShipoutPicture*{%      % ON EVERY PAGE
+  \AtBeginPage{\AddToShipoutPicture*{%           % BOPHOOK <-> EVERYPAGE (BUGGY!)
+  \ifnum\value{imposethis} < \value{stopimpose}% % FOR ALL PAGES
+  \ifnum\value{page} > \value{didimpose}%        % DO IF NOT DONE
+  \stepcounter{imposethis}%                      % INCREASE COUNTER
+  \includegraphics[width=\paperwidth,%           % INCLUDE PDF
+                   page=\arabic{imposethis}]{#1}%% 
+  \setcounter{didimpose}{\value{page}}%          % REMEMBER IF DONE
+  \fi\fi}%
+  }}\makeatother
 
 
 % --------------------------------------------------------------------------- %
