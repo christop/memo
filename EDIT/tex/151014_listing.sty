@@ -1,54 +1,44 @@
+
 % SRCODE
 % -------------------------------------------------------------------- %
   \usepackage{listings}
   \usepackage{EDIT/tex/151015_lstdefineBash}
   \usepackage{EDIT/tex/151015_lstdefineTeX}
-% http://tex.stackexchange.com/questions/63353/how-to-properly-display-backticks-in-verbatim-environment
-  \usepackage{upquote}
 
-  \newcommand{\lstsetBash}{\lstset{language=Bash+}}
+  \usepackage{textcomp}
+
+  \newcommand{\emptylinelst}{\vspace{-.5\baselineskip}}
+
+  \newcommand{\kwbBash}{
+    morekeywords = [2]{write2src,getFile,mkqr}
+  }
+
+  \newcommand{\lstsetBash}{\lstset{language=Bash+,
+               morekeywords = [2]{write2src,getFile,
+                                  mkqr
+             }}}
   \newcommand{\lstsetTeX}{\lstset{language=TeX+}}
-
+  \newcommand{\lstReset}{\lstset{language={}}}
 
 % ------------------------------------------- %
   \definecolor{cyan}{cmyk}{1,0,0,0}
-  \definecolor{darkred}{cmyk}{0,1,0,0}
+  \definecolor{magenta}{cmyk}{0,1,0,0}
   \definecolor{darkgreen}{cmyk}{1,0,1,0}
   \definecolor{red}{cmyk}{0,1,1,0}
   \definecolor{yellow}{cmyk}{0,0,1,0}
 % ------------------------------------------- %
 
-  \newcommand{\kwa}{\color{cyan}}
-  \newcommand{\kwb}{\color{red}}
-  \newcommand{\kwc}{\color{yellow}}
-
-
-% \lstloadlanguages{Bash}
-% \lstset{%
-%   basicstyle=\fontfamily{grm}\selectfont\footnotesize,
-%   commentstyle=\scalefont{.9},
-%   keywordstyle=\bf,
-%  %stringstyle=\color{darkred},
-%   stringstyle=\fontfamily{asc}\selectfont\em,
-%   showspaces=false,
-%   showtabs=false,
-%   columns=fixed,
-%   numbers=none,
-%   frame=none,
-%   numberstyle=\tiny,
-%   breaklines=false,
-%   showstringspaces=false,
-%   xleftmargin=1mm
-% }%
-
+  \newcommand{\kwa}{\bfseries\em}
+  \newcommand{\kwb}{\kwa}
+  \newcommand{\kwc}{}
 
   \lstset{
-    basicstyle=\fontfamily{asc}\selectfont\footnotesize,
-    commentstyle=\color{darkgreen},
+    basicstyle=\fontfamily{zca}\selectfont\footnotesize,
+    commentstyle=\scalefont{.9},
     keywordstyle = \kwa,
     keywordstyle = [2]{\kwb},
     keywordstyle = [3]{\kwc},
-    stringstyle=\color{darkred},
+    stringstyle=\bfseries\scalefont{.8},
    %directivestyle=\bfseries\color{red}, % ?????
     showspaces=false,
     showtabs=false,
@@ -58,74 +48,10 @@
     numberstyle=\tiny,
     breaklines=false,
     showstringspaces=false,
-    xleftmargin=0cm
+    aboveskip=1em,
+    xleftmargin=0cm,
+    upquote=true,
+    escapechar=°
   }
 
 
-
-
-
-
-
-
-
-%\lstdefinelanguage{Bash+}{%
-%  language     = Bash,
-%  morekeywords = { rl,head,tail,ls,grep,
-%                   cut,tr,rev,wc,md5sum,nawk,mv,
-%                   cp,rm,pdftk,sort,uniq,convert,composite,
-%	           java,touch,inkscape,epstopdf,
-%	           pdf2svg,egrep,shuf,find,
-%	           autotrace,pdflatex,date,
-%	           biber,bibtex,makeindex,dot,ps2pdf
-%        }
-%}
-
-%\newcommand{\lstsetBash}{
-%\lstset{language=Bash,
-%        morekeywords={
-%        rl,head,tail,ls,grep,
-%        cut,tr,rev,wc,md5sum,nawk,mv,
-%        cp,rm,pdftk,sort,uniq,convert,composite,
-%	java,touch,inkscape,epstopdf,
-%	pdf2svg,egrep,shuf,find,
-%	autotrace,pdflatex,date,
-%	biber,bibtex,makeindex,dot,ps2pdf
-%        }}
-%}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%\lstloadlanguages{C++}
-%%\lstloadlanguages{TeX}
-%\lstloadlanguages{Bash}
-%\lstset{%
-%% language=C++,
-%% language=TeX,
-%  language=Bash,
-%% basicstyle=\tiny\ttfamily,
-%  basicstyle=\tiny\ttfamily,
-%% commentstyle=\itshape\color{darkgreen},
-%% keywordstyle=\bfseries\color{darkblue},
-%  stringstyle=\color{darkred},
-%  showspaces=false,
-%  showtabs=false,
-%  columns=fixed,
-%  numbers=left,
-%  frame=none,
-%  numberstyle=\tiny,
-%  breaklines=true,
-%  showstringspaces=false,
-%  xleftmargin=0cm
-%}%

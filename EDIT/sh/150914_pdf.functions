@@ -380,6 +380,18 @@ function SRCODE() {
   fi
 
   EXTENSION=`echo $SRCSRC | rev | cut -d "." -f 1 | rev`
+  if   [ "X$EXTENSION" == "Xsh" ]; then
+          LSTSET="\lstsetBash"
+  elif [ "X$EXTENSION" == "Xfunctions" ]; then
+          LSTSET="\lstsetBash"
+  elif [ "X$EXTENSION" == "Xtex" ]; then
+          LSTSET="\lstsetTeX"
+  elif [ "X$EXTENSION" == "Xsty" ]; then
+          LSTSET="\lstsetTeX"
+  else
+          LSTSET="\lstReset"
+  fi
+
   SRCGET=${TMPID}SRC`echo $SRCSRC | md5sum | cut -c 1-3`.$EXTENSION
 
   if [ ! -f $SRCGET ]; then
@@ -403,6 +415,7 @@ function SRCODE() {
             tail -n 1              | # SELECT LAST (=SHORTEST)
             wc -c`                   # COUNT
 
+     write2src "$LSTSET"
      write2src "\begin{lstlisting}"
      cat $SRCGET                        | #
      eval "$SELECTSRCLINES"             | #
@@ -476,7 +489,8 @@ function QUAVERBATIM() {
 
 function WERBATIM() {
 
- # TODO: COPIED FROM QUAVERBATIM
+ # TODO: DE-ANONYMIZE EMAIL
+ # !! COPIED FROM QUAVERBATIM
 
   SPRTCT=SP`echo $RANDOM | cut -c 1-4`CE
   BPRTCT=BR`echo $RANDOM | cut -c 1-4`AK
