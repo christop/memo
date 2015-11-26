@@ -460,9 +460,9 @@ function QUAVERBATIM() {
      sed ":a;N;\$!ba;s/\n/$BPRTCT/g" | #
      tee                             > super.tmp
 
-     write2src "\begin{alltt}"
+     write2src "\begin{quaverbatim}"
      mdsh2src super.tmp
-     write2src "\end{alltt}"
+     write2src "\end{quaverbatim}"
 
      sed -i "s/$BPRTCT/\n/g" $SRCDUMP
      sed -i "s/$SPRTCT/ /g" $SRCDUMP
