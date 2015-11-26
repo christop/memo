@@ -472,10 +472,50 @@ function QUAVERBATIM() {
 
 }
 
+# --------------------------------------------------------------------------- #
 
+function WERBATIM() {
 
+ # TODO: COPIED FROM QUAVERBATIM
 
+  SPRTCT=SP`echo $RANDOM | cut -c 1-4`CE
+  BPRTCT=BR`echo $RANDOM | cut -c 1-4`AK
+  TXTSRC=`echo $* | sed 's/ /\n/g'         | # SPACES TO NEWLINES
+          sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHARACTER EXTENSION
+          grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
+          head -n 1`                         # SELECT FIRST
+   LINES=`echo $* | sed "s/ /\n/g" | # SPACES TO NEWLINES
+          sed "/[^0-9\\-]/d"       | # NO LINES WITH MORE THAN NUMS AND -
+          tail -n 1`                 # LAST LINE ONLY
+  if [ `echo $LINES | wc -c` -gt 1 ]; then      # IF LINE OPTION IS SET
+        echo "lines: $LINES"
+        LINES=`echo $LINES | sed 's/-/,/'`
+        SELECTSRCLINES="sed -n \"${LINES}p\" "
+  else
+        SELECTSRCLINES="tee"
+  fi
 
+  TXTGET=${TMPID}SRC`echo $TXTSRC | md5sum | cut -c 1-3`.txt
+  if [ ! -f $TXTGET ]; then
+        getFile $TXTSRC $TXTGET
+  fi
+  if [ -f $TXTGET ]; then
+    if [ X"$QRMODE" != XOFF  ]; then
+     mkqr $*
+     write2src "\qrmargin{$QRPDF}{$QRTXT}"
+    fi
+     cat $TXTGET                     | #
+     eval "$SELECTSRCLINES"          | #
+     sed "s/ /$SPRTCT/g"             | #
+     sed ":a;N;\$!ba;s/\n/$BPRTCT/g" | #
+     tee                             > super.tmp
+     write2src "\begin{werbatim}"
+     cat super.tmp >> $SRCDUMP
+     write2src "\end{werbatim}"
+     sed -i "s/$BPRTCT/\n/g" $SRCDUMP
+     sed -i "s/$SPRTCT/ /g"  $SRCDUMP
+  fi
+}
 
 # --------------------------------------------------------------------------- #
 
