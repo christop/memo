@@ -340,14 +340,11 @@
               \selectfont{%
                \relscale{1.05}{#1}}}}
 
-  \newcommand{\embody}{}
-
+   \newcommand{\embody}{}
  % CHANGE \emph FOR BODYTEXT
    \DeclareTextFontCommand{\emph}{%
      \ifbodytext%
      \embody
-    %\fontfamily{pju}\fontshape{it}%
-    %\selectfont\relscale{1.2}%
      \else\em %
      \fi%
     }
@@ -361,8 +358,9 @@
    \renewcommand*{\sfdefault}{\sfstandard}\selectfont
    \renewcommand\urlsplit[1]{\seqsplit{\tt\tiny ##1}}
    \renewcommand\urlf[1]{{\scalefont{.8}\tt ##1}}
-   \renewcommand{\embody}{\fontfamily{pju}\fontshape{it}%
-                          \selectfont\relscale{1.2}}
+  %\renewcommand{\embody}{\fontfamily{pju}\fontshape{it}%
+  %                       \selectfont\relscale{1.2}}
+   \renewcommand{\embody}{\it}
    \fontsize{8pt}{8pt}
 % ........................................................................... %
   }
