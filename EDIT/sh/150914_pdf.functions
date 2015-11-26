@@ -864,6 +864,10 @@ function MKSIDENOTE(){
    grep -v "^% MKSIDEBAR"        | #
    sed "s/%//"                   | #
    sed "s/^[ ]*//"               | # REMOVE ALL LEADING BLANKS (= PROBLEM FOR INDENTED CODE)
+   sed -e '/^http.\{20\}/s/^/\\urlsplit{/' \
+       -e '/^\\urlsplit/s/$/}/'| #
+   sed -e '/^http:\/\//s/^/\\urlf{/' \
+       -e '/^\\urlf/s/$/}/'| #
    tee                           > super.tmp
 
    write2src "\marginpar{\begin{marginblock}"
