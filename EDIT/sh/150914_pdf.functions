@@ -873,9 +873,9 @@ function MKSIDENOTE(){
    write2src "\marginpar{\begin{marginblock}"
    mdsh2src super.tmp
    write2src "\end{marginblock}\vspace{.8cm}}"
-
+   write2src "\vspace{-1\baselineskip}"
+ 
    rm super.tmp
-
 }
 
 # --------------------------------------------------------------------------- #
