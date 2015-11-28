@@ -513,21 +513,31 @@ function WERBATIM() {
   if [ ! -f $TXTGET ]; then
         getFile $TXTSRC $TXTGET
   fi
+
   if [ -f $TXTGET ]; then
+
+    INDENT=`cat $TXTGET            | # DISPLAY SRC
+            eval "$SELECTSRCLINES" | # SELECT LINES
+            sed '/^[ \t]*$/g'      | # IGNORE EMPTY LINES
+            grep -v "^$"           | # IGNORE EMPTY LINES (SOLVE DOS NEWLINE PROBLEM?)
+            sed -E 's/([^ ]).*//'  | # KEEP ONLY LEADING BLANK
+            sort -r                | # REVERESE SORT
+            tail -n 1              | # SELECT LAST (=SHORTEST)
+            wc -c`                   # COUNT
+    if [ $INDENT -lt 1 ]; then INDENT=1; fi
+
     if [ X"$QRMODE" != XOFF  ]; then
      mkqr $*
      write2src "\qrmargin{$QRPDF}{$QRTXT}"
     fi
+
+     write2src "\begin{werbatim}"
      cat $TXTGET                     | #
      eval "$SELECTSRCLINES"          | #
-     sed "s/ /$SPRTCT/g"             | #
-     sed ":a;N;\$!ba;s/\n/$BPRTCT/g" | #
-     tee                             > super.tmp
-     write2src "\begin{werbatim}"
-     cat super.tmp >> $SRCDUMP
+     cut -c ${INDENT}-               | #
+     tee                             >> $SRCDUMP
      write2src "\end{werbatim}"
-     sed -i "s/$BPRTCT/\n/g" $SRCDUMP
-     sed -i "s/$SPRTCT/ /g"  $SRCDUMP
+
   fi
 }
 
