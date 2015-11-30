@@ -515,7 +515,7 @@
   \addtocounter{imposethis}{-1}                  % COMPENSATE PAGE HOOK
   \setcounter{stopimpose}{#3}                    % PAGE TO STOP
  % - FIRST  ---------                            % FOR THE VERY FIRST TIME
-  \AddThispageHook{\AddToShipoutPicture*{%       %
+  \AddThispageHook{\AddToShipoutPictureFG*{%     %
   \includegraphics[width=\paperwidth,%           % INCLUDE PDF 
                    page=\arabic{imposethis}]{#1}%% 
   }}%                                            %
@@ -523,7 +523,7 @@
   \stepcounter{imposethis}%                      % INCREASE COUNTER
  % - REPEAT ---------                            % KEEP ON
  %\AddEverypageHook{\AddToShipoutPicture*{%      % ON EVERY PAGE
-  \AtBeginPage{\AddToShipoutPicture*{%           % BOPHOOK <-> EVERYPAGE (BUGGY!)
+  \AtBeginPage{\AddToShipoutPictureFG*{%         % BOPHOOK <-> EVERYPAGE (BUGGY!)
   \ifnum\value{imposethis} < \value{stopimpose}% % FOR ALL PAGES
   \ifnum\value{page} > \value{didimpose}%        % DO IF NOT DONE
   \stepcounter{imposethis}%                      % INCREASE COUNTER
