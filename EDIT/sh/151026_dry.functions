@@ -6,10 +6,19 @@
   echo "$INCLUDEID"  >> $SRCDUMP
   echo -e "\n\n"     >> $SRCDUMP
 
-  echo "\newenvironment{dryquote}{\begin{quotation}}{\end{quotation}}" >> $SRCDUMP
- #echo "\newcommand\mmdrytt[1]{\texttt{\relscale{.9}#1}}" >> $SRCDUMP
-  echo "\newcommand\mmdrytt[1]{\texttt{\mbox{#1}}}" >> $SRCDUMP
-  echo "\newcommand\mmdryit[1]{\textit{#1}}" >> $SRCDUMP
+
+ #echo "\newcommand\mmdrytt[1]{\texttt{\mbox{#1}}}" >> $SRCDUMP
+ #echo "\newcommand\mmdryit[1]{\textit{#1}}" >> $SRCDUMP
+  echo "\newcommand\drycc[1]{\texttt{\mbox{\upshape#1}}}" >> $SRCDUMP
+
+  echo "\newenvironment{quotewwwsite}{%
+        \medskip%
+        \relscale{.8}%
+        \tt%
+   }{
+        \bigskip
+        \vfill
+   }" >> $SRCDUMP
 
 
 # --------------------------------------------------------------------------- #
@@ -46,7 +55,7 @@ function SWAPTHISHERE(){
 
 function TREATCAMELCASE(){
 
-   C1="\\\mmdrytt{"
+   C1="\\\drycc{"
    C2="}"
 
    tac $SRCDUMP              | #
@@ -68,4 +77,9 @@ function TREATCAMELCASE(){
 
 # --------------------------------------------------------------------------- #
 
+function NL(){
+
+ write2src "\smallskip"
+
+}
 
