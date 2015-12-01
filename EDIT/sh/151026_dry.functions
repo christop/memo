@@ -1,26 +1,34 @@
 
-  INCLUDEID="% "`printf "_%.0s" {1..35}`" "`echo $RANDOM | #
-             cut -c 1-4`" "`printf "_%.0s" {1..34}`" %"
+  echo "\newcommand\drycc[1]{\mbox{\texttt{\upshape#1}}}" >> $SRCDUMP
 
-  echo -e "\n\n\n\n" >> $SRCDUMP
-  echo "$INCLUDEID"  >> $SRCDUMP
-  echo -e "\n\n"     >> $SRCDUMP
-
-
- #echo "\newcommand\mmdrytt[1]{\texttt{\mbox{#1}}}" >> $SRCDUMP
- #echo "\newcommand\mmdryit[1]{\textit{#1}}" >> $SRCDUMP
-  echo "\newcommand\drycc[1]{\texttt{\mbox{\upshape#1}}}" >> $SRCDUMP
-
-  echo "\newenvironment{quotewwwsite}{%
+  write2src "\newenvironment{quotewwwsite}{%
         \medskip%
         \relscale{.8}%
         \tt%
    }{
         \bigskip
         \vfill
-   }" >> $SRCDUMP
+   }"
 
+  write2src "\makeatletter
+             \renewenvironment{quote}
+                   {\it
+                    \list{}{\listparindent=0pt
+                            \itemindent\listparindent
+                            \leftmargin=6pt
+                            \rightmargin=12pt
+                            \topsep=10pt
+                           }%
+                    \item\relax}
+                   {\endlist}
+             \makeatother"
 
+# --------------------------------------------------------------------------- #
+  INCLUDEID="% "`printf "_%.0s" {1..35}`" "`echo $RANDOM | #
+             cut -c 1-4`" "`printf "_%.0s" {1..34}`" %"
+  echo -e "\n\n\n\n" >> $SRCDUMP
+  echo "$INCLUDEID"  >> $SRCDUMP
+  echo -e "\n\n"     >> $SRCDUMP
 # --------------------------------------------------------------------------- #
 
 function SWAPTHISHERE(){
@@ -45,9 +53,7 @@ function SWAPTHISHERE(){
  
    mv ${SRCDUMP}.tmp $SRCDUMP
 
-
   #sed -i "s/{$FROM}/{$TO}/" $SRCDUMP
-
 
 }
 
@@ -76,10 +82,4 @@ function TREATCAMELCASE(){
 }
 
 # --------------------------------------------------------------------------- #
-
-function NL(){
-
- write2src "\smallskip"
-
-}
 

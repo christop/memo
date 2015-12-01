@@ -109,6 +109,9 @@
       \rule{\textwidth}{0.5pt}{
        \vspace*{-3pt}
   }}
+% SAVE FOR RESET
+  \newlength{\SKIPFOOTINS}
+  \setlength{\SKIPFOOTINS}{\skip\footins}
 
 % --------------------------------------------------------------------------- %
 %  C O N D I T I O N S
@@ -361,6 +364,10 @@
   %\renewcommand{\embody}{\fontfamily{pju}\fontshape{it}%
   %                       \selectfont\relscale{1.2}}
    \renewcommand{\embody}{\it}
+   \renewcommand{\texttt}[1]{%
+   \OldTexttt{\fontfamily{\ttstandard}%
+               \selectfont{%
+                \relscale{1.05}{#1}}}}
    \fontsize{8pt}{8pt}
 % ........................................................................... %
   }
@@ -417,6 +424,13 @@
 % ........................................................................... %
   }
 % =========================================================================== %
+
+  \newcommand{\AtEndQuote}{}%
+  \AtEndEnvironment{quote}{\AtEndQuote}
+
+  \newcommand{\AtBeginQuote}{}%
+  \AtBeginEnvironment{quote}{\AtBeginQuote}
+
 
 % --------------------------------------------------------------------------- %
 % P A G E   H E A D E R /  F O O T E R
@@ -595,6 +609,14 @@
    \setstandardheadings
    \setstandardquote
    \setstandarditemize
+%
+%  \AtBeginEnvironment{quote}{} % ??
+%  \AtEndEnvironment{quote}{}   % ??
+%
+   \renewcommand{\AtBeginQuote}{}
+   \renewcommand{\AtEndQuote}{}
+   \flushbottom
+   \setlength{\skip\footins}{\SKIPFOOTINS}
  % RELOAD ORIGINAL LISTING/SOURCE CODE CONFIGURATION
  % WIDOW CONFIGURATION
  % FOOTNOTESEP (<- WHITESPACE)

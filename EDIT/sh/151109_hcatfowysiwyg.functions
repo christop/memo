@@ -10,6 +10,7 @@
         sed 's/[^a-z]//g' | cut -c 1-8`  # NO DIGITS/ 8 ONLY
   write2src "\newcommand\\$QSEP{\vspace{0pt plus 5pt minus 5pt}}"
   write2src "\setlength{\parskip}{2pt plus 4pt minus 0pt}"
+
   write2src "\makeatletter
              \renewenvironment{quote}
                    {\list{}{\listparindent=2pt
@@ -22,10 +23,15 @@
                     \item\relax}
                    {\endlist}
              \makeatother"
- # \usepackage{etoolbox}
-   write2src "\AtBeginEnvironment{quote}{
-              \\$QSEP\fontfamily{grm}\selectfont\relscale{.8}}"
-   write2src "\AtEndEnvironment{quote}{\\$QSEP}"
+
+ # write2src "\AtBeginEnvironment{quote}{
+ #             \\$QSEP\fontfamily{grm}\selectfont\relscale{.85}}"
+ # write2src "\AtEndEnvironment{quote}{\\$QSEP}"
+ # http://tex.stackexchange.com/questions/36708/how-can-i-undo-an-etoolbox-patch
+   write2src "\renewcommand{\AtBeginQuote}{
+               \\$QSEP\fontfamily{grm}\selectfont\relscale{.85}}"
+   write2src "\renewcommand{\AtEndQuote}{\\$QSEP}"
+
    write2src "\newenvironment{figlettext}
              {\addtolength{\baselineskip}{\fill}%
               \addtolength{\parskip}{\fill}%
@@ -35,6 +41,7 @@
 
    write2src "\addtolength{\skip\footins}{\fill}"
    write2src "\raggedbottom"
+
 
 # --------------------------------------------------------------------------- #
 
