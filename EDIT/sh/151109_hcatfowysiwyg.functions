@@ -29,7 +29,7 @@
  # write2src "\AtEndEnvironment{quote}{\\$QSEP}"
  # http://tex.stackexchange.com/questions/36708/how-can-i-undo-an-etoolbox-patch
    write2src "\renewcommand{\AtBeginQuote}{
-               \\$QSEP\fontfamily{grm}\selectfont\relscale{.85}}"
+               \\$QSEP\fontfamily{grm}\selectfont\relscale{.8}}"
    write2src "\renewcommand{\AtEndQuote}{\\$QSEP}"
 
    write2src "\newenvironment{figlettext}
