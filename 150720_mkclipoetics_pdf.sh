@@ -48,7 +48,7 @@
 # WRITE TEX SOURCE
 # --------------------------------------------------------------------------- #
   echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{EDIT/tex/150720_A5}"                >> $TMPTEX
+  echo "\usepackage{lib/tex/150720_A5}"                 >> $TMPTEX
   # PDF/X COMPLIANCY
   echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
         > `dirname $TMPTEX`/pdfx-1a.xmp
@@ -87,7 +87,7 @@
         -O ${LICENSE} $LURL > /dev/null 2>&1
 
   echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{EDIT/tex/150720_A5}"                         >> $TMPTEX
+  echo "\usepackage{lib/tex/150720_A5}"                 >> $TMPTEX
   echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
         > `dirname $TMPTEX`/pdfx-1a.xmp
   cp lib/icc/FOGRA39L.icc `dirname $TMPTEX`
