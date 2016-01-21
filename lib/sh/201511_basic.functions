@@ -55,7 +55,7 @@
 # --------------------------------------------------------------------------- #
 # GENERATE QR CODE FOR INCLUSION
 # --------------------------------------------------------------------------- #
-  QRDEKOSRC=EDIT/assets/151007_qrdeko-simple.svg
+  QRDEKOSRC=EDIT/151007_qrdeko-simple.svg
    QRURLLOG=${TMPID}.qrurls
 
   function mkqr() {

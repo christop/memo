@@ -821,7 +821,7 @@ function LICENSE(){
   LID=`echo $LNAME | md5sum | cut -c 1-6`
 
 
-  BADGESRC=EDIT/assets/151025_licenses.svg
+  BADGESRC=EDIT/151025_licenses.svg
   BADGEPDF=${TMPID}${LID}`echo $RANDOM | cut -c 1-2`.pdf
 
 # SELECT LAYERS: ONE FOR EACH UNIQUE NAME
