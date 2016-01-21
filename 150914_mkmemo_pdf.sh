@@ -3,7 +3,12 @@
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.                                #
 # --------------------------------------------------------------------------- #
 
-  MAIN=JUNK/lokal.mdsh
+  MAIN=EDIT/151019_strlov.mdsh
+ #MAIN=JUNK/parts.mdsh
+ #MAIN=JUNK/dokdev.mdsh
+ #MAIN=JUNK/SUPERIMPOSE/superimposeport.mdsh
+ #MAIN=JUNK/collect_pdf.mdsh
+ #MAIN=JUNK/dokdev.mdsh
 
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
@@ -15,6 +20,8 @@
 # =========================================================================== #
 # CONFIGURATION                                                               #
 # --------------------------------------------------------------------------- #
+  source lib/sh/prepress.functions
+
 # INCLUDE/COMBINE FUNCTIONS
 # --------------------------------------------------------------------------- #
   FUNCTIONSBASIC=EDIT/sh/000003_basic.functions
@@ -74,6 +81,7 @@
  #ORDINALS:\newcommand{\ts}{\textsuperscript}
  #echo "14th 345chd 3rd rd 1st 2nd ddnd" | #
  #sed -e 's/\(\([0-9]\)\+\)\(st\|nd\|rd\|th\)\+/\1\\ts{\3}/g'
+ # SuiteTM <- convert trademark sign
 
   sed -i "s/--\\\textgreater{}/\\\ding{222}/g" $TMPTEX
 
@@ -117,6 +125,7 @@
   rm ${TMPID}*.wget
   rm ${TMPID}*.info
   rm ${TMPID}*.toc
+  rm ${TMPID}*.licenses
   rm ${TMPID}*.qrurls
   rm ${TMPID}SRC*.*
 # BIBER
