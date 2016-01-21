@@ -17,8 +17,8 @@
 # =========================================================================== #
 # CONFIGURATION                                                               #
 # --------------------------------------------------------------------------- #
-  FUNCTIONSBASIC=EDIT/sh/000001_basic.functions
-   FUNCTIONSPLUS=EDIT/sh/150720_pdf.functions
+  FUNCTIONSBASIC=lib/sh/201508_basic.functions
+   FUNCTIONSPLUS=lib/sh/150720_pdf.functions
        FUNCTIONS=$TMPDIR/$TMPID.functions.tmp
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
