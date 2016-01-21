@@ -24,8 +24,8 @@
 
 # INCLUDE/COMBINE FUNCTIONS
 # --------------------------------------------------------------------------- #
-  FUNCTIONSBASIC=EDIT/sh/000003_basic.functions
-   FUNCTIONSPLUS=EDIT/sh/150914_pdf.functions
+  FUNCTIONSBASIC=lib/sh/201511_basic.functions
+   FUNCTIONSPLUS=lib/sh/150914_pdf.functions
        FUNCTIONS=$TMPID.functions
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
@@ -68,8 +68,7 @@
 # WRITE TEX SOURCE
 # --------------------------------------------------------------------------- #
   echo "\documentclass[8pt,cleardoubleempty]{scrbook}"  >  $TMPTEX
-  echo "\usepackage{EDIT/tex/151007_A5}"                >> $TMPTEX
- #echo "\usepackage{EDIT/OLDEDITROOT/150731_A5}"        >> $TMPTEX
+  echo "\usepackage{lib/tex/151007_A5}"                 >> $TMPTEX
   echo "\bibliography{${TMPID}.bib}"                    >> $TMPTEX
   echo "\begin{document}"                               >> $TMPTEX
   cat   $SRCDUMP                                        >> $TMPTEX
