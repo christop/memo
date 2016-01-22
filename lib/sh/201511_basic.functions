@@ -280,7 +280,7 @@ function QR() {
 
   cat $PROTECTED                         | # USELESS USE OF CAT
   eval "$SELECTLINES"                    | # CUSTOM COMMAND TO SELEC TLINES
-  sed "s/^ *$/$EMPTYLINE$BREAKFOO/g"     | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
+  sed "s/^ *$/$BREAKFOO$EMPTYLINE$BREAKFOO/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
  #sed "s/^ *$/$EMPTYLINE/g"     | # PROTECT EMPTY LINES
   sed "s/^[ ]\{4\}/$CODEFOO/"            | # PROTECT CODEBLOCKS
   sed ":a;N;\$!ba;s/\n/$BREAKFOO/g"      | # REMOVE LINEBREAKS (TEMPORARY)
