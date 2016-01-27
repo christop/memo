@@ -80,6 +80,15 @@
   \renewenvironment{itemize}{\begin{samepage}\ITEMIZE}
                             {\ENDITEMIZE\end{samepage}}
 
+  \usepackage{newunicodechar}
+ %\newunicodechar{ }{~} % tree non-breaking space ??!!
+ %\DeclareUnicodeCharacter{00A0}{X}
+  \newunicodechar{─}{-} % tree
+  \newunicodechar{├}{+} % tree
+  \newunicodechar{│}{|} % tree
+  \newunicodechar{└}{-} % tree
+
+
 % --------------------------------------------------------------------------- %
 %  T A B L E   O F   C O N T E N T
 % --------------------------------------------------------------------------- %
