@@ -444,7 +444,6 @@ function QR() {
 
 
 # --------------------------------------------------------------------------- #
-# TODO: adjust ad-hoc function set
 
 function INCLUDE() {
 
@@ -459,7 +458,7 @@ function INCLUDE() {
                  grep "\.functions$" | tail -n 1`
 
   if [ `echo $FUNCTIONSHERE | wc -c` -gt 1 ];then
-  PARAMETERSWITHOUTFUNCTIONS=`echo $* | #
+  PARAMETERSWITHOUTFUNCTIONS=`echo $*        | #
                               sed 's/ /\n/g' | #
                               grep -v "\.functions$"`                                    # TODO: BETTER
 
@@ -480,9 +479,28 @@ function INCLUDE() {
    FUNCTIONSADDED="NO"
   fi
 
+# MAKE QR REFERENCE
+# --------------------------------------------------------
+  mkqr $*
+  QRIDINC=$QRID
+  write2src "HEREQR$QRIDINC"
+
 # PROCESS INPUT !!!!!
 # --------------------------------------------------------
   mdsh2src $*
+
+# ADD REFERENCE IF NOT SKIPPED
+# --------------------------------------------------------
+  if [ X"$SKIP"   != "XYES" ] &&
+     [ Y"$RUN"    == "YYES" ] &&
+     [ X"$QRMODE" != "XOFF" ]; then
+       sed -i "s,HEREQR$QRIDINC,\\\qrmargin{$QRPDF}{$QRTXT}," \
+               $SRCDUMP
+  else
+       sed -i "/^HEREQR${QRIDINC}$/d" $SRCDUMP
+  fi
+
+  sed -i "/^HEREQR.*$/d" $SRCDUMP # EMERGENCY REMOVE
 
 # REMOVE ADDED FUNCTIONS
 # --------------------------------------------------------
@@ -501,7 +519,3 @@ function INCLUDE() {
 
   echo "INCLUDE ENDS  ======================================================"
 }
-
-# --------------------------------------------------------------------------- #
-
-

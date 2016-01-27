@@ -96,92 +96,6 @@
 
 
 
-# --------------------------------------------------------------------------- #
-
-function INCLUDE() {
-
-# TODOTODO: check, check, debug
-# mdsh2src $PARAMETERSWITHOUTFUNCTIONS # TODOTODO
-
-  echo "INCLUDE STARTS ====================================================="
-
-# EXTRACT OPTIONAL PARAMETERS
-# ---------------------------------------------------------
-  FUNCTIONSHERE=`echo $* | sed 's/ /\n/g' | #
-                 grep "\.functions$" | tail -n 1`
-
-  if [ `echo $FUNCTIONSHERE | wc -c` -gt 1 ];then
-  PARAMETERSWITHOUTFUNCTIONS=`echo $*        | #
-                              sed 's/ /\n/g' | #
-                              grep -v "\.functions$"`                                    # TODO: BETTER
-
-# ATTACH FUNCTIONS TO MAIN FUNCTIONS
-# ---------------------------------------------------------
-  if [ `ls $FUNCTIONSHERE 2>/dev/null | wc -l` -gt 0 ];then
-
-   FID=`date +%s%N`
- # ATTACH AND MARK FUNCTIONS
-   echo "#  -- ${FID} -- START" >> $FUNCTIONS
-   cat  $FUNCTIONSHERE          >> $FUNCTIONS
-   echo "#  -- ${FID} -- END"   >> $FUNCTIONS
-   FUNCTIONSADDED="YES"
- # SAVE FUNCTION ID (AS VARIABLE MAY BE OVERWRITTEN)
-   echo $FID >> ${TMPID}.fid
-   fi
-   else
-   FUNCTIONSADDED="NO"
-  fi
-
-# MAKE QR REFERENCE
-# --------------------------------------------------------
-  mkqr $*
-  QRIDINC=$QRID
-  write2src "HEREQR$QRIDINC"
-
-# PROCESS INPUT !!!!!
-# --------------------------------------------------------
-  mdsh2src $*
-
-# ADD REFERENCE IF NOT SKIPPED
-# --------------------------------------------------------
-  if [ X"$SKIP"   != "XYES" ] &&
-     [ Y"$RUN"    == "YYES" ] &&
-     [ X"$QRMODE" != "XOFF" ]; then
-       sed -i "s,HEREQR$QRIDINC,\\\qrmargin{$QRPDF}{$QRTXT}," \
-               $SRCDUMP
-  else
-       sed -i "/^HEREQR${QRIDINC}$/d" $SRCDUMP
-  fi
-
-  sed -i "/^HEREQR.*$/d" $SRCDUMP # EMERGENCY REMOVE
-
-# REMOVE ADDED FUNCTIONS
-# --------------------------------------------------------
-  if [ -f ${TMPID}.fid ]; then
-
-# LOAD LATEST FUNCTION ID
-  FID=`tail -n 1 ${TMPID}.fid`
-# REMOVE FROM FUNCTIONS
-  sed -i "/${FID} -- START$/,/${FID} -- END$/d" ${FUNCTIONS}
-# REMOVE FROM SAVED FUNCTIONS
-  sed -i "/$FID/d" ${TMPID}.fid
-# RELOAD FUNCTIONS
-  source $FUNCTIONS
-  
-  fi
-  
-  echo "INCLUDE ENDS  ======================================================"
-}
-
-
-
-
-
-
-
-
-
-
 
 
 # --------------------------------------------------------------------------- #
@@ -1074,4 +988,106 @@ function SWAP(){
 }
 
 # --------------------------------------------------------------------------- #
- 
+
+
+
+
+
+
+
+
+
+
+
+# DIRTY HTML PORTS !!!!!!!!!!!!!!
+# --------------------------------------------------------------------------- #
+
+function QUAVERBATIM() {
+
+  # TODO: NOT WORKING FOR TWO PERIODS IN FILENAME?
+
+  if [ `echo $* | wc -c` -lt 2 ]; then
+
+       QVSEP="% ------------"
+    QVSEPNUM=`grep -n "$QVSEP" $SRCDUMP | #
+              tail -n 1                 | #
+              cut -d ":" -f 1`
+       sed "1,${QVSEPNUM}d" $SRCDUMP  | # PRINT FROM LINENUM TO END
+       grep -v "^% QUAVERBATIM"       | # IGNORE COMMAND ITSELF
+       sed "s/^%//"                   | # REMOVE LEADING %
+       sed "s/^[ ]*//"                | # REMOVE ALL LEADING BLANKS
+       sed "/^[ \t]*$/d"              | # REMOVE EMPTY LINES
+       tee      > quaverbatim.list
+  else
+        echo $* > quaverbatim.list
+  fi
+
+
+
+
+( IFS=$'\n'
+
+  for QVSRC in `cat quaverbatim.list`
+   do
+      echo $QVSRC
+
+    TXTSRC=`echo $QVSRC | sed 's/ /\n/g'     | # SPACES TO NEWLINES
+            sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHAR EXT
+            grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
+            head -n 1`                         # SELECT FIRST
+     LINES=`echo $QVSRC | sed "s/ /\n/g" | # SPACES TO NEWLINES
+            sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+            tail -n 1`                   # LAST LINE ONLY
+    if [ `echo $LINES | wc -c` -gt 1 ]; then # IF LINE OPTION IS SET
+          echo "lines: $LINES"
+          LINES=`echo $LINES | sed 's/-/,/'`
+          SELECTSRCLINES="sed -n \"${LINES}p\" "
+    else
+          SELECTSRCLINES="tee"
+    fi
+
+    TXTGET=${TMPID}SRC`echo $TXTSRC | md5sum | cut -c 1-3`.txt
+
+    if [ ! -f $TXTGET ]; then
+          getFile $TXTSRC $TXTGET
+    else
+       echo "no need to download"
+    fi
+    if [ -f $TXTGET ]; then
+
+
+       cat $TXTGET                   | #
+       eval "$SELECTSRCLINES"        | #
+       tee                           > super.tmp
+
+       cat super.tmp >> $TMPID.qvcollected
+    fi
+
+  done )
+  INDENT=`cat $TMPID.qvcollected | # DISPLAY SRC
+          sed '/^[ \t]*$/d'      | # IGNORE/DELETE EMPTY LINES
+          sed -E 's/([^ ]).*//'  | # KEEP ONLY LEADING BLANK
+          sort -r                | # REVERSE SORT
+          tail -n 1              | # SELECT LAST (=SHORTEST)
+          wc -c`                   # COUNT  
+  echo $INDENT
+
+  #write2src "<pre class=\"quaverbatim\">"
+  #cat $TMPID.qvcollected | #
+  #cut -c ${INDENT}-  >> $SRCDUMP
+  #write2src "</pre>" 
+
+   write2src "\begin{quaverbatim}"
+  #mdsh2src $TMPID.qvcollected
+   cat $TMPID.qvcollected | #
+   cut -c ${INDENT}-  >> $SRCDUMP
+   write2src "\end{quaverbatim}"
+
+
+# CLEAN UP!
+# --------
+  rm super.tmp $TMPID.qvcollected
+  rm quaverbatim.list
+
+}
+
