@@ -350,7 +350,8 @@
   \renewcommand{\texttt}[1]{%
   \OldTexttt{\fontfamily{\ttstandard}%
               \selectfont{%
-               \relscale{1.05}{#1}}}}
+              %\relscale{1.05}{#1}}}}
+               \relscale{.95}{#1}}}}
 
    \newcommand{\embody}{}
  % CHANGE \emph FOR BODYTEXT
@@ -376,7 +377,7 @@
    \renewcommand{\texttt}[1]{%
    \OldTexttt{\fontfamily{\ttstandard}%
                \selectfont{%
-                \relscale{1.05}{##1}}}}
+                \relscale{.95}{##1}}}}
    \fontsize{8pt}{8pt}
 % ........................................................................... %
   }
@@ -402,21 +403,40 @@
 % Q U O T E
 % --------------------------------------------------------------------------- %
 
+  %\newcommand{\AtEndQuote}{}%
+  %\AtEndEnvironment{quote}{\AtEndQuote}
+  %\newcommand{\AtBeginQuote}{}%
+  %\AtBeginEnvironment{quote}{\AtBeginQuote}
 % =========================================================================== %
   \newcommand{\setstandardquote}{ % DEFINE STANDARD QUOTE ENVIRONMENT
 % ........................................................................... %
+   % \makeatletter
+   % \renewenvironment{quote}
+   %               {\list{}{\listparindent=2pt%whatever you need
+   %                        \itemindent    \listparindent
+   %                        \leftmargin=15pt%  whatever you need
+   %                        \rightmargin=30pt%whatever you need
+   %                        \topsep=5pt%%%%%  whatever you need
+   %                       %\parsep        \z@ \@plus\p@
+   %                       }%
+   %                \item\relax}
+   %               {\endlist}
+   % \makeatother
     \makeatletter
     \renewenvironment{quote}
-                  {\list{}{\listparindent=2pt%whatever you need
+                  {\list{}{\listparindent=0pt%whatever you need
                            \itemindent    \listparindent
-                           \leftmargin=15pt%  whatever you need
-                           \rightmargin=30pt%whatever you need
-                           \topsep=5pt%%%%%  whatever you need
+                           \leftmargin=5pt%  whatever you need
+                           \rightmargin=10pt%whatever you need
+                           \topsep=2pt%%%%%  whatever you need
                           %\parsep        \z@ \@plus\p@
+                           \sl \raggedright
                           }%
                    \item\relax}
                   {\endlist}
     \makeatother
+    %\renewcommand{\AtBeginQuote}{}
+    %\renewcommand{\AtEndQuote}{}
 % ........................................................................... %
   }
 % =========================================================================== %
@@ -478,11 +498,34 @@
 
 % INCLUDE GRAPHICS ....
 % --------------------------------------------------------------------------- %
-   \newcommand\fullpagefloat[2]{%
-    \afterpage{
-     \includepdf[pages=#2]{#1}
-    }
+
+   %\newcommand\fullpagefloat[3]{%
+   % see p.\pageref{#3}\afterpage{\AddThispageHook{
+   % \includepdf[pages=#2,pagecommand={\label{#3}}]{#1}%
+   %}\newpage}%
+   %}
+
+   %\newcommand\fullpagefloat[3]{%
+   %  see p.\pageref{#3}
+   %
+   %  \afterpage{\AddThispageHook{ %
+   %  \includepdf[pages=#2, %
+   %   pagecommand={\thispagestyle{fancy}}] %
+   %  {#1}}\label{#3}\newpage}%
+   %}
+
+   \newcommand\fullpagefloat[3]{%
+     see p.\pageref{#3}
+
+     \afterpage{\AddThispageHook{ %
+     \includepdf[pages=#2, %
+      pagecommand={\thispagestyle{fancy}}] %
+     {#1}}\label{#3}
+     ~
+     \newpage}%
    }
+
+
 % --------------------------------------------------------------------------- %
    \newcommand\spread[3]{%
    #3
@@ -500,29 +543,6 @@
                scale=1,pages=#2#3]{#1}
   }
 % --------------------------------------------------------------------------- %
-%  \makeatletter
-%   \newcommand{\superimpose}[2]{%
-%   %\newpage%
-%     \AddThispageHook{%
-%      \AddToShipoutPicture*{%
-%       \includegraphics[width=\paperwidth,page=#2]
-%         {#1}}%
-%   }}\makeatother
-
-% \newif\ifdosuperimpose
-% \newcounter{imposepage}
-
-% \makeatletter
-%  \newcommand{\superimpose}[3]{%
-%  \dosuperimposetrue
-%  \setcounter{imposepage}{#2}
-%  \AddEverypageHook{\AddToShipoutPicture*{%
-%  \ifnum\value{imposepage} > #3 \dosuperimposefalse\fi
-%   \ifdosuperimpose
-%    \includegraphics[width=\paperwidth,%
-%                      page=\arabic{imposepage}]{#1}
-%  \fi}\stepcounter{imposepage}
-% }}\makeatother
 
   \usepackage{bophook}
 
@@ -555,7 +575,6 @@
   \setcounter{didimpose}{\value{page}}%          % REMEMBER IF DONE
   \fi\fi}%
   }}\makeatother
-
 
 % --------------------------------------------------------------------------- %
 %  .MDSH  E N V I R O N M E N T S
