@@ -4,13 +4,7 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=EDIT/151019_strlov.mdsh
-  MAIN=EDIT/160126_doodle.mdsh
- #MAIN=JUNK/parts.mdsh
- #MAIN=JUNK/dokdev.mdsh
- #MAIN=JUNK/SUPERIMPOSE/superimposeport.mdsh
- #MAIN=JUNK/collect_pdf.mdsh
- #MAIN=JUNK/dokdev.mdsh
-
+ #MAIN=EDIT/160126_doodle.mdsh
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump
@@ -25,8 +19,8 @@
 
 # INCLUDE/COMBINE FUNCTIONS
 # --------------------------------------------------------------------------- #
-  FUNCTIONSBASIC=lib/sh/201511_basic.functions
-   FUNCTIONSPLUS=lib/sh/150914_pdf.functions
+  FUNCTIONSBASIC="lib/sh/201511_basic.functions"
+   FUNCTIONSPLUS="lib/sh/160127_pdf.functions"
        FUNCTIONS=$TMPID.functions
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
@@ -78,11 +72,6 @@
 # --------------------------------------------------------------------------- #
 # MODIFY SRC BEFORE COMPILING
 # --------------------------------------------------------------------------- #
- #ORDINALS:\newcommand{\ts}{\textsuperscript}
- #echo "14th 345chd 3rd rd 1st 2nd ddnd" | #
- #sed -e 's/\(\([0-9]\)\+\)\(st\|nd\|rd\|th\)\+/\1\\ts{\3}/g'
- # SuiteTM <- convert trademark sign
-
   sed -i "s/--\\\textgreater{}/\\\ding{222}/g" $TMPTEX
 
 
@@ -142,83 +131,4 @@
 
 exit 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# --------------------------------------------------------------------------- #
-# WRITE TEX SOURCE
-# --------------------------------------------------------------------------- #
-  echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{150731_A5}"                         >> $TMPTEX
-  echo "\bibliography{${TMPID}.bib}"                    >> $TMPTEX
-  # PDF/X COMPLIANCY
-  echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
-        > `dirname $TMPTEX`/pdfx-1a.xmp
-  cp ../lib/icc/FOGRA39L.icc `dirname $TMPTEX`
-  echo "\begin{document}"                               >> $TMPTEX
-  cat   $SRCDUMP                                        >> $TMPTEX
-  echo "\cleartofour"                                   >> $TMPTEX
-  echo "\end{document}"                                 >> $TMPTEX
-
-# --------------------------------------------------------------------------- #
-# CORRECTIONS
-# APPEND LINES STARTING WITH \cite
-  sed -i -e :a -e '$!N;s/\n\\cite/\\cite/;ta' -e 'P;D' $TMPTEX
-  sed -i "s/{quote}/{quotation}/g" $TMPTEX
-# --------------------------------------------------------------------------- #
-# MAKE PDF
-# --------------------------------------------------------------------------- #
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-  biber `echo ${TMPTEX} | rev | cut -d "." -f 2- | rev`
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-
-# --------------------------------------------------------------------------- #
-# COMBINE PDF FILES (JACKET,MAIN,LICENSE)
-# --------------------------------------------------------------------------- #
-
-  MAIN=${TMPID}.pdf
-  JACKET=../FREEZE/150725_jacket.pdf;
-  TMPTEX=${TMPID}final.tex
-# LICENSE=${TMPID}license.pdf
-# LURL="https://github.com/christop/licenses/raw/master/pdf/CC-BY-NC-SA_3.0.pdf"
-# wget --no-check-certificate \
-#       -O ${LICENSE} $LURL > /dev/null 2>&1
-
-  echo "\documentclass[12pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{150731_A5}"                         >> $TMPTEX
-  echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" \
-        > `dirname $TMPTEX`/pdfx-1a.xmp
-  cp ../lib/icc/FOGRA39L.icc `dirname $TMPTEX`
-  echo "\begin{document}"                               >> $TMPTEX
-  echo "\includepdf[scale=1,pages=1-2]{$JACKET}"        >> $TMPTEX
-  echo "\includepdf[scale=1,pages=-]{$MAIN}"            >> $TMPTEX
-# echo "\includepdf[scale=.95]{$LICENSE}"               >> $TMPTEX
-  echo "\includepdf[scale=1,pages=4]{$JACKET}"          >> $TMPTEX
-  echo "\end{document}"                                 >> $TMPTEX
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-
-  mv ${TMPID}final.pdf ../FREEZE/debug.pdf
-
-
-
-exit 0;
 
