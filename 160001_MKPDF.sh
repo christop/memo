@@ -4,6 +4,7 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=EDIT/151019_strlov.mdsh
+  MAIN=EDIT/160126_doodle.mdsh
  #MAIN=JUNK/parts.mdsh
  #MAIN=JUNK/dokdev.mdsh
  #MAIN=JUNK/SUPERIMPOSE/superimposeport.mdsh
