@@ -1,6 +1,7 @@
 #!/bin/bash
 
-  EDIT="dev.txt"
+  EDIT="treetest.txt"
+  EDIT="/home/christoph/2016/160125--DOK-CUTUP/EDIT/130000_rw/130000_rw_1601251934.txt"
   REF="REMEMBER.txt"
   MDSHACTION="% QUAVERBATIM"
 
