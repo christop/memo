@@ -132,7 +132,7 @@
 
 function QR() {
 
-      O=`echo $QRKEY | cut -d " " -f 1`
+      O=`echo $* | cut -d " " -f 1`
 
   if [ X"$O" == XON   ] ||
      [ X"$O" == XOFF  ]
