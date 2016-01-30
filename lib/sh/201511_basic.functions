@@ -60,13 +60,15 @@
 
   function mkqr() {
 
-  QRID=`echo $* | md5sum | base64 | cut -c 1-5`
+  QRID=`echo $* | sed 's/#/\n#/g' | #
+        grep -v "^#" | sed 's/ //g'`
+  QRID=`echo $QRID | md5sum | base64 | cut -c 1-5`
+
   QURL="http://lfkn.de/$QRID"
   QRTXT=`echo $QRID | tr [:lower:] [:upper:]`
 
   QRPDF=$TMPID${QRID}.pdf
   QRDEKO=${TMPID}DEKO
-
 
   if [ ! -f $QRPDF ]; then
 
@@ -130,7 +132,6 @@
 
 function QR() {
 
-  QRKEY=`echo "$*" | tr -s ' ' | sed 's/^[ \t]*//'`
       O=`echo $QRKEY | cut -d " " -f 1`
 
   if [ X"$O" == XON   ] ||
@@ -140,12 +141,9 @@ function QR() {
         echo "QRMODE: $QRMODE"
    else
     if [ X"$QRMODE" != XOFF  ]; then
-        QRSEED=`echo "$QRKEY" | md5sum | base64 | cut -c 1-5`
-        echo "insert QR (QRSEED: $QRSEED)"
-        mkqr $QRSEED
+        mkqr $*
         write2src "\qrmargin{$QRPDF}{$QRTXT}"
-     else
-        echo "QRSEED: $QRSEED (but QRMODE: $QRMODE)"
+     #else echo "QRSEED: $QRSEED (but QRMODE: $QRMODE)"
     fi
   fi
 
