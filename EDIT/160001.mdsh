@@ -1,0 +1,118 @@
+
+% INTRODUCTION
+% --------------------------------------------------------------------------- %
+
+% How I stopped
+% to learn programmming
+% and love the Bash
+% OR:
+% How I learned
+% to stop programmming
+% and love the Bash
+
+
+
+%  C O N S U M E R   T O   C R E A T O R
+% --------------------------------------------------------------------------- %
+% CLEARTORIGHT:
+% TOCITEM: Nikolaj Hald Nielsen: From Consumer to Creator
+% --------------------------------------------------------------------------- %
+% TEXINJECT: \chapterfont{\fontfamily{bbe}\selectfont\relscale{.8}}
+% TEXINJECT:  \sectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
+% TEXINJECT:   \subsectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
+% TEXINJECT:    \renewcommand{\texttt}[1]{%
+% TEXINJECT:    {\fontfamily{\ttstandard}\selectfont%
+% TEXINJECT:      \seqsplit{#1}}}
+
+% TITLE: From Consumer to Creator
+% SUBTITLE: The Lego Generation in the Digital Age
+% BY: Nikolaj Hald Nielsen
+
+% INFO: http://lfkn.de/ztzi
+% LICENSE: CC-BY-SA (2.5)
+% INCLUDE: http://freeze.sh/etherpad/export/_/freebeer.nielsen.c2c.mdsh/104 32-61
+% QR: OFF
+% NEWPAGE:
+% INCLUDE: http://freeze.sh/etherpad/export/_/freebeer.nielsen.c2c.mdsh/104 62-260
+% RESETALL:
+
+% SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_computerlib.svg 2
+
+
+
+%  H A C K E R S   A N D   T H E    F E A R    O F    W Y S I W Y G
+% --------------------------------------------------------------------------- %
+% QR: OFF
+% SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151109_hcatfowysiwyg.svg 1
+% --------------------------------------------------------------------------- %
+
+% SUPERIMPOSE: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151109_hcatfowysiwyg.svg 2-22
+% INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 1-510 lib/sh/151109_hcatfowysiwyg.functions
+
+% VFILL:
+
+% CLEARTOLEFT:
+% QR: ON
+% TOCITEM: Brendan Howell: In-Reply-To: Hacker Culture and the Fe...
+
+## Brendan Howell (--> `wintermute.org`)
+%  ------------------------------------
+% TEXINJECT: \setlength{\parskip}{10pt plus 10pt minus 5pt}
+% INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 623-684
+% RESETALL:
+
+
+
+%  A P P R O P R I A T I O N   A N D   T Y P E
+%  B E F O R E   A N D   T O D A Y
+% --------------------------------------------------------------------------- %
+% QR: OFF
+% SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151110_aatbat.svg 2-3
+% --------------------------------------------------------------------------- %
+% TEXINJECT: ~\vfill
+% TEXINJECT: \chapterfont{\fontfamily{ima}\selectfont\relscale{1.5}}
+% TEXINJECT: \sectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
+% TEXINJECT: \subsectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
+% TEXINJECT: \fontsize{10pt}{11pt}\selectfont
+% SUPERIMPOSE: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151110_aatbat.svg 4
+% QR: ON
+% TOCITEM: Ricardo Lafuente: Appropriation and Type -- Before and Today
+% INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 21-55
+% QR: OFF
+% INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 56-630 lib/sh/151120_aatbat.functions
+% RESETALL:
+
+
+
+% GAMBIARRA AND THE PROTOTYPING PERSPECTIVE
+% --------------------------------------------------------------------------- %
+% CLEARTORIGHT:
+% TOCITEM: Gabriel Menotti: _Gambiarra_ and The Prototyping Perspective
+% --------------------------------------------------------------------------- %
+% TEXINJECT: \chapterfont{\scalefont{1.2}\setstretch{1.0}}
+% TEXINJECT: \renewcommand{\by}[1]{\vspace{-0.6\baselineskip}
+% TEXINJECT:                       \scalefont{1.2} #1\vfill}
+% TEXINJECT: \renewcommand*{\rmdefault}{pju}\normalfont
+% TEXINJECT: \renewcommand*{\embody}{\fontfamily{grm}\selectfont\relscale{.85}}
+% TEXINJECT: \setlength{\parskip}{10pt plus 10pt minus 5pt}
+% TEXINJECT: \fontsize{11pt}{11pt}\selectfont
+% INCLUDE: http://freeze.sh/etherpad/export/_/menotti.gambiarra.mdsh/57
+% RESETALL:
+
+
+
+%  D O   R E P E A T   Y O U R S E L F
+% --------------------------------------------------------------------------- %
+% SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_dry.svg 2-3
+% CLEARTORIGHT:
+% TOCITEM: Michael Murtaugh: Do (not) repeat yourself
+% --------------------------------------------------------------------------- %
+% SUPERIMPOSE: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_dry.svg 4-6
+% INCLUDE: http://freeze.sh/etherpad/export/_/murtaugh.dry.mdsh/649 lib/sh/151026_dry.functions 8-460
+% RESETALL:
+
+
+
+% --------------------------------------------------------------------------- %
+% FLUSHLICENSES:
+
