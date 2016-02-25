@@ -3,8 +3,9 @@
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.                                #
 # --------------------------------------------------------------------------- #
 
-  MAIN=EDIT/151019_strlov.mdsh
+ #MAIN=EDIT/151019_strlov.mdsh
  #MAIN=EDIT/160126_doodle.mdsh
+  MAIN=EDIT/160001.mdsh
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump

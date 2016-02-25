@@ -12,6 +12,16 @@
 
 
 
+
+
+
+%!  'T H E   L A C   M A C H I N E'
+
+
+
+
+
+
 %  C O N S U M E R   T O   C R E A T O R
 % --------------------------------------------------------------------------- %
 % CLEARTORIGHT:
@@ -40,6 +50,25 @@
 
 
 
+
+
+
+%! 'on .mdsh'
+
+
+%! 'Prints Not Dead'?
+
+
+%! 'Tools Shape Practise'
+
+
+
+
+
+
+
+
+
 %  H A C K E R S   A N D   T H E    F E A R    O F    W Y S I W Y G
 % --------------------------------------------------------------------------- %
 % QR: OFF
@@ -60,6 +89,20 @@
 % TEXINJECT: \setlength{\parskip}{10pt plus 10pt minus 5pt}
 % INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 623-684
 % RESETALL:
+
+
+
+
+
+%! 'Explain: figlet headers'
+
+
+
+
+
+
+
+
 
 
 
@@ -84,6 +127,14 @@
 
 
 
+
+%! 'Latin Modern Chart'
+
+
+%!  'F O N T A I N / B O T'
+
+
+
 % GAMBIARRA AND THE PROTOTYPING PERSPECTIVE
 % --------------------------------------------------------------------------- %
 % CLEARTORIGHT:
@@ -98,6 +149,8 @@
 % TEXINJECT: \fontsize{11pt}{11pt}\selectfont
 % INCLUDE: http://freeze.sh/etherpad/export/_/menotti.gambiarra.mdsh/57
 % RESETALL:
+
+
 
 
 

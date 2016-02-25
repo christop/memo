@@ -87,7 +87,7 @@
            -dNOPAUSE -sDEVICE=jpeg \
            -dFirstPage=1 -dLastPage=1 \
            -sOutputFile=./checkcolor.jpg \
-           -dJPEGQ=20 -r10 \
+           -dJPEGQ=20 -r50 \
            -q $CHECK -c quit
    
         HASCOLOR=`convert checkcolor.jpg -colorspace HSL \
