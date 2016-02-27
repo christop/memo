@@ -107,8 +107,7 @@
 # =========================================================================== #
 # CLEAN UP
   if [ `ls ${TMPID}.* | wc -l` -gt 0 ]; then rm ${TMPID}* ; fi
-  rm $TMPDIR/FOGRA39L.icc $TMPDIR/pdfx-1a.xmp*
-
+  rm $TMPDIR/FOGRA39L.icc $TMPDIR/pdfx-1a.xmp* $MDSH
 
 exit 0;
 
