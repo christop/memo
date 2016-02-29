@@ -9,7 +9,6 @@
 # ONLY SET ONCE (FOR NOW. TO BE CLEANED)
   if [ `echo $EMPTYLINE | wc -c` -lt 10 ]; then
   MKLONG=`printf "X%.0s" {1..100}`
- #EMPTYLINE=EMPTY${RANDOM}LINE$MKLONG
   EMPTYLINE=`echo $RANDOM | md5sum | cut -d " " -f 1`$MKLONG
   APND=A${RANDOM}ND
   ESC=ES${RANDOM}C
@@ -230,7 +229,8 @@ function QR() {
 
   cat $PROTECTED                         | # USELESS USE OF CAT
   eval "$SELECTLINES"                    | # CUSTOM COMMAND TO SELEC TLINES
-  sed "s/^ *$/$BREAKFOO$EMPTYLINE$BREAKFOO/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
+ #sed "s/^ *$/$BREAKFOO$EMPTYLINE$BREAKFOO/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
+  sed "s/^ *$/$EMPTYLINE/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
   sed "s/^[ ]\{4\}/$CODEFOO/"            | # PROTECT CODEBLOCKS
   sed ":a;N;\$!ba;s/\n/$BREAKFOO/g"      | # REMOVE LINEBREAKS (TEMPORARY)
   sed "s/\[\^\]{/\n$FN1FOO/g"            | # PROTECT (FOONOTE OPEN)
@@ -240,12 +240,12 @@ function QR() {
   sed "/^$CP1FOO/s/\]/$CP2FOO/"          | # PROTECT (CITEP OPTION OPEN)
   sed "/^$CICOMMON/s/\]/$CI2FOO/"        | # PROTECT (CITE CLOSE)
   sed "s/$BREAKFOO/\n/g"                 | # RESTORE LINEBREAKS
-  sed "s/$BREAKFOO/\n/g"                 | # RESTORE LINE BREAKS
   sed "s/$CODEFOO/    /"                 | # RESTORE CODEFOO
+  sed "s/$EMPTYLINE/\n/"                 | # RESTORE CODEFOO
+ #tee -a beforepandoc.debug | #
   eval "$PANDOCACTION"                   | # MD TO TARGET MARKUP
+ #tee -a afterpandoc.debug | #
   sed "/^<[^>]*>[a-f0-9]\{32\}$MKLONG<[^>]*>/s/<[^>]*>//g" | # REMOVE TAGS IF LINE IS 'FUNCTION'
- #sed "s/\(<[^>]*>\)\(.*\)\([a-f0-9]\{32\}$MKLONG\)\(.*\)\(<[^>]*>\)/\1\2\5\n\3\n\1\4\5/g" | # IF COMMAND IS INSIDE PARAGRAPH
- #sed "/^<[^>]*><\/[^>]*>$/d"            | # DELETE LINES WITH EMPTY HTML TAGS (!!!)
   sed "s/[ \t]*$FN1FOO/$APND$FNOESC/g"   | # SUBSTITUTE WITH TARGET MARKUP 
   sed "s/[ \t]*$FN2FOO/$FOOTNOTECLOSE/g" | # SUBSTITUTE WITH TARGET MARKUP 
   sed "s/[ \t]*$CI1FOO/$APND$CTOESC/g"   | # SUBSTITUTE WITH TARGET MARKUP 
@@ -254,6 +254,8 @@ function QR() {
   sed "s/[ \t]*$CP2FOO/$CITEPCLOSE/g"    | # SUBSTITUTE WITH TARGET MARKUP 
   tee > $MDSHMOD                           # WRITE TO FILE
 
+  cp $MDSHMOD mdshmod.debug
+
 # --------------------------------------------------------------------------- #
 # MAKE MD5 HASH TO PREVENT (REPETITION)/RECURSION -> SKIP IF NECESSARY
 # --------------------------------------------------------------------------- #
@@ -261,7 +263,7 @@ function QR() {
   touch ${TMPID}.included
   TIMESINCLUDED=`grep $MD5THIS ${TMPID}.included | wc -l`
   echo $MD5THIS >> ${TMPID}.included
- #echo $TIMESINCLUDED ; echo $MD5THIS
+  #echo $TIMESINCLUDED ; echo $MD5THIS
 
   if [ $TIMESINCLUDED -ge 5 ]; then
        echo "Skipping! (caught in a loop)"
@@ -291,7 +293,7 @@ function QR() {
 # ----------------------------------------------
   cat $MDSHMOD                    | #
   grep -v "^[ ]*$"                | #
-  grep -v "^[ ]*<[/]*.\{1,10\}>$" | #
+ #grep -v "^[ ]*<[/]*.\{1,10\}>$" | #
   tee > tmptmp.tmp                  # WRITE TO TEMPORARY FILE
   mv tmptmp.tmp $MDSHMOD            # MOVE IN RIGHT PLACE
 
@@ -340,7 +342,7 @@ function QR() {
               $CMD "$ARG"
          else
             # KEEP COMMENT
-              echo "$LINE" >>  $SRCDUMP
+              echo "$COMSTART $LINE $COMCLOSE" >>  $SRCDUMP
          fi
        # --------------------------------------------------- # 
        # IF LINE DOES NOT START WITH %
@@ -359,11 +361,10 @@ function QR() {
 # POST-PROCESSING
 # --------------------------------------------------------------------------- #
 
-  sed -i "s/$EMPTYLINE/ /g"    $SRCDUMP  # RESTORE EMPTY LINES
+  sed -i "s/$EMPTYLINE//g"     $SRCDUMP  # RESTORE EMPTY LINES
   sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
  #sed -i "/^%/s/\(%\)\(.*\)%$/$COMSTART \2 $COMCLOSE/" $SRCDUMP # ADJUST COMMENTS
   sed -i "/^%/s/\(%\)\(.*\)[%]*$/$COMSTART \2 $COMCLOSE/" $SRCDUMP
-  cp $SRCDUMP stillcomment.debug
 
   sed -i -e :a  \
       -i -e "\$!N;s/\n*[ \t]*$APND//;ta" \
