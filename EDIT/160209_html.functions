@@ -18,7 +18,7 @@ QRHREF=""
   XLINKID="xlink:href"
   SRCLIST=${TMPID}X.list
   MDSHALL="EDIT/160203_all.list"
-
+  IDLIST="/home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160120_forkableids.list"
 
 # =========================================================================== #
 
@@ -317,6 +317,64 @@ QRHREF=""
  }
 
 # =========================================================================== #
+
+  function mktable() {
+
+    COLS=$1
+  
+    ACNT=1 # ALL COUNT
+    CCNT=1 # COL COUNT
+    ECNT=`echo $*          | #
+          cut -d " " -f 2- | #
+          sed 's/|/\n/g'   | #
+          wc -l $ELEMENTS  | # COUNT ELEMENTS 
+          cut -d " " -f 1`   # SELECT FIELD
+    CLASSPLUS=CP$RANDOM
+  
+    write2src "<table class=\"pp $CLASSPLUS\">"
+    write2src "<tr>"
+  
+    while [ $ACNT -le $ECNT ] ||
+          [ $CCNT -le $COLS ]
+     do
+        ELEMENT=`echo $*           | #
+                 cut -d " " -f 2-  | #
+                 sed 's/|/\n/g'    | #
+                 head -n $ACNT     | #
+                 tail -n 1`          #
+       #IMG=$IMGDIR/`echo $ELEMENT | sed 's/[^a-z0-9]//g'`.svg
+        IMG="$ELEMENT"
+  
+        if   [ $CCNT -eq 1 ]; then
+             write2src "<td class=\"l\">" # LEFT
+        elif [ $CCNT -eq $COLS ]; then
+             write2src "<td class=\"r\">" # RIGHT
+        else
+             write2src "<td class=\"c\">" # CENTER
+        fi
+        if [ $ACNT -le $ECNT ]; then
+            #w "<img src =\"$IMG\"/>"
+             write2src "$IMG"
+        fi
+        write2src "</td>"
+  
+        CCNT=`expr $CCNT + 1`
+        ACNT=`expr $ACNT + 1`
+        if [ $CCNT -gt $COLS ] &&
+           [ $ACNT -le $ECNT ]
+        then
+            write2src "</tr>"
+              CCNT=1
+            write2src "<tr>"
+        fi
+    done
+  
+    write2src "</tr>"
+    write2src "</table>"
+ }
+
+
+# =========================================================================== #
 # =========================================================================== #
 
 
@@ -567,6 +625,139 @@ function SPREAD() {
 
 # --------------------------------------------------------------------------- #
 
+function PP(){
+
+   PPCOLLECT="" # RESET
+       PPSEP="% ------------------------"
+    PPSEPNUM=`grep -n "$PPSEP" $SRCDUMP | #
+              tail -n 1                 | #
+              cut -d ":" -f 1`
+    REFID=`echo $*             | # START PIPE
+           sed 's/REF:/\n&/'   | #
+           grep "^REF:"        | #
+           head -n 1           | #
+           cut -d ":" -f 2     | #
+           sed 's/^[ \t]*//'   | # REMOVE LEADING WHITESPACE
+           sed 's/[ \t]*$//'   | # REMOVE TRAILING WHITESPACE
+           md5sum | cut -c 1-10` # CREATE UNIQUE ID
+    PPPDFS=`sed "1,${PPSEPNUM}d" $SRCDUMP  | # PRINT FROM LINENUM TO END
+            grep -v "^% PP"                | # IGNORE COMMAND ITSELF
+            sed "s/^%[ ]*$/X.pdf/"         | # ALLOW EMPTY (=TO SHIFT)
+            grep "\.pdf$"                  | # SELECT LINES WITH .pdf EXTENSION
+            sed "s/^%//"                   | # REMOVE LEADING %
+            sed "s/^[ ]*//"`                 # REMOVE ALL LEADING BLANKS
+     PPNUM=`echo $PPPDFS |  sed 's/ /\n/g' | wc -l` # COUNT
+
+
+
+    for PDFSRC in $PPPDFS 
+     do
+        if [ "X$PDFSRC" == "XX.pdf" ]; then
+             #echo "do empty!"
+              PPCOLLECT=`echo "$PPCOLLECT|" | sed 's/^|//'`
+        else
+
+         PDFGET=${TMPID}`echo $PDFSRC | #
+                         md5sum       | #
+                         cut -c 1-4`.pdf
+         PDFNAME=`echo $PDFSRC      | #
+                  rev               | #
+                  cut -d "/" -f 1   | #
+                  cut -d "." -f 2-  | #
+                  rev`
+         PDFPFAD=`echo $PDFSRC      | #
+                  sed "s,http://,," | #
+                  cut -d "/" -f 2-`   #
+
+         ID=`echo $PDFNAME | md5sum | cut -c 1-8`
+         SEEME=`grep $ID $IDLIST | #
+                grep $PDFPFAD    | #
+                head -n 1        | #
+                cut -d ":" -f 3-`
+
+         if [ `echo $SEEME | wc -c` -gt 2 ]; then
+               LINK="http://www.forkable.eu${SEEME}#${ID}"
+         else
+               LINK="$PDFSRC"
+         fi
+
+         THUMB=${HTMLSRCDIR}/OO_`echo $PDFSRC | md5sum | cut -c 1-8`.gif
+         THUMBSRC=${HTMLSRCDIRNAME}/OO_`echo $PDFSRC | md5sum | cut -c 1-8`.gif
+
+         if [ ! -f $THUMB ]; then
+
+          if [ ! -f $PDFGET ]; then
+                getFile $PDFSRC $PDFGET 
+                if [ -f $PDFGET ]; then
+
+                convert -resize 398 \
+                        $PDFGET \
+                +antialias \
+                -background white -alpha remove \
+                -bordercolor "#000000" -border 1 \
+                $THUMB
+
+                fi
+           else
+               echo "$THUMB exists"
+          fi
+         fi
+        if [ -f $THUMB ]; then
+
+             PPNEW="<a href=\"$LINK\"><img src=\"$THUMBSRC\" id=\"$ID\"/></a>"
+             PPCOLLECT=`echo "$PPCOLLECT|$PPNEW" | sed 's/^|//'`
+        fi
+        fi
+
+    done
+
+    if   [ $PPNUM -lt 2 ]; then
+
+           sleep 0
+          #echo "P = 1"
+          #w "$PPCOLLECT"
+           mktable 1 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/t1/g" $SRCDUMP
+
+    elif [ $PPNUM -lt 3 ]; then
+
+          #echo "P = 2"
+           mktable 2 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/t2/g" $SRCDUMP
+ 
+    elif [ $PPNUM -lt 4 ]; then
+
+          #sleep 0
+          #echo "P = 3"
+           mktable 3 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/t3/g" $SRCDUMP
+
+    elif [ $PPNUM -lt 5 ]; then
+
+          #sleep 0
+          #echo "P = 4"
+           mktable 4 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/t4/g" $SRCDUMP
+
+    elif [ $PPNUM -eq 9 ]; then
+
+          #sleep 0
+          #echo "P = 9"
+           mktable 3 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/t9/g" $SRCDUMP
+    else
+          #sleep 0
+          #echo "P = more than 4 and not 9"
+           mktable 6 "$PPCOLLECT"
+           sed -i "s/$CLASSPLUS/tx/g" $SRCDUMP
+    fi
+
+    sed -i "s/[ ]*$CLASSPLUS[ ]*//g" $SRCDUMP # RM WHATEVER'S LEFT
+
+}
+
+# --------------------------------------------------------------------------- #
+
 function PDF() {
 
   listSrc $*
@@ -702,4 +893,66 @@ function SHOWASAP() {
 }
 
 # --------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ============================
+
+
+
+## --------------------------------------------------------------------------- #
+#
+#function PDFANDINFO() {
+#
+#  PDFSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+#          grep "\.pdf$" | head -n 1`    # SELECT FIRST ENDING WITH .pdf
+#  PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.pdf
+#
+#  INFOSRC=`echo $PDFSRC | sed 's/\.pdf$/.info/'`
+#  INFOGET=${TMPID}`echo $TXTSRC | md5sum | cut -c 1-4`.txt
+#
+#  NAMEBASE=`echo $PDFSRC | md5sum | cut -c 1-5`
+#       IMG=$THUMBDIR/${NAMEBASE}.png
+#
+#   ISPDF=`echo $PDFSRC | grep "\.pdf$" | wc -l`
+#   if [ $ISPDF -gt 0 ]; then
+#
+#        if [ ! -f $IMG ] || 
+#           [ ! -f $PDFGET ]; then
+#           getFile $PDFSRC $PDFGET
+#           convert $PDFGET $IMG
+#        fi
+#
+#        if [ -f $IMG ]; then
+#
+#          write2src "<table class=\"pdfandinfo\"><tr><td>"
+#          write2src "<img src=\"_/${NAMEBASE}.png\" />"
+#          write2src "</td></tr>" 
+#          getFile $INFOSRC $INFOGET
+#          write2src "<tr><td class=\"info\">"
+#          cat $INFOGET >> $SRCDUMP
+#          write2src "</td></tr></table>" 
+#
+#        fi
+#   fi
+#
+#}
+#
+## --------------------------------------------------------------------------- #
 
