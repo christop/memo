@@ -4,7 +4,11 @@
 
 # ...
 
+function mkqr() {
 
+QRHREF=""
+
+}
 
 # =========================================================================== #
 #  S H A R E D
@@ -18,7 +22,7 @@
 
 # =========================================================================== #
 
- function listSrc() {
+ function listSrc() { # -> getSRCList
 
   if [ `echo $* | wc -c` -lt 2 ]; then   # = NO PARAMETERS PROVIDED 
        SEP="% ------------"              # THIS IS THE SEPARATOR
@@ -96,7 +100,7 @@
 
 # =========================================================================== #
 
- function injectSRChref() {
+ function injectSRChref() { # -> injectRef / mkRef
 
       SRCSRC=$1
 
@@ -120,7 +124,10 @@
    CROP=10.63 # 3mm in px
 
      SVGLAYER=$1
+
      PDFPAGES=$2
+    #PDFPAGES=`echo $2 | sed 's/\.pdf$//'`_single.pdf
+     PDFDOUBLEPAGES=`echo $2 | sed 's/\.pdf$//'`_double.pdf
      SUPERTMP=${TMPID}.`echo $SVGL | md5sum | cut -c 1-4`.tmp
  
      CANVASWIDTH=`sed ":a;N;\$!ba;s/\n//g" $SVGLAYER | # SVG WITHOUT LINEBREAKS
@@ -190,15 +197,34 @@
 
              COUNT=`expr $COUNT + 1`
           done
+
+             head -n 1 ${SUPERTMP}    | # THE HEADER
+             sed "s/$BFOO/\n/g"       | # RESTORE ORIGINAL LINEBREAKS
+             sed "s/$SFOO/ /g"        | # RESTORE ORIGINAL SPACES
+             sed "s/width=\"[^\"]*\"/width=\"1090\"/" | # MAKE FULL WIDTH
+             tee                    >   ${TMPID}_${NUM}_${LNAME}.svg
+             grep "inkscape:label=\"$LAYERNAME\"" ${SUPERTMP} | #
+             sed "s/$BFOO/\n/g"       | # RESTORE ORIGINAL LINEBREAKS
+             sed "s/$SFOO/ /g"        | # RESTORE ORIGINAL SPACES
+             tee                    >>  ${TMPID}_${NUM}_${LNAME}.svg
+             echo "</svg>"          >>  ${TMPID}_${NUM}_${LNAME}.svg
+
+             inkscape --export-pdf=${TMPID}-X_${NUM}_${LNAME}.pdf \
+                      --export-text-to-path ${TMPID}_${NUM}_${LNAME}.svg
+
+             rm ${TMPID}_${NUM}_${LNAME}.svg
+
      done
    # ----------------------------------------------------------------------- #
    # MAKE MULTIPAGE PDF
    # ----------------------------------------------------------------------- #
-     pdftk ${TMPID}_*.pdf cat output $PDFPAGES
+     pdftk ${TMPID}_*.pdf   cat output $PDFPAGES
+     pdftk ${TMPID}-X_*.pdf cat output $PDFDOUBLEPAGES
+
    # ----------------------------------------------------------------------- #
-   # CLEAN UP(OBSOLETE?)
+   # CLEAN UP (OBSOLETE?)
    # ----------------------------------------------------------------------- #
-     rm ${TMPID}_*.pdf $SVGLAYER
+     rm ${TMPID}_*.pdf ${TMPID}-X_*.pdf $SVGLAYER
  
   }
 
@@ -433,61 +459,109 @@ function HTMLIN() {
 
 function SPREAD() {
 
+ # -------------------------------------------------------- #
+ # WHAT HAPPENS HERE ????????
+ # -------------------------------------------------------- #
    mkpages $*
 
+
    EXPORTBASE=`echo $PDFSRC | md5sum | cut -c 1-10`
-   if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.png 2> /dev/null | #
+ # -------------------------------------------------------- #
+ # DOUBLE PAGES
+ # -------------------------------------------------------- #
+   if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.pdf 2> /dev/null | # IF NOT YET DONE
          wc -l` -lt  1 ]; then
-         convert $PDFGET ${TMPID}${EXPORTBASE}_%05d.png  
+         pdftk $PDFDOUBLEPAGES burst \
+               output ${TMPID}${EXPORTBASE}_%05d.pdf
+       PN=1
+       for DOUBLEPAGE in `ls ${TMPID}${EXPORTBASE}_*.pdf`
+        do
+           EXPORTNUM="${PN}-$((PN + 1))"
+           EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
+   #       EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}
+           mv $DOUBLEPAGE ${TMPID}${EXPORTNAME}.pdf
+           PN=`expr $PN + 2`
+       done
+   fi
+ # -------------------------------------------------------- #
+ # SINGLE PAGES
+ # -------------------------------------------------------- #
+   if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.png 2> /dev/null | # IF NOT YET DONE
+         wc -l` -lt  1 ]; then
+         convert $PDFGET -scene 1 ${TMPID}${EXPORTBASE}_%05d.png  
+         pdftk $PDFGET burst output ${TMPID}${EXPORTBASE}_%05d.pdf
+         rm doc_data.txt
    fi
 
+ # -------------------------------------------------------- #
+ # CHECK PAGES
+ # -------------------------------------------------------- #
    if [ `echo $PAGES | grep "^-$" | wc -l` -gt 0 ]; then
          PA="1"
          PX=`pdftk $PDFGET dump_data output | #
              grep -i NumberofPages | cut -d ":" -f 2 | #
              sed 's/ //g'`
          PAGES="${PA}-${PX}"
-         echo $PAGES
    fi
 
+ # -------------------------------------------------------- #
+ # MAKE EXPORTS ACCORDING TO PAGE SELECTION
+ # -------------------------------------------------------- #
    PA=`echo $PAGES | cut -d "-" -f 1`
    PX=`echo $PAGES | cut -d "-" -f 2`
    REGION="-crop 417x592+10+10 +repage"
-
-   injectSRChref $PDFSRC
 
    CNT=1 ; PN=$PA # KEEP ON COUNTING
    for PAGESELECTION in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png | #
                          sed -n "${PA},${PX}p"`
      do
-        PAIR="$PAIR \( $PAGESELECTION $REGION -flatten -coalesce -append \)"
-        CNT=`expr $CNT + 1`
-        if [ $CNT -gt 2 ]; then
-
+         PAIR="$PAIR \( $PAGESELECTION $REGION -flatten -coalesce -append \)"
+         CNT=`expr $CNT + 1`
+         if [ $CNT -gt 2 ]; then
+ 
             EXPORTNUM="${PN}-$((PN + 1))"
-            EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}.png"
-            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}
-            eval "convert $PAIR +append \
-                                -gravity west ${EXPORTFULL}"
-
-            IMGPFAD="$HTMLSRCDIRNAME/$EXPORTNAME"
-            write2src "<img src=\"$IMGPFAD\" class=\"spread full\" />"
-
+            EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
+            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
+ 
+            eval "convert $PAIR +append -gravity west ${EXPORTFULL}"
+            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
+            PDFNOW=${TMPID}${EXPORTNAME}.pdf
+            inkscape --export-plain-svg=${EXPORTFULL} ${PDFNOW}
+ 
+            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+            then ADDCLASS="v"; else ADDCLASS=""; fi
+            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+            write2src '<table class="spread"><tr><td>'
+            write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
+            write2src '</td></tr></table>'
+ 
             PAIR=""; CNT=1 # RESET
-            PN=`expr $PN + 1`
-        fi
+            PN=`expr $PN + 2`
+         fi
     done
-            if [ `echo $PAIR | wc -c` -gt 1 ]; then
-            EXPORTNAME="${EXPORTBASE}_${PX}-X.png"
-            EXPORTFULL=$HTMLSRCDIR/$EXPORTNAME
+         if [ `echo $PAIR | wc -c` -gt 1 ]; then
+ 
+            EXPORTNAME="${EXPORTBASE}_${PX}-X"
+            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
             eval "convert $PAIR +append \
                                 -gravity west ${EXPORTFULL}"
-
-            IMGPFAD="$HTMLSRCDIRNAME/$EXPORTNAME"
-            write2src "<img src=\"$IMGPFAD\" class=\"spread half\" />"
-
-            fi
-            PAIR="" # RESET
+    
+            PDFLAST=`echo $PAGESELECTION | sed 's/\.png$/.pdf/'`
+            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
+            inkscape --export-plain-svg=${EXPORTFULL} ${PDFLAST}
+    
+            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+            then ADDCLASS="v"; else ADDCLASS=""; fi
+            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+            write2src '<table class="spread"><tr><td>'
+            write2src "<img src=\"$IMGPFAD\" class=\"half\" />"
+            write2src '</td></tr></table>'
+         fi
+         PAIR="" # RESET
 
 }
 
@@ -541,8 +615,6 @@ function PDF() {
       PX=`echo $PAGES | cut -d "-" -f 2`
 
    PN=$PA
-
-  #injectSRChref $PDFSRC
 
    for THISPAGE in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png | #
                     sed -n "${PA},${PX}p"`
