@@ -1,17 +1,18 @@
 # =========================================================================== #
 #  O V E R W R I T E   F U N C T I O N S
 # =========================================================================== #
+  function refsrc() {
 
-# ...
+         echo "<div class=\"sref\"><a href=\"$1\"> \
+               <img src=\"../../../lib/img/sref.svg\" /></a></div>" | #
+                sed ':a;N;$!ba;s/\n/ /g'                | #
+                sed 's/>[ ]*</></g'
+  }
 
-# function refsrc() { echo $1; }
 
-
-function mkqr() {
-
-QRHREF=""
-
-}
+ #function mkqr() {
+ #    QRHREF=""
+ #}
 
 # =========================================================================== #
 #  S H A R E D
@@ -409,7 +410,7 @@ function HTMLIN() {
                          --export-text-to-path \
                          ${TMPID}_${NUM}_${LNAME}.svg
    
-                conformColor ${TMPID}_${NUM}_${LNAME}.pdf
+               #conformColor ${TMPID}_${NUM}_${LNAME}.pdf
 
                 rm ${TMPID}_${NUM}_${LNAME}.svg
 
@@ -529,7 +530,7 @@ function HTMLIN() {
         elif [ "X$EXT" == "Xpdf" ]; then
     
                getFile $PDFSRC $PDFGET   
-               conformColor $PDFGET
+              #conformColor $PDFGET
         fi
    fi
  }
@@ -606,7 +607,140 @@ function HTMLIN() {
 
 
 
+#function SPREAD() {
+#
+#   EXPORTBASE=`echo $PDFSRC | md5sum | cut -c 1-10`
+#
+#   echo $EXPORTBASE
+#
+# # -------------------------------------------------------- #
+# # DOUBLE PAGES
+# # -------------------------------------------------------- #
+#   if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.pdf 2> /dev/null | # IF NOT YET DONE
+#         wc -l` -lt  1 ]; then
+#
+#         mkpages $*
+#
+#         pdftk $PDFDOUBLEPAGES burst \
+#               output ${TMPID}${EXPORTBASE}_%05d.pdf
+#       PN=1
+#       for DOUBLEPAGE in `ls ${TMPID}${EXPORTBASE}_*.pdf`
+#        do
+#           EXPORTNUM="${PN}-$((PN + 1))"
+#           EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
+#   #       EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}
+#           mv $DOUBLEPAGE ${TMPID}${EXPORTNAME}.pdf
+#           PN=`expr $PN + 2`
+#       done
+#   fi
+# # -------------------------------------------------------- #
+# # SINGLE PAGES
+# # -------------------------------------------------------- #
+#   if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.png 2> /dev/null | # IF NOT YET DONE
+#         wc -l` -lt  1 ]; then
+#         convert $PDFGET -scene 1 ${TMPID}${EXPORTBASE}_%05d.png  
+#         pdftk $PDFGET burst output ${TMPID}${EXPORTBASE}_%05d.pdf
+#         rm doc_data.txt
+#   fi
+#
+# # -------------------------------------------------------- #
+# # CHECK PAGES
+# # -------------------------------------------------------- #
+#   if [ `echo $PAGES | grep "^-$" | wc -l` -gt 0 ]; then
+#         PA="1"
+#         PX=`pdftk $PDFGET dump_data output | #
+#             grep -i NumberofPages | cut -d ":" -f 2 | #
+#             sed 's/ //g'`
+#         PAGES="${PA}-${PX}"
+#   fi
+#
+# # -------------------------------------------------------- #
+# # MAKE EXPORTS ACCORDING TO PAGE SELECTION
+# # -------------------------------------------------------- #
+#   PA=`echo $PAGES | cut -d "-" -f 1`
+#   PX=`echo $PAGES | cut -d "-" -f 2`
+#
+#   REGION="-crop 417x592+10+10 +repage"
+#
+#   CNT=1 ; PN=$PA # KEEP ON COUNTING
+#   for PAGESELECTION in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png | #
+#                         sed -n "${PA},${PX}p"`
+#     do
+#         PAIR="$PAIR \( $PAGESELECTION $REGION -flatten -coalesce -append \)"
+#         CNT=`expr $CNT + 1`
+#         if [ $CNT -gt 2 ]; then
+# 
+#            EXPORTNUM="${PN}-$((PN + 1))"
+#            EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
+#            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
+# 
+#            eval "convert $PAIR +append -gravity west ${EXPORTFULL}"
+#            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
+#            PDFNOW=${TMPID}${EXPORTNAME}.pdf
+#            inkscape --export-plain-svg=${EXPORTFULL} ${PDFNOW}
+# 
+#            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+#                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+#            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+#            then ADDCLASS="v"; else ADDCLASS=""; fi
+#            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+#            write2src '<table class="spread"><tr><td>'
+#            write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
+#            write2src '</td></tr></table>'
+# 
+#            PAIR=""; CNT=1 # RESET
+#            PN=`expr $PN + 2`
+#         fi
+#    done
+#         if [ `echo $PAIR | wc -c` -gt 1 ]; then
+# 
+#            EXPORTNAME="${EXPORTBASE}_${PX}-X"
+#            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
+#            eval "convert $PAIR +append \
+#                                -gravity west ${EXPORTFULL}"
+#    
+#            PDFLAST=`echo $PAGESELECTION | sed 's/\.png$/.pdf/'`
+#            EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
+#            inkscape --export-plain-svg=${EXPORTFULL} ${PDFLAST}
+#    
+#            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+#                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+#            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+#            then ADDCLASS="v"; else ADDCLASS=""; fi
+#            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+#            write2src '<table class="spread"><tr><td>'
+#            write2src "<img src=\"$IMGPFAD\" class=\"half\" />"
+#            write2src '</td></tr></table>'
+#         fi
+#         PAIR="" # RESET
+#
+#}
+
+
+
 function SPREAD() {
+
+ # TODO: if image do not export svg
+
+   PLUSCLASS=`echo $* | sed 's/ /\n/g' | # SPACES TO NEWLINES
+              grep "^class:" | cut -d ":" -f 2` # SELECT CLASS
+
+   PDFSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+           egrep "\.svg$|\.pdf$"       | # SELECT ENDING WITH .svg/.pdf
+           head -n 1`                    # SELECT FIRST
+    PAGES=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+           sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+           egrep -v "^-|-$"            | # IGNORE ISOLATED - 
+           grep -v "^[ ]*$" | tail -n 1` #  
+   if [ `echo $PAGES | wc -c` -le 1 ]; then PAGES=- ; fi
+
+   EXPORTBASE=`echo $PDFSRC | md5sum | cut -c 1-10`
+
+
+   if [ `ls $HTMLSRCDIR/${EXPORTBASE}* 2> /dev/null | #
+         wc -l` -gt 0 ]; then
+         echo "export exists"
+   else
 
  # -------------------------------------------------------- #
  # WHAT HAPPENS HERE ????????
@@ -614,7 +748,7 @@ function SPREAD() {
    mkpages $*
 
 
-   EXPORTBASE=`echo $PDFSRC | md5sum | cut -c 1-10`
+
  # -------------------------------------------------------- #
  # DOUBLE PAGES
  # -------------------------------------------------------- #
@@ -627,7 +761,6 @@ function SPREAD() {
         do
            EXPORTNUM="${PN}-$((PN + 1))"
            EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
-   #       EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}
            mv $DOUBLEPAGE ${TMPID}${EXPORTNAME}.pdf
            PN=`expr $PN + 2`
        done
@@ -637,32 +770,35 @@ function SPREAD() {
  # -------------------------------------------------------- #
    if [ `ls ${TMPID}${EXPORTBASE}_[0-9]*.png 2> /dev/null | # IF NOT YET DONE
          wc -l` -lt  1 ]; then
+       # TODO: add crop
          convert $PDFGET -scene 1 ${TMPID}${EXPORTBASE}_%05d.png  
          pdftk $PDFGET burst output ${TMPID}${EXPORTBASE}_%05d.pdf
          rm doc_data.txt
    fi
 
- # -------------------------------------------------------- #
- # CHECK PAGES
- # -------------------------------------------------------- #
-   if [ `echo $PAGES | grep "^-$" | wc -l` -gt 0 ]; then
-         PA="1"
-         PX=`pdftk $PDFGET dump_data output | #
-             grep -i NumberofPages | cut -d ":" -f 2 | #
-             sed 's/ //g'`
-         PAGES="${PA}-${PX}"
-   fi
+# # -------------------------------------------------------- #
+# # MAKE EXPORTS ACCORDING TO PAGE SELECTION
+# # -------------------------------------------------------- #
+
+#   PA=`echo $PAGES | cut -d "-" -f 1`
+#   PX=`echo $PAGES | cut -d "-" -f 2`
+# # -------------------------------------------------------- #
+# # WORKAROUND: IF FIRST PAGE IS RIGHT -> ADD LEFT SIDE
+# # -------------------------------------------------------- #
+#   if [ `python -c "print $PA / 2.0" | #
+#         cut -d "." -f 2` -lt 5 ];then
+#         PA=`expr $PA - 1`
+#   elif [ $PA -eq 1 ]; then
+#         PA="1"
+#   fi
 
  # -------------------------------------------------------- #
- # MAKE EXPORTS ACCORDING TO PAGE SELECTION
+ # EXPORT ALL DOUBLE PAGES
  # -------------------------------------------------------- #
-   PA=`echo $PAGES | cut -d "-" -f 1`
-   PX=`echo $PAGES | cut -d "-" -f 2`
    REGION="-crop 417x592+10+10 +repage"
 
-   CNT=1 ; PN=$PA # KEEP ON COUNTING
-   for PAGESELECTION in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png | #
-                         sed -n "${PA},${PX}p"`
+   CNT=1 ; PN=1 # KEEP ON COUNTING
+   for PAGESELECTION in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png`
      do
          PAIR="$PAIR \( $PAGESELECTION $REGION -flatten -coalesce -append \)"
          CNT=`expr $CNT + 1`
@@ -671,21 +807,18 @@ function SPREAD() {
             EXPORTNUM="${PN}-$((PN + 1))"
             EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
             EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
- 
             eval "convert $PAIR +append -gravity west ${EXPORTFULL}"
             EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
             PDFNOW=${TMPID}${EXPORTNAME}.pdf
             inkscape --export-plain-svg=${EXPORTFULL} ${PDFNOW}
- 
-            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
-                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
-            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
-            then ADDCLASS="v"; else ADDCLASS=""; fi
-            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
-            write2src '<table class="spread"><tr><td>'
-            write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
-            write2src '</td></tr></table>'
- 
+          # TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+          #           tail -n 1 | rev | cut -d "/" -f 1 | rev`
+          # if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+          # then ADDCLASS="v"; else ADDCLASS=""; fi
+          # IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+          # write2src "<table class=\"spread full $PLUSCLASS\"><tr><td>"
+          # write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
+          # write2src '</td></tr></table>' 
             PAIR=""; CNT=1 # RESET
             PN=`expr $PN + 2`
          fi
@@ -696,23 +829,171 @@ function SPREAD() {
             EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
             eval "convert $PAIR +append \
                                 -gravity west ${EXPORTFULL}"
-    
             PDFLAST=`echo $PAGESELECTION | sed 's/\.png$/.pdf/'`
             EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
             inkscape --export-plain-svg=${EXPORTFULL} ${PDFLAST}
-    
-            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
-                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
-            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
-            then ADDCLASS="v"; else ADDCLASS=""; fi
-            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
-            write2src '<table class="spread"><tr><td>'
-            write2src "<img src=\"$IMGPFAD\" class=\"half\" />"
-            write2src '</td></tr></table>'
+          # TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+          #           tail -n 1 | rev | cut -d "/" -f 1 | rev`
+          # if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+          # then ADDCLASS="v"; else ADDCLASS=""; fi
+          # IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+          # write2src "<table class=\"spread half $PLUSCLASS\"><tr><td>"
+          # write2src "<img src=\"$IMGPFAD\" class=\"half\" />"
+          # write2src '</td></tr></table>'
          fi
          PAIR="" # RESET
 
+ # -------------------------------------------------------- #
+ # EXPORT ALL SINGLE PAGES
+ # -------------------------------------------------------- #
+
+   PN=1
+   for PAGE in `ls ${TMPID}${EXPORTBASE}_*.png`
+    do
+       PNPAD=`echo 00$PN | rev | cut -c 1-3 | rev`
+       EXPORTNAME="${EXPORTBASE}_${PNPAD}"
+       EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.png
+       convert $PAGE -flatten $EXPORTFULL
+       EXPORTFULL=$HTMLSRCDIR/${EXPORTNAME}.svg
+       PAGE=`echo $PAGE | sed 's/\.png$/.pdf/'`
+       inkscape --export-plain-svg=${EXPORTFULL} ${PAGE}
+       PN=`expr $PN + 1`
+   done
+
+         rm ${TMPID}${EXPORTBASE}_*.p*  # SAVE DISKSPACE
+
+  fi
+
+ # -------------------------------------------------------- #
+ # CHECK PAGES
+ # -------------------------------------------------------- #
+   if [ `echo $PAGES | grep "^-$" | wc -l` -gt 0 ]; then
+         PA="1"
+         PX=`ls $HTMLSRCDIR/${EXPORTBASE}* | #
+             grep "_[0-9]*.png$"           | #
+             wc -l`
+         PAGES="${PA}-${PX}"
+   fi
+
+
+
+ # -------------------------------------------------------- #
+ # WRITE HTML  ACCORDING TO PAGE SELECTION
+ # -------------------------------------------------------- #
+   PA=`echo $PAGES | cut -d "-" -f 1`
+   PX=`echo $PAGES | cut -d "-" -f 2`
+
+   CNT=$PA
+   while [ $CNT -lt $PX ]; do
+
+        TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTBASE}* | #
+                  grep "_${CNT}-[0-9]*" | tail -n 1`
+
+        if [ `echo $TAKETHIS | wc -c` -gt 2 ]; then
+
+             IMGPFAD=$HTMLSRCDIRNAME/`basename $TAKETHIS`
+             if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+             then ADDCLASS="v"; else ADDCLASS=""; fi
+             write2src "<table class=\"spread full $PLUSCLASS\"><tr><td>"
+             write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
+             write2src '</td></tr></table>' 
+             CNT=`expr $CNT + 1`
+        else
+
+        TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTBASE}* | #
+                  grep "${CNT}\." | tail -n 1`
+             IMGPFAD=$HTMLSRCDIRNAME/`basename $TAKETHIS`
+             if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+             then ADDCLASS="v"; else ADDCLASS=""; fi
+             write2src "<table class=\"spread half right $PLUSCLASS\"><tr><td>"
+             write2src "<img src=\"$IMGPFAD\" class=\"half $ADDCLASS\" />"
+             write2src '</td></tr></table>' 
+
+        fi
+        CNT=`expr $CNT + 1`
+   done
+       if [ $CNT -le $PX ]; then
+        TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTBASE}* | #
+                  grep "[0-9]*${CNT}\." | tail -n 1`
+
+        if [ `echo $TAKETHIS | wc -c` -gt 2 ]; then
+             IMGPFAD=$HTMLSRCDIRNAME/`basename $TAKETHIS`
+             if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+             then ADDCLASS="v"; else ADDCLASS=""; fi
+             write2src "<table class=\"spread half left $PLUSCLASS\"><tr><td>"
+             write2src "<img src=\"$IMGPFAD\" class=\"half $ADDCLASS\" />"
+             write2src '</td></tr></table>' 
+        fi
+       fi
+
+# # -------------------------------------------------------- #
+# # WRITE HTML  ACCORDING TO PAGE SELECTION
+# # -------------------------------------------------------- #
+#   PA=`echo $PAGES | cut -d "-" -f 1`
+#   PX=`echo $PAGES | cut -d "-" -f 2`
+#
+#   CNT=1 ; PN=$PA # KEEP ON COUNTING
+#   for PAGESELECTION in `ls ${TMPID}${EXPORTBASE}_[0-9]*.png | #
+#                         sed -n "${PA},${PX}p"`
+#     do
+#         PAIR="$PAIR \( $PAGESELECTION $REGION -flatten -coalesce -append \)"
+#         CNT=`expr $CNT + 1`
+#         if [ $CNT -gt 2 ]; then
+# 
+#            EXPORTNUM="${PN}-$((PN + 1))"
+#            EXPORTNAME="${EXPORTBASE}_${EXPORTNUM}"
+#            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+#                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+#            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+#            then ADDCLASS="v"; else ADDCLASS=""; fi
+#            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+#            write2src "<table class=\"spread full $PLUSCLASS\"><tr><td>"
+#            write2src "<img src=\"$IMGPFAD\" class=\"full $ADDCLASS\" />"
+#            write2src '</td></tr></table>' 
+#            PAIR=""; CNT=1 # RESET
+#            PN=`expr $PN + 2`
+#         fi
+#    done
+#         if [ `echo $PAIR | wc -c` -gt 1 ]; then
+# 
+#            EXPORTNAME="${EXPORTBASE}_${PX}-X"
+#            TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTNAME}.* | #
+#                      tail -n 1 | rev | cut -d "/" -f 1 | rev`
+#            if [ `echo $TAKETHIS | grep ".svg$" | wc -l` -gt 0 ]
+#            then ADDCLASS="v"; else ADDCLASS=""; fi
+#            IMGPFAD="$HTMLSRCDIRNAME/${TAKETHIS}"
+#            write2src "<table class=\"spread half $PLUSCLASS\"><tr><td>"
+#            write2src "<img src=\"$IMGPFAD\" class=\"half\" />"
+#            write2src '</td></tr></table>'
+#         fi
+#         PAIR="" # RESET
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # --------------------------------------------------------------------------- #
 
