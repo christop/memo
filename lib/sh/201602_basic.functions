@@ -3,13 +3,14 @@
 # --------------------------------------------------------------------------- #
 # ONLY SET ONCE (FOR NOW. TO BE CLEANED)
   if [ `echo $EMPTYLINE | wc -c` -lt 10 ]; then
-  MKLONG=`printf "X%.0s" {1..100}`
-  EMPTYLINE=`echo $RANDOM | md5sum | cut -d " " -f 1`$MKLONG
-  APND=A${RANDOM}ND
-  ESC=ES${RANDOM}C
+        MKLONG=`printf "X%.0s" {1..100}`
+        EMPTYLINE=`echo $RANDOM | md5sum | cut -d " " -f 1`$MKLONG
+        APND=A${RANDOM}ND
+        ESC=ES${RANDOM}C
+        SHORTURLBASE="http://lfkn.de"
   fi
 
-  QRHREFIMG="lib/img/qrwww.svg"
+# QRHREFIMG="lib/img/qrwww.svg"
 
 # --------------------------------------------------------------------------- #
 # WRITE TO DUMP
@@ -65,10 +66,61 @@
 
 
 # --------------------------------------------------------------------------- #
-# GENERATE QR CODE FOR INCLUSION
+# HREFSYSTEM
 # --------------------------------------------------------------------------- #
 
-  function mkqr() { sleep 0; }
+  function shortref() {
+     REFID=`echo $* | sed 's/ #/ \n#/g' | #
+            grep -v "^#" | sed 's/ //g'`
+     REFID=`echo $REFID | md5sum | base64 | #
+            cut -c 1-5 | tr [:upper:] [:lower:]` 
+
+   # COLLECT LOG/REFERENCE ???
+     echo "$SHORTURLBASE/$REFID"
+  }
+
+  function urlitzer() {
+
+        IFHTTP=`echo $1 | grep "^http.\?://" | wc -l`
+        if [ $IFHTTP -ge 1 ]; then
+             echo $1
+         else
+             shortref "$1"
+        fi
+
+  }
+
+  function refsrc() {
+
+         echo "<div class=\"sref\"><a href=\"$1\"> \
+               <img src=\"../../../lib/img/sref.svg\" /></a></div>" | #
+                sed ':a;N;$!ba;s/\n/ /g'                | #
+                sed 's/>[ ]*</></g'
+  }
+
+function HREF() {
+ 
+       O=`echo $* | cut -d " " -f 1`
+ 
+   if [ X"$O" == XON   ] ||
+      [ X"$O" == XOFF  ]
+    then
+         HREFMODE=$O
+         echo "HREFMODE: $HREFMODE"
+    else
+     if [ X"$HREFMODE" != XOFF  ]; then
+
+         WWWLINK=`urlitzer "$*"`
+         REFCODE=`refsrc $WWWLINK`
+         write2src "$REFCODE" 
+     fi
+   fi
+ 
+}
+
+
+
+   function mkqr() { sleep 0; }
 
 #  QRDEKOSRC=EDIT/151007_qrdeko-simple.svg
 #   QRURLLOG=${TMPID}.qrurls
@@ -139,7 +191,7 @@
 # --------------------------------------------------------------------------- #
 # AND ACTION PLEASE! 
 # --------------------------------------------------------------------------- #
-  #echo "--------------------------------------------------------------------"
+ #echo "--------------------------------------------------------------------"
 
 # --------------------------------------------------------------------------- #
 # PREPARE INPUT PARAMETERS 
@@ -149,8 +201,6 @@
 
   INPUT=`echo $* | cut -d " " -f 1`; echo "input is: "$INPUT
   LINES=`echo $* | sed "s/ /\n/g"             | # SPACES TO NEWLINES
-        #sed "s/[^0-9\\-]//g"                 | # REMOVE ALL EXCEPT NUMS AND -      UNNECCESSARY?!
-        #grep -v "^[ ]*$"                     | # REMOVE EMPTY                      UNNECCESSARY?!
          sed -e '/^[0-9]\+-*[0-9]*$/s/^/X/g'  | # MARK LINE OPTION 
          grep "^X" | sed 's/^X//' | tail -n 1`  # SELECT LINE OPTION
   if [ `echo $LINES | wc -c` -gt 1 ]; then      # IF LINE OPTION IS SET
@@ -181,6 +231,13 @@
      [ `wc -l $MDSH | cut -d " " -f 1` -gt 0 ]; then
  
 # --------------------------------------------------------------------------- #
+# GET LINERANGE
+# --------------------------------------------------------------------------- #
+  cat $MDSH | #
+  eval "$SELECTLINES" > tmp.tmp
+  mv tmp.tmp $MDSH
+
+# --------------------------------------------------------------------------- #
 # PRE-PROCESSING
 # --------------------------------------------------------------------------- #
 
@@ -208,7 +265,6 @@
        echo "${COMMENTID}:${COMMENT}" >> $BCKUPCOMM
   done
   fi
-
 
 # --------------------------------------------------------------------------- #
 # CONVERT MARKDOWN WITH PANDOC (CUSTOM FOOTNOTES/BIBREFS)
@@ -238,8 +294,7 @@
                 sed 's/\//\\\\\//g'`
 
   cat $PROTECTED                         | # USELESS USE OF CAT
-  eval "$SELECTLINES"                    | # CUSTOM COMMAND TO SELEC TLINES
- #sed "s/^ *$/$BREAKFOO$EMPTYLINE$BREAKFOO/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
+ #eval "$SELECTLINES"                    | # CUSTOM COMMAND TO SELEC TLINES
   sed "s/^ *$/$EMPTYLINE/g" | # PROTECT EMPTY LINES (BREAK FOR HEADINGS)
   sed "s/^[ ]\{4\}/$CODEFOO/"            | # PROTECT CODEBLOCKS
   sed ":a;N;\$!ba;s/\n/$BREAKFOO/g"      | # REMOVE LINEBREAKS (TEMPORARY)
@@ -437,9 +492,18 @@ function INCLUDE() {
 
 # MAKE QR REFERENCE
 # --------------------------------------------------------
-  mkqr $*
-  QRIDINC="$QRID"
-  write2src "HEREQR$QRIDINC"
+# mkqr $*
+# QRIDINC="$QRID"
+# write2src "HEREQR$QRIDINC"
+
+# MAKE HREF
+# --------------------------------------------------------
+  REFIDIN="X"
+  WWWLINK=`shortref $*`
+  REFCODE=`refsrc $WWWLINK`
+
+  write2src "HEREREF$REFIDIN"
+
 
 # PROCESS INPUT !!!!!
 # --------------------------------------------------------
@@ -447,19 +511,16 @@ function INCLUDE() {
 
 # ADD REFERENCE IF NOT SKIPPED
 # --------------------------------------------------------
-  QRHREF=`echo "$QRHREF"      | #
-          sed 's/\//\\\\\//g' | # ESCAPE 
-          sed 's/"/\\"/g'`      # ESCAPE
 
-  if [ X"$SKIP"   != "XYES" ] &&
-     [ Y"$RUN"    == "YYES" ] &&
-     [ X"$QRMODE" != "XOFF" ]; then
-       sed -i "s,HEREQR$QRIDINC,$QRHREF," $SRCDUMP
+  if [ X"$SKIP"     != "XYES" ] &&
+     [ Y"$RUN"      == "YYES" ] &&
+     [ X"$HREFMODE" != "XOFF" ]; then
+       sed -i "s,HEREREF$REFIDIN,$REFCODE," $SRCDUMP
   else
-       sed -i "/^HEREQR${QRIDINC}$/d" $SRCDUMP
+       sed -i "/^HEREREF${REFIDIN}$/d" $SRCDUMP
   fi
 
-  sed -i "/^HEREQR.*$/d" $SRCDUMP # EMERGENCY REMOVE
+  sed -i "/^HEREREF.*$/d" $SRCDUMP # EMERGENCY REMOVE
 
 # REMOVE ADDED FUNCTIONS
 # --------------------------------------------------------
