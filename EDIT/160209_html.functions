@@ -14,11 +14,20 @@ QRHREF=""
 #  S H A R E D
 # =========================================================================== #
   SHORTURLBASE="http://lfkn.de"
-  REPOURL="http://gitlab.com/christophh/pppp/tree/master"
+ #REPOURL="http://gitlab.com/christophh/pppp/tree/master"
   XLINKID="xlink:href"
   SRCLIST=${TMPID}X.list
-  MDSHALL="EDIT/160203_all.list"
-  IDLIST="/home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160120_forkableids.list"
+ #MDSHALL="EDIT/160203_all.list"
+
+  SEEMEBASE="http://www.forkable.eu"
+  IDSRC="https://raw.githubusercontent.com/christop/DOK/3004/EDIT/160120_forkableids.list"
+  IDGET=$TMPID`echo $IDSRC | md5sum | cut -c 1-10`.list
+  if [ ! -f $IDGET ]; then
+        getFile $IDSRC $IDGET
+  if [ "X$SUCCESS" != "XYES" ]; then 
+        touch $IDGET
+  fi
+  fi
 
 # =========================================================================== #
 
@@ -31,7 +40,7 @@ QRHREF=""
             tail -n 1                       | # SELECT LAST 
             cut -d ":" -f 1`                  # SELECT FIRST FIELD
        sed "1,${SEPN}d" $SRCDUMP   | # PRINT FROM LINE NUM TO END
-       grep -v "^% QUAVERBATIM"    | # IGNORE COMMAND ITSELF
+       grep -v "^$THISCMD"         | # IGNORE COMMAND ITSELF
        sed "s/^%//"                | # REMOVE LEADING %
        sed "s/^[ ]*//"             | # REMOVE ALL LEADING BLANKS
        sed "/^[ \t]*$/d"           | # REMOVE EMPTY LINES
@@ -39,6 +48,7 @@ QRHREF=""
   else 
        echo $*  > $SRCLIST
   fi
+
 
  }
 
@@ -72,6 +82,7 @@ QRHREF=""
        if [ ! -f $SRCGET ]; then
             getFile $SRCURL $SRCGET
        fi;  if [ -f $SRCGET ]; then
+            echo "$COMSTART SRCURL: $SRCURL $COMCLOSE" >> $COLLECTED
             cat   $SRCGET                 | # START WITH ALL
             eval "$SELECTSRCLINES"        | # DO SELECT LINE RANGE
             tee                           >> $COLLECTED
@@ -79,24 +90,18 @@ QRHREF=""
    done 
   fi
  )
+
    if [ -f $COLLECTED ]; then
-   INDENT=`cat $COLLECTED        | # START PIPE WITH COLLECTION
-           sed '/^[ \t]*$/d'     | # IGNORE/DELETE EMPTY LINES
-           sed -E 's/([^ ]).*//' | # KEEP ONLY LEADING BLANK
-           sort -r               | # REVERSE SORT
-           tail -n 1             | # SELECT LAST (=SHORTEST)
-           wc -c`                  # COUNT  
+   INDENT=`cat $COLLECTED             | # START PIPE WITH COLLECTION
+           grep -v "$COMSTART SRCURL" | #
+           sed '/^[ \t]*$/d'          | # IGNORE/DELETE EMPTY LINES
+           sed -E 's/([^ \t]).*//'    | # KEEP ONLY LEADING BLANK
+           sort -r                    | # REVERSE SORT
+           tail -n 1                  | # SELECT LAST (=SHORTEST)
+           wc -c`                       # COUNT  
    if [ $INDENT -eq 0 ]; then INDENT=1 ; fi
    fi
  }
-
-# =========================================================================== #
-
- function conformColor() {
-
-       sleep 0
-
-  }
 
 # =========================================================================== #
 
@@ -114,8 +119,183 @@ QRHREF=""
       fi
 
       write2src "<div class=\"sref\"><a href=\"$SRCHREF\">
-                 <img src=\"../../../lib/img/qrwww.svg\" /></a></div>"
+                 <img src=\"../../../lib/img/sref.svg\" /></a></div>"
  }
+
+# =========================================================================== #
+
+# --------------------------------------------------------------------------- #
+
+function SRCODE() {
+
+  THISCMD="% SRCODE:"
+  LASTURL=""
+
+  listSrc $*
+  getFileRange
+
+  if [ -f $COLLECTED ]; then
+
+     INDENTCOMSTART=`printf " %.0s" {1..100}`
+
+     cat $COLLECTED                           | # START ...
+     sed "s/$COMSTART/$INDENTCOMSTART&/"      | # INDENT COMMENT TO NOT BE CUT
+     cut -c ${INDENT}-                        | # REMOVE INDENT
+     sed "/^[ ]*${COMSTART} SRC/!s/</\&lt;/g" | # ENTITY FOR BRACKET
+     sed "/^[ ]*${COMSTART} SRC/!s/>/\&gt;/g" | # ENTITY FOR BRACKET
+     tee > tmp.collect                          # WRITE TO FILE
+
+      for URLNUM in `grep -n "[ ]*$COMSTART SRCURL" tmp.collect | #
+                     cut -d ":" -f 1`; 
+       do 
+          THISURL=`sed -n "${URLNUM}p" tmp.collect | #
+                   cut -d ":" -f 2- | cut -d " " -f 2`
+          if [ "X$THISURL" != "X$LASTURL" ]; then
+                HTMLURL=`echo "<div class=\"sref\"><a href=\"$THISURL\"> \
+                        <img src=\"../../../lib/img/sref.svg\" /></a></div>" | #
+                         sed ':a;N;$!ba;s/\n/ /g'                | #
+                         sed 's/>[ ]*</></g'`
+                sed -i "${URLNUM}s,^.*$,$HTMLURL," tmp.collect
+          else
+                sed -i "${URLNUM}s,^.*$,," tmp.collect
+          fi
+          LASTURL="$THISURL"
+      done
+
+    write2src         "<pre><code>"
+    cat tmp.collect   | # USELESS USE OF CAT
+    tee >> $SRCDUMP
+    write2src         "</code></pre>"
+
+    rm $COLLECTED #tmp.collect
+  fi
+
+  if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function QUAVERBATIM() {
+
+  THISCMD="% QUAVERBATIM:"
+
+  listSrc $*
+  getFileRange
+
+  if [ -f $COLLECTED ]; then
+
+    #if [ X"$QRMODE" != XOFF  ]; then
+    # mkqr $*
+    # write2src "$QRHREF"
+    #fi
+
+    injectSRChref $THISSRC
+  # ------------------------------------------------------------------------- #
+    write2src "<pre class=\"quaverbatim\">"
+
+     cat $COLLECTED      | # START ...
+     cut -c ${INDENT}-   | # REMOVE INDENT
+     sed 's/</\&lt;/g'   | # ENTITY FOR BRACKET
+     sed 's/>/\&gt;/g'   | # ENTITY FOR BRACKET
+     tee >> $SRCDUMP       # WRITE TO FILE
+
+    write2src "</pre>"
+  # ------------------------------------------------------------------------- #
+
+  rm $COLLECTED
+
+  fi
+
+  if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
+
+}
+
+# --------------------------------------------------------------------------- #
+
+function HTMLIN() {
+
+ # 1: HTMLIN: input.html 1-2
+ # 2: HTMLIN: <img src="http://www.image.de/image.jpg" />
+ # 3:
+ # % --------------------------------
+ # % <table><tr><td>
+ # % <img src="http://www.image.de/image.jpg" />
+ # % </td></tr></table>
+ # % HTMLIN:
+
+  THISCMD="% HTMLIN:"
+
+
+  write2src "$*"  
+
+# listSrc $*
+
+# if [ -f $SRCLIST ]; then
+
+#( IFS=$'\n'
+#  for ITEM in `cat $SRCLIST`
+#   do
+
+#     if [ `echo $ITEM         | #
+#           sed 's/ /\n/g'     | #
+#           grep "\.htm[l]\?$" | #
+#           wc -l` -lt 1 ]; then
+#           write2src "$ITEM"
+#      else
+
+#       echo "$ITEM"
+#       HTMURL=`echo $ITEM  | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+#               sed "/\.htm[l]\?$/s/^/XXX/g"    | # MARK LINES WITH .htm(l) EXT
+#               grep "^XXX" | sed 's/^XXX//'    | # SELECT AND REMOVE MARK
+#               head -n 1`                        # SELECT FIRST
+#        LINES=`echo $ITEM | sed "s/ /\n/g"     | # SPACES TO NEWLINES
+#               sed "/[^0-9\\-]/d"              | # NO LINES WITH MORE THAN NUMS AND -
+#               egrep -v "^-|-$"                | # IGNORE ISOLATED - 
+#               tail -n 1`                        # LAST LINE ONLY
+#        if [ `echo $LINES | wc -c` -gt 1 ]; then # IF LINE OPTION IS SET
+#              LINES=`echo $LINES | sed 's/-/,/'`
+#              SELECTSRCLINES="sed -n \"${LINES}p\" "
+#        else                                       # IF LINE OPTION IS NOT SET
+#              SELECTSRCLINES="tee"
+#        fi
+#        HTMGET=${TMPID}SRC`echo $HTMURL | md5sum | cut -c 1-3`.txt
+#        if [ ! -f $HTMGET ]; then
+#             getFile $HTMURL $HTMGET
+#        fi;  if [ -f $HTMGET ]; then
+#             cat   $HTMGET                 | # START WITH ALL
+#             eval "$SELECTSRCLINES"        | # DO SELECT LINE RANGE
+#             tee                           >> $SRCDUMP
+#        fi
+#     fi
+
+#  done )
+
+#  rm $SRCLIST
+#  fi
+
+}
+
+# --------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
+
+
+
+
+# =========================================================================== #
+
+ function conformColor() {
+
+       sleep 0
+
+  }
 
 # =========================================================================== #
 
@@ -346,11 +526,14 @@ QRHREF=""
         IMG="$ELEMENT"
   
         if   [ $CCNT -eq 1 ]; then
-             write2src "<td class=\"l\">" # LEFT
+            #write2src "<td class=\"l\">" # LEFT
+             write2src "<td align=\"left\">" # LEFT
         elif [ $CCNT -eq $COLS ]; then
-             write2src "<td class=\"r\">" # RIGHT
+            #write2src "<td class=\"r\">" # RIGHT
+             write2src "<td align=\"right\">" # RIGHT
         else
-             write2src "<td class=\"c\">" # CENTER
+            #write2src "<td class=\"c\">" # CENTER
+             write2src "<td align=\"center\">" # CENTER
         fi
         if [ $ACNT -le $ECNT ]; then
             #w "<img src =\"$IMG\"/>"
@@ -379,141 +562,11 @@ QRHREF=""
 
 
 
-# --------------------------------------------------------------------------- #
-
-function QUAVERBATIM() {
-
-  listSrc $*
-  getFileRange
-
-  if [ -f $COLLECTED ]; then
-
-    #if [ X"$QRMODE" != XOFF  ]; then
-    # mkqr $*
-    # write2src "$QRHREF"
-    #fi
-
-    injectSRChref $THISSRC
-  # ------------------------------------------------------------------------- #
-    write2src "<pre class=\"quaverbatim\">"
-
-     cat $COLLECTED      | # START ...
-     cut -c ${INDENT}-   | # REMOVE INDENT
-     sed 's/</\&lt;/g'   | # ENTITY FOR BRACKET
-     sed 's/>/\&gt;/g'   | # ENTITY FOR BRACKET
-     tee >> $SRCDUMP       # WRITE TO FILE
-
-    write2src "</pre>"
-  # ------------------------------------------------------------------------- #
-
-  rm $COLLECTED
-
-  fi
-
-  if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
-
-}
-
-# --------------------------------------------------------------------------- #
-
-function SRCODE() {
-
-  listSrc $*
-  getFileRange
-
-  if [ -f $COLLECTED ]; then
 
 
-       SRCURL=`echo $* | sed 's/ /\n/g'         | # SPACES TO NEWLINES
-               sed "/\.functions$/s/^/XXX/g"    | # MARK LINES WITH .functions EXTENSION
-               sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHAR EXT
-               grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
-               head -n 1`                         # SELECT FIRST
 
 
-      injectSRChref $SRCURL
 
-  # ------------------------------------------------------------------------- #
-    write2src "<pre>"
-
-     cat $COLLECTED      | # START ...
-     cut -c ${INDENT}-   | # REMOVE INDENT
-     sed 's/</\&lt;/g'   | # ENTITY FOR BRACKET
-     sed 's/>/\&gt;/g'   | # ENTITY FOR BRACKET
-     tee >> $SRCDUMP       # WRITE TO FILE
-
-    write2src "</pre>"
-  # ------------------------------------------------------------------------- #
-
-  rm $COLLECTED
-
-  fi
-
-  if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
-
-}
-
-# --------------------------------------------------------------------------- #
-
-function HTMLIN() {
-
- # 1: HTMLIN: input.html 1-2
- # 2: HTMLIN: <img src="http://www.image.de/image.jpg" />
- # 3:
- # % --------------------------------
- # % <table><tr><td>
- # % <img src="http://www.image.de/image.jpg" />
- # % </td></tr></table>
- # % HTMLIN:
-
-  listSrc $*
-
-  if [ -f $SRCLIST ]; then
-
- ( IFS=$'\n'
-   for ITEM in `cat $SRCLIST`
-    do
-
-      if [ `echo $ITEM         | #
-            sed 's/ /\n/g'     | #
-            grep "\.htm[l]\?$" | #
-            wc -l` -lt 1 ]; then
-            write2src "$ITEM"
-       else
-
-        echo "$ITEM"
-        HTMURL=`echo $ITEM  | sed 's/ /\n/g'    | # SPACES TO NEWLINES
-                sed "/\.htm[l]\?$/s/^/XXX/g"    | # MARK LINES WITH .htm(l) EXT
-                grep "^XXX" | sed 's/^XXX//'    | # SELECT AND REMOVE MARK
-                head -n 1`                        # SELECT FIRST
-         LINES=`echo $ITEM | sed "s/ /\n/g"     | # SPACES TO NEWLINES
-                sed "/[^0-9\\-]/d"              | # NO LINES WITH MORE THAN NUMS AND -
-                egrep -v "^-|-$"                | # IGNORE ISOLATED - 
-                tail -n 1`                        # LAST LINE ONLY
-         if [ `echo $LINES | wc -c` -gt 1 ]; then # IF LINE OPTION IS SET
-               LINES=`echo $LINES | sed 's/-/,/'`
-               SELECTSRCLINES="sed -n \"${LINES}p\" "
-         else                                       # IF LINE OPTION IS NOT SET
-               SELECTSRCLINES="tee"
-         fi
-         HTMGET=${TMPID}SRC`echo $HTMURL | md5sum | cut -c 1-3`.txt
-         if [ ! -f $HTMGET ]; then
-              getFile $HTMURL $HTMGET
-         fi;  if [ -f $HTMGET ]; then
-              cat   $HTMGET                 | # START WITH ALL
-              eval "$SELECTSRCLINES"        | # DO SELECT LINE RANGE
-              tee                           >> $SRCDUMP
-         fi
-      fi
-
-   done )
-
-   rm $SRCLIST
-   fi
-
-}
-
-# --------------------------------------------------------------------------- #
 
 function SPREAD() {
 
@@ -642,112 +695,106 @@ function PP(){
            md5sum | cut -c 1-10` # CREATE UNIQUE ID
     PPPDFS=`sed "1,${PPSEPNUM}d" $SRCDUMP  | # PRINT FROM LINENUM TO END
             grep -v "^% PP"                | # IGNORE COMMAND ITSELF
+            sed "s/[ ]*${COMSTART}[ ]*//g" | #
+            sed "s/[ ]*$COMCLOSE[ ]*//g"   | #
             sed "s/^%[ ]*$/X.pdf/"         | # ALLOW EMPTY (=TO SHIFT)
             grep "\.pdf$"                  | # SELECT LINES WITH .pdf EXTENSION
             sed "s/^%//"                   | # REMOVE LEADING %
             sed "s/^[ ]*//"`                 # REMOVE ALL LEADING BLANKS
-     PPNUM=`echo $PPPDFS |  sed 's/ /\n/g' | wc -l` # COUNT
+    PPNUM=`echo $PPPDFS |  sed 's/ /\n/g' | wc -l` # COUNT
+
+    sed "1,${PPSEPNUM}d" $SRCDUMP  | # PRINT FROM LINENUM TO END
+            grep -v "^% PP"                | # IGNORE COMMAND ITSELF
+            sed "s/[ ]*${COMSTART}[ ]*//g" | #
+            sed "s/[ ]*$COMCLOSE[ ]*//g"
 
 
-
-    for PDFSRC in $PPPDFS 
+    for PDFSRC in $PPPDFS
      do
         if [ "X$PDFSRC" == "XX.pdf" ]; then
-             #echo "do empty!"
               PPCOLLECT=`echo "$PPCOLLECT|" | sed 's/^|//'`
         else
 
          PDFGET=${TMPID}`echo $PDFSRC | #
                          md5sum       | #
                          cut -c 1-4`.pdf
-         PDFNAME=`echo $PDFSRC      | #
-                  rev               | #
-                  cut -d "/" -f 1   | #
-                  cut -d "." -f 2-  | #
+         PDFNAME=`echo $PDFSRC        | #
+                  rev                 | #
+                  cut -d "/" -f 1     | #
+                  cut -d "." -f 2-    | #
                   rev`
-         PDFPFAD=`echo $PDFSRC      | #
-                  sed "s,http://,," | #
-                  cut -d "/" -f 2-`   #
+         PDFPFAD=`echo $PDFSRC        | #
+                  sed "s,http://,,"   | #
+                  cut -d "/" -f 2-`     #
 
-         ID=`echo $PDFNAME | md5sum | cut -c 1-8`
-         SEEME=`grep $ID $IDLIST | #
-                grep $PDFPFAD    | #
-                head -n 1        | #
-                cut -d ":" -f 3-`
-
+            ID=`echo $PDFNAME | md5sum | cut -c 1-8`
+        IFHTTP=`echo $PDFSRC | grep "http.\?://" | wc -l`
+        if [ $IFHTTP -ge 1 ]; then
+        URL=$PDFSRC;
+        SEEME=`grep $ID $IDGET  | #
+               grep $PDFPFAD    | #
+               head -n 1        | #
+               cut -d ":" -f 3-`
          if [ `echo $SEEME | wc -c` -gt 2 ]; then
-               LINK="http://www.forkable.eu${SEEME}#${ID}"
-         else
-               LINK="$PDFSRC"
+               AHREF="<a href=\"$SEEMEBASE${SEEME}#${ID}\""
+          else
+               AHREF="<a href=\"${PDFSRC}\">"
          fi
+               FERHA="</a>"
+        else
+           AHREF=""
+           FERHA=""
+        fi
 
-         THUMB=${HTMLSRCDIR}/OO_`echo $PDFSRC | md5sum | cut -c 1-8`.gif
-         THUMBSRC=${HTMLSRCDIRNAME}/OO_`echo $PDFSRC | md5sum | cut -c 1-8`.gif
-
+         THUMB=${HTMLSRCDIR}/OO_`echo $PDFSRC  | #
+                                 md5sum        | #
+                                 cut -c 1-8`.gif #
+         THUMBSRC=${HTMLSRCDIRNAME}/OO_`echo $PDFSRC | #
+                                        md5sum       | #
+                                        cut -c 1-8`.gif
          if [ ! -f $THUMB ]; then
 
           if [ ! -f $PDFGET ]; then
                 getFile $PDFSRC $PDFGET 
                 if [ -f $PDFGET ]; then
 
-                convert -resize 398 \
-                        $PDFGET \
-                +antialias \
-                -background white -alpha remove \
-                -bordercolor "#000000" -border 1 \
-                $THUMB
+               #convert -resize 398 $PDFGET \
+               #+antialias -background white -alpha remove \
+               #-bordercolor "#000000" -border 1 $THUMB
+
+                convert -density 300 -resize 400 ${PDFGET}[0] +antialias \
+                -background white -alpha remove $THUMB
 
                 fi
            else
                echo "$THUMB exists"
           fi
          fi
-        if [ -f $THUMB ]; then
-
-             PPNEW="<a href=\"$LINK\"><img src=\"$THUMBSRC\" id=\"$ID\"/></a>"
+         if [ -f $THUMB ]; then
+ 
+             PPNEW="$AHREF<img src=\"$THUMBSRC\" id=\"$ID\"/>$FERHA"
              PPCOLLECT=`echo "$PPCOLLECT|$PPNEW" | sed 's/^|//'`
-        fi
+         fi
         fi
 
     done
 
     if   [ $PPNUM -lt 2 ]; then
-
-           sleep 0
-          #echo "P = 1"
-          #w "$PPCOLLECT"
            mktable 1 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/t1/g" $SRCDUMP
-
     elif [ $PPNUM -lt 3 ]; then
-
-          #echo "P = 2"
            mktable 2 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/t2/g" $SRCDUMP
- 
     elif [ $PPNUM -lt 4 ]; then
-
-          #sleep 0
-          #echo "P = 3"
            mktable 3 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/t3/g" $SRCDUMP
-
     elif [ $PPNUM -lt 5 ]; then
-
-          #sleep 0
-          #echo "P = 4"
            mktable 4 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/t4/g" $SRCDUMP
-
     elif [ $PPNUM -eq 9 ]; then
-
-          #sleep 0
-          #echo "P = 9"
            mktable 3 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/t9/g" $SRCDUMP
     else
-          #sleep 0
-          #echo "P = more than 4 and not 9"
            mktable 6 "$PPCOLLECT"
            sed -i "s/$CLASSPLUS/tx/g" $SRCDUMP
     fi
@@ -757,6 +804,47 @@ function PP(){
 }
 
 # --------------------------------------------------------------------------- #
+
+function SOFTWAREUSED() {
+
+  MANBASE="http://freeze.sh/man"
+  LISTSRC="$1"
+  LISTGET=${TMPID}`echo $1 | md5sum | cut -c 1-4`.list
+
+  if [ ! -f $LISTGET ]; then
+       getFile $LISTSRC $LISTGET
+  fi
+  if [ -f $LISTGET ]; then
+
+  write2src "<p class=\"full\">"
+
+ ( IFS=$'\n'
+   for ITEM in `cat $LISTGET`
+    do
+       PROGRAM=`echo $ITEM | cut -d "-" -f 1`
+       DESCRIPTION=`echo $ITEM | cut -d "-" -f 2- | sed 's/^[ ]*//'`
+
+       echo $PROGRAM $DESCRIPTION
+
+       MANURL=$MANBASE/$PROGRAM;
+       RESPONSE=`curl -s -o /dev/null -IL -w "%{http_code}" $MANURL`
+       if [ $RESPONSE == '200' ]; then
+            PROGRAM="<a href=\"$MANURL\">$PROGRAM</a>"
+       fi
+
+       write2src "<span class="nobreak"><tt>$PROGRAM</tt> (</span>${DESCRIPTION})"
+
+   done
+ )
+
+ write2src "</p>"
+
+  fi
+}
+
+
+# --------------------------------------------------------------------------- #
+
 
 function PDF() {
 
