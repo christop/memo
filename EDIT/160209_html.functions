@@ -4,6 +4,9 @@
 
 # ...
 
+# function refsrc() { echo $1; }
+
+
 function mkqr() {
 
 QRHREF=""
@@ -14,10 +17,9 @@ QRHREF=""
 #  S H A R E D
 # =========================================================================== #
   SHORTURLBASE="http://lfkn.de"
- #REPOURL="http://gitlab.com/christophh/pppp/tree/master"
   XLINKID="xlink:href"
   SRCLIST=${TMPID}X.list
- #MDSHALL="EDIT/160203_all.list"
+
 
   SEEMEBASE="http://www.forkable.eu"
   IDSRC="https://raw.githubusercontent.com/christop/DOK/3004/EDIT/160120_forkableids.list"
@@ -49,7 +51,6 @@ QRHREF=""
        echo $*  > $SRCLIST
   fi
 
-
  }
 
 # =========================================================================== #
@@ -57,6 +58,7 @@ QRHREF=""
  function getFileRange() {
  
    COLLECTED=$TMPID.srccollected
+
  
  ( IFS=$'\n'
 
@@ -72,12 +74,14 @@ QRHREF=""
                sed "/[^0-9\\-]/d"               | # NO LINES WITH MORE THAN NUMS AND -
                egrep -v "^-|-$"                 | # IGNORE ISOLATED - 
                grep -v "^[ ]*$" | tail -n 1`      # LAST LINE ONLY
+
        if [ `echo $LINES | wc -c` -gt 1 ]; then   # IF LINE OPTION IS SET
              LINES=`echo $LINES | sed 's/-/,/'`
              SELECTSRCLINES="sed -n \"${LINES}p\" "
        else                                       # IF LINE OPTION IS NOT SET
              SELECTSRCLINES="tee"
        fi
+
        SRCGET=${TMPID}SRC`echo $SRCURL | md5sum | cut -c 1-3`.txt  
        if [ ! -f $SRCGET ]; then
             getFile $SRCURL $SRCGET
@@ -86,6 +90,9 @@ QRHREF=""
             cat   $SRCGET                 | # START WITH ALL
             eval "$SELECTSRCLINES"        | # DO SELECT LINE RANGE
             tee                           >> $COLLECTED
+
+
+
      fi
    done 
   fi
@@ -105,22 +112,22 @@ QRHREF=""
 
 # =========================================================================== #
 
- function injectSRChref() { # -> injectRef / mkRef
-
-      SRCSRC=$1
-
-      IFHTTP=`echo $SRCSRC | grep "http.\?://" | wc -l`
-      if [ $IFHTTP -lt 1 ]; then
-
-           SRCHREF="$REPOURL/$SRCSRC"
-
-      else
-           SRCHREF="$SRCSRC"
-      fi
-
-      write2src "<div class=\"sref\"><a href=\"$SRCHREF\">
-                 <img src=\"../../../lib/img/sref.svg\" /></a></div>"
- }
+# function injectSRChref() { # -> injectRef / mkRef
+#
+#      SRCSRC=$1
+#
+#      IFHTTP=`echo $SRCSRC | grep "http.\?://" | wc -l`
+#      if [ $IFHTTP -lt 1 ]; then
+#
+#           SRCHREF="$REPOURL/$SRCSRC"
+#
+#      else
+#           SRCHREF="$SRCSRC"
+#      fi
+#
+#      write2src "<div class=\"sref\"><a href=\"$SRCHREF\">
+#                 <img src=\"../../../lib/img/sref.svg\" /></a></div>"
+# }
 
 # =========================================================================== #
 
@@ -150,11 +157,11 @@ function SRCODE() {
        do 
           THISURL=`sed -n "${URLNUM}p" tmp.collect | #
                    cut -d ":" -f 2- | cut -d " " -f 2`
-          if [ "X$THISURL" != "X$LASTURL" ]; then
-                HTMLURL=`echo "<div class=\"sref\"><a href=\"$THISURL\"> \
-                        <img src=\"../../../lib/img/sref.svg\" /></a></div>" | #
-                         sed ':a;N;$!ba;s/\n/ /g'                | #
-                         sed 's/>[ ]*</></g'`
+          if [ "X$THISURL"  != "X$LASTURL" ] &&
+             [ "X$HREFMODE" != "XOFF" ]
+           then
+                WWWLINK=`urlitzer $THISURL`
+                HTMLURL=`refsrc $WWWLINK`
                 sed -i "${URLNUM}s,^.*$,$HTMLURL," tmp.collect
           else
                 sed -i "${URLNUM}s,^.*$,," tmp.collect
@@ -179,32 +186,45 @@ function SRCODE() {
 function QUAVERBATIM() {
 
   THISCMD="% QUAVERBATIM:"
+  LASTURL=""
 
   listSrc $*
   getFileRange
 
   if [ -f $COLLECTED ]; then
 
-    #if [ X"$QRMODE" != XOFF  ]; then
-    # mkqr $*
-    # write2src "$QRHREF"
-    #fi
+     INDENTCOMSTART=`printf " %.0s" {1..100}`
 
-    injectSRChref $THISSRC
-  # ------------------------------------------------------------------------- #
-    write2src "<pre class=\"quaverbatim\">"
+     cat $COLLECTED                           | # START ...
+     sed "s/$COMSTART/$INDENTCOMSTART&/"      | # INDENT COMMENT TO NOT BE CUT
+     cut -c ${INDENT}-                        | # REMOVE INDENT
+     sed "/^[ ]*${COMSTART} SRC/!s/</\&lt;/g" | # ENTITY FOR BRACKET
+     sed "/^[ ]*${COMSTART} SRC/!s/>/\&gt;/g" | # ENTITY FOR BRACKET
+     tee > tmp.collect                          # WRITE TO FILE
 
-     cat $COLLECTED      | # START ...
-     cut -c ${INDENT}-   | # REMOVE INDENT
-     sed 's/</\&lt;/g'   | # ENTITY FOR BRACKET
-     sed 's/>/\&gt;/g'   | # ENTITY FOR BRACKET
-     tee >> $SRCDUMP       # WRITE TO FILE
+      for URLNUM in `grep -n "[ ]*$COMSTART SRCURL" tmp.collect | #
+                     cut -d ":" -f 1`; 
+       do 
+          THISURL=`sed -n "${URLNUM}p" tmp.collect | #
+                   cut -d ":" -f 2- | cut -d " " -f 2`
+          if [ "X$THISURL"  != "X$LASTURL" ] &&
+             [ "X$HREFMODE" != "XOFF" ]
+           then
+                WWWLINK=`urlitzer $THISURL`
+                REFCODE=`refsrc $WWWLINK`
+                sed -i "${URLNUM}s,^.*$,$REFCODE," tmp.collect
+          else
+                sed -i "${URLNUM}s,^.*$,," tmp.collect
+          fi
+          LASTURL="$THISURL"
+      done
 
-    write2src "</pre>"
-  # ------------------------------------------------------------------------- #
+    write2src         "<pre class=\"quaverbatim\">"
+    cat tmp.collect   | # USELESS USE OF CAT
+    tee >> $SRCDUMP
+    write2src         "</pre>"
 
-  rm $COLLECTED
-
+    rm $COLLECTED tmp.collect
   fi
 
   if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
@@ -213,69 +233,87 @@ function QUAVERBATIM() {
 
 # --------------------------------------------------------------------------- #
 
-function HTMLIN() {
+function QUOTE() {
 
- # 1: HTMLIN: input.html 1-2
- # 2: HTMLIN: <img src="http://www.image.de/image.jpg" />
- # 3:
- # % --------------------------------
- # % <table><tr><td>
- # % <img src="http://www.image.de/image.jpg" />
- # % </td></tr></table>
- # % HTMLIN:
-
-  THISCMD="% HTMLIN:"
-
-
-  write2src "$*"  
-
-# listSrc $*
-
-# if [ -f $SRCLIST ]; then
-
-#( IFS=$'\n'
-#  for ITEM in `cat $SRCLIST`
-#   do
-
-#     if [ `echo $ITEM         | #
-#           sed 's/ /\n/g'     | #
-#           grep "\.htm[l]\?$" | #
-#           wc -l` -lt 1 ]; then
-#           write2src "$ITEM"
-#      else
-
-#       echo "$ITEM"
-#       HTMURL=`echo $ITEM  | sed 's/ /\n/g'    | # SPACES TO NEWLINES
-#               sed "/\.htm[l]\?$/s/^/XXX/g"    | # MARK LINES WITH .htm(l) EXT
-#               grep "^XXX" | sed 's/^XXX//'    | # SELECT AND REMOVE MARK
-#               head -n 1`                        # SELECT FIRST
-#        LINES=`echo $ITEM | sed "s/ /\n/g"     | # SPACES TO NEWLINES
-#               sed "/[^0-9\\-]/d"              | # NO LINES WITH MORE THAN NUMS AND -
-#               egrep -v "^-|-$"                | # IGNORE ISOLATED - 
-#               tail -n 1`                        # LAST LINE ONLY
-#        if [ `echo $LINES | wc -c` -gt 1 ]; then # IF LINE OPTION IS SET
-#              LINES=`echo $LINES | sed 's/-/,/'`
-#              SELECTSRCLINES="sed -n \"${LINES}p\" "
-#        else                                       # IF LINE OPTION IS NOT SET
-#              SELECTSRCLINES="tee"
-#        fi
-#        HTMGET=${TMPID}SRC`echo $HTMURL | md5sum | cut -c 1-3`.txt
-#        if [ ! -f $HTMGET ]; then
-#             getFile $HTMURL $HTMGET
-#        fi;  if [ -f $HTMGET ]; then
-#             cat   $HTMGET                 | # START WITH ALL
-#             eval "$SELECTSRCLINES"        | # DO SELECT LINE RANGE
-#             tee                           >> $SRCDUMP
-#        fi
-#     fi
-
-#  done )
-
-#  rm $SRCLIST
-#  fi
+   sleep 0;
 
 }
 
+# --------------------------------------------------------------------------- #
+
+# # 1: HTMLIN: input.html 1-2
+# # 2: HTMLIN: <img src="http://www.image.de/image.jpg" />
+# # 3:
+# # % --------------------------------
+# # % <table><tr><td>
+# # % <img src="http://www.image.de/image.jpg" />
+# # % </td></tr></table>
+# # % HTMLIN:
+
+function HTMLIN() {
+
+  THISCMD="% HTMLIN:"
+  HTMLSRCLIST=xx.list
+
+  listSrc $*
+
+
+ ( IFS=$'\n'
+
+  if [ -f $SRCLIST ]; then
+
+   mv $SRCLIST $HTMLSRCLIST
+
+   for THISSRC in `cat $HTMLSRCLIST | #
+                   sed "s/[ ]*${COMSTART}[ ]*//g" | #
+                   sed "s/[ ]*$COMCLOSE[ ]*//g"   | #
+                   sed "s/^%[ ]*//"`
+
+    do
+       ISHTML=`echo $THISSRC | sed 's/ /\n/g' | #
+               grep "\.html$" | wc -l`
+       if [ $ISHTML -gt 0 ]; then
+
+            echo "$THISSRC" > $SRCLIST
+            getFileRange "$THISSRC"
+
+            if [ -f $COLLECTED ]; then
+
+              for URLNUM in `grep -n "[ ]*$COMSTART SRCURL" $COLLECTED | #
+                             cut -d ":" -f 1`; 
+               do 
+                  THISURL=`sed -n "${URLNUM}p" $COLLECTED | #
+                           cut -d ":" -f 2- | cut -d " " -f 2`
+                  if [ "X$THISURL"  != "X$LASTURL" ] &&
+                     [ "X$HREFMODE" != "XOFF" ]
+                   then
+                        WWWLINK=`urlitzer $THISURL`
+                        HTMLURL=`refsrc $WWWLINK`
+                        sed -i "${URLNUM}s,^.*$,$HTMLURL," $COLLECTED
+                  else
+                        sed -i "${URLNUM}s,^.*$,," $COLLECTED
+                  fi
+                  LASTURL="$THISURL"
+              done
+
+                 #write2src "<p>$THISURL</p>" # DEBUG
+                 #cat $COLLECTED
+                  cat $COLLECTED >> $SRCDUMP
+                  rm $COLLECTED
+            fi
+       else
+            write2src "$THISSRC"
+       fi
+  done 
+
+   rm $HTMLSRCLIST
+ fi 
+
+
+
+)
+
+}
 # --------------------------------------------------------------------------- #
 
 
