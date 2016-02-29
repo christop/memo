@@ -10,7 +10,7 @@
         SHORTURLBASE="http://lfkn.de"
   fi
 
-# QRHREFIMG="lib/img/qrwww.svg"
+
 
 # --------------------------------------------------------------------------- #
 # WRITE TO DUMP
@@ -85,30 +85,26 @@
         if [ $IFHTTP -ge 1 ]; then
              echo $1
          else
-             shortref "$1"
+             shortref "$*"
         fi
-
   }
 
   function refsrc() {
-
-         echo "<div class=\"sref\"><a href=\"$1\"> \
-               <img src=\"../../../lib/img/sref.svg\" /></a></div>" | #
-                sed ':a;N;$!ba;s/\n/ /g'                | #
-                sed 's/>[ ]*</></g'
+          echo $1
   }
+
 
 function HREF() {
  
        O=`echo $* | cut -d " " -f 1`
  
-   if [ X"$O" == XON   ] ||
-      [ X"$O" == XOFF  ]
+   if [ "X$O" == "XON"  ] ||
+      [ "X$O" == "XOFF" ]
     then
          HREFMODE=$O
-         echo "HREFMODE: $HREFMODE"
+        #echo "HREFMODE: $HREFMODE"
     else
-     if [ X"$HREFMODE" != XOFF  ]; then
+     if [ "X$HREFMODE" != "XOFF"  ]; then
 
          WWWLINK=`urlitzer "$*"`
          REFCODE=`refsrc $WWWLINK`
@@ -119,8 +115,9 @@ function HREF() {
 }
 
 
+# QRHREFIMG="lib/img/qrwww.svg"
 
-   function mkqr() { sleep 0; }
+#  function mkqr() { sleep 0; }
 
 #  QRDEKOSRC=EDIT/151007_qrdeko-simple.svg
 #   QRURLLOG=${TMPID}.qrurls
