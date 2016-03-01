@@ -303,7 +303,7 @@ function HREF() {
   sed "/^$CICOMMON/s/\]/$CI2FOO/"        | # PROTECT (CITE CLOSE)
   sed "s/$BREAKFOO/\n/g"                 | # RESTORE LINEBREAKS
   sed "s/$CODEFOO/    /"                 | # RESTORE CODEFOO
-  sed "s/$EMPTYLINE/\n/"                 | # RESTORE CODEFOO
+  sed "s/$EMPTYLINE/&\n/"                | # RESTORE EMPTYLINES
  #tee -a beforepandoc.debug | #
   eval "$PANDOCACTION"                   | # MD TO TARGET MARKUP
  #tee -a afterpandoc.debug | #
@@ -316,7 +316,6 @@ function HREF() {
   sed "s/[ \t]*$CP1FOO/$APND$CPOESC/g"   | # SUBSTITUTE WITH TARGET MARKUP 
   sed "s/[ \t]*$CP2FOO/$CITEPCLOSE/g"    | # SUBSTITUTE WITH TARGET MARKUP 
   tee > $MDSHMOD                           # WRITE TO FILE
-
 
 # --------------------------------------------------------------------------- #
 # MAKE MD5 HASH TO PREVENT (REPETITION)/RECURSION -> SKIP IF NECESSARY
@@ -354,11 +353,10 @@ function HREF() {
 
 # CLEAN UP (RM: 'REAL' EMPTY LINES, ORPHAN HTML TAGS)
 # ----------------------------------------------
-  cat $MDSHMOD                    | #
-  grep -v "^[ ]*$"                | #
- #grep -v "^[ ]*<[/]*.\{1,10\}>$" | #
-  tee > tmptmp.tmp                  # WRITE TO TEMPORARY FILE
-  mv tmptmp.tmp $MDSHMOD            # MOVE IN RIGHT PLACE
+ #cat $MDSHMOD                    | #
+ #grep -v "^[ ]*$"                | #
+ #tee > tmptmp.tmp                  # WRITE TO TEMPORARY FILE
+ #mv tmptmp.tmp $MDSHMOD            # MOVE IN RIGHT PLACE
 
  # BUG: EMPTY LINE WITHIN INLINE CODE
  # cp $MDSHMOD mdshmod.debug # DEBUG
@@ -415,7 +413,7 @@ function HREF() {
          echo "$LINE"  >> $SRCDUMP
          fi
        # --------------------------------------------------- # 
-  done
+  done 
 
 # POST-PROCESSING
 # --------------------------------------------------------------------------- #
