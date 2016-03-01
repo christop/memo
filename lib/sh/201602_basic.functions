@@ -478,27 +478,21 @@ function INCLUDE() {
    cat  $FUNCTIONSHERE          >> $FUNCTIONS
    echo "#  -- ${FID} -- END"   >> $FUNCTIONS
    FUNCTIONSADDED="YES"
- # SAVE FUNCTION ID (AS VARIABLE MAY BE OVERWRITTEN)
+ # SAVE FUNCTION ID (NOT AS VARIABLE, MAY BE OVERWRITTEN)
    echo $FID >> ${TMPID}.fid
    fi
    else
    FUNCTIONSADDED="NO"
   fi
 
-# MAKE QR REFERENCE
-# --------------------------------------------------------
-# mkqr $*
-# QRIDINC="$QRID"
-# write2src "HEREQR$QRIDINC"
-
 # MAKE HREF
 # --------------------------------------------------------
-  REFIDIN="X"
   WWWLINK=`shortref $*`
-  REFCODE=`refsrc $WWWLINK`
-
+  REFCODE=`refsrc $WWWLINK       | #
+           sed 's/\\\/\\\\\\\/g' | #
+           sed 's/\//\\\\\//g'`    #
+  REFIDIN="$QRID"
   write2src "HEREREF$REFIDIN"
-
 
 # PROCESS INPUT !!!!!
 # --------------------------------------------------------
@@ -506,7 +500,6 @@ function INCLUDE() {
 
 # ADD REFERENCE IF NOT SKIPPED
 # --------------------------------------------------------
-
   if [ X"$SKIP"     != "XYES" ] &&
      [ Y"$RUN"      == "YYES" ] &&
      [ X"$HREFMODE" != "XOFF" ]; then
