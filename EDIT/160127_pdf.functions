@@ -1,6 +1,7 @@
 
 
 # SAVE FOR NOW: BACKWARDS COMPATIBILITY
+# ---------------------------------------------------------------------------- #
 function mkqr(){ sleep 0; }
 function QR(){ HREF $* ;}
 
@@ -14,7 +15,6 @@ function QR(){ HREF $* ;}
 
   }
 # --------------------------------------------------------------------------- #
-
 
 
 # --------------------------------------------------------------------------- #
@@ -353,9 +353,10 @@ function QUAVERBATIM() {
 
   if [ -f $COLLECTED ]; then
 
-     if [ X"$QRMODE" != XOFF  ]; then
-      mkqr $*
-      write2src "\qrmargin{$QRPDF}{$QRTXT}"
+     if [ "X$HREFMODE" != "XOFF"  ]; then
+           WWWLINK=`shortref $*`
+           REFCODE=`refsrc $WWWLINK`
+           write2src "$REFCODE"
      fi
 
   # ------------------------------------------------------------------------- #
@@ -404,9 +405,10 @@ function SRCODE() {
 
   if [ -f $COLLECTED ]; then
 
-     if [ X"$QRMODE" != XOFF  ]; then
-      mkqr $*
-      write2src "\qrmargin{$QRPDF}{$QRTXT}"
+     if [ "X$HREFMODE" != "XOFF"  ]; then
+           WWWLINK=`shortref $*`
+           REFCODE=`refsrc $WWWLINK`
+           write2src "$REFCODE"
      fi
 
   # ------------------------------------------------------------------------- #
@@ -427,6 +429,20 @@ function SRCODE() {
   if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
 
 }
+
+# --------------------------------------------------------------------------- #
+
+function SOFTWAREUSED() {
+
+    getFile $1 ${TMPID}softwareused.tmp
+    write2src "\begin{quaverbatim}"
+
+     cat ${TMPID}softwareused.tmp | # START ...
+     tee >> $SRCDUMP                # WRITE TO FILE
+
+    write2src "\end{quaverbatim}"
+    rm ${TMPID}softwareused.tmp
+ }
 
 # --------------------------------------------------------------------------- #
 
@@ -467,11 +483,12 @@ function PDF() {
 
       conformColor $PDFGET
 
-      if [ X"$QRMODE" != XOFF  ]; then
-           mkqr $*
+     if [ "X$HREFMODE" != "XOFF"  ]; then
+           WWWLINK=`shortref $*`
+           REFCODE=`refsrc $WWWLINK | sed 's/qrmargin/qroverlay/'`
            write2src "\newpage"
-           write2src "\qroverlay{$QRPDF}{$QRTXT}"
-      fi
+           write2src "$REFCODE"
+     fi
            write2src "\pdfpage{$PDFGET}{$PAGES}{$OPTIONS}"
    fi
 
@@ -487,20 +504,23 @@ function SPREAD() {
 
    mkpages $*
    MACRO="% something went wrong with $SVGSRC"
-
    if   [ "P$FIRSTPAGEIS" == "Podd" ]; then
            PAGECOMMAND="\cleartoleft"
    elif [ "P$FIRSTPAGEIS" == "Peven" ]; then
            PAGECOMMAND="\cleartoright"
-   else
-           PAGECOMMAND=""
+   else  # ALL PAGES
+         # PAGECOMMAND=""
+           PAGECOMMAND="\cleartoleft" # P1 = 1
    fi
+   if [ `echo $PAGES | grep -v "-" | # RM - AND 0-9 => 2 -gt 0
+         wc -l` -gt 0 ]; then  PAGECOMMAND=""; fi
 
    if [ -f $PDFGET ]; then
    MACRO="\spread{$PDFGET}{$PAGES}{$PAGECOMMAND}"
    fi
 
    write2src "$MACRO"
+
 }
 
 # --------------------------------------------------------------------------- #
@@ -577,6 +597,137 @@ function SUPERIMPOSE() {
 
 # --------------------------------------------------------------------------- #
 
+function PP(){(
+
+   PPCOLLECT="" # RESET
+     PPPAGES="" # RESET
+     REFCODE="" # RESET
+       PPSEP="% -----------------"
+    PPSEPNUM=`grep -n "" $SRCDUMP               | # NUMBER LINES
+              egrep "$PPSEP|^[0-9]*:$EMPTYLINE" | # LOCATE SEPARATOR OR EMPTY LINE
+              tail -n 1                         | # SELECT LAST 
+              cut -d ":" -f 1`                    # SELECT FIRST FIELD
+
+  # REFID=`echo $*             | # START PIPE
+  #        sed 's/REF:/\n&/'   | #
+  #        grep "^REF:"        | #
+  #        head -n 1           | #
+  #        cut -d ":" -f 2     | #
+  #        sed 's/^[ \t]*//'   | # REMOVE LEADING WHITESPACE
+  #        sed 's/[ \t]*$//'   | # REMOVE TRAILING WHITESPACE
+  #        md5sum | cut -c 1-10` # CREATE UNIQUE ID
+    MOREOPTIONS=`echo $*               | # START PIPE
+                 sed 's/OPTIONS:/\n&/' | #
+                 grep "^OPTIONS:"      | #
+                 head -n 1             | #
+                 cut -d ":" -f 2`
+    PPPDFS=`sed "1,${PPSEPNUM}d" $SRCDUMP  | # PRINT FROM LINENUM TO END
+            grep -v "^% PP"                | # IGNORE COMMAND ITSELF
+            sed "s/[ ]*${COMSTART}[ ]*//g" | #
+            sed "s/[ ]*$COMCLOSE[ ]*//g"   | #
+            sed "s/^[%]*[ ]*$/X.pdf/"      | # ALLOW EMPTY (=TO SHIFT)
+            grep "\.pdf$"                  | # SELECT LINES WITH .pdf EXTENSION
+            sed "s/^%//"                   | # REMOVE LEADING %
+            sed "s/^[ ]*//"`                 # REMOVE ALL LEADING BLANKS
+    PPNUM=`echo $PPPDFS |  sed 's/ /\n/g' | wc -l` # COUNT
+
+     if [ "X$HREFMODE" != "XOFF"  ]; then
+           PPLINK=`shortref $PPPDFS`
+           echo $PPLINK
+           REFCODE=`refsrc $PPLINK | sed 's/qrmargin/qroverlay/'`
+       if [ "A$PPLINK" == "A$PPLBEFORE" ];then
+           REFCODE=""
+           echo "REF is the same"
+       fi
+           PPLBEFORE="$PPLINK"
+     fi
+
+   for PDFSRC in $PPPDFS
+    do
+       if [ "X$PDFSRC" == "XX.pdf" ]; then
+             echo "do empty!"
+             PPPAGES=$PPPAGES,
+       else
+        PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.pdf
+
+        if [ ! -f $PDFGET ]; then
+              getFile $PDFSRC $PDFGET
+            if [ -f $PDFGET ]; then
+              pdfxgs $PDFGET
+              PPPAGES=$PPPAGES,${PDFGET},-
+            fi
+        else
+            #echo "no need to download"
+             PPPAGES=$PPPAGES,$PDFGET,-
+        fi
+       fi
+   done
+          MKPN="pagecommand={\thispagestyle{fancy}\label{$REFID}$REFCODE},"
+          OPTIONFILTER=`echo XX,$MOREOPTIONS | sed 's/,/\n/g' | #
+                        cut -d "=" -f 1 | sed ':a;N;$!ba;s/\n/|/g' |#
+                        sed 's/|$//' | sed 's/ //g'`
+          PPPAGES=`echo $PPPAGES | sed 's/^,//'`
+
+    if   [ $PPNUM -eq 1 ]; then
+
+           PPPAGES=`echo $PPPAGES | sed "s/,-//g"`
+          OPTIONS="nup=1x1,scale=.625,frame=true,
+                   offset=28.5 27,$MKPN"
+           PMACRO="\includepdf[$OPTIONS]{$PPPAGES}"
+
+    elif [ $PPNUM -eq 2 ]; then
+
+           OPTIONS="nup=1x2,frame=true,angle=\rotif,offset=28.5 27,
+                    delta=10 10,scale=.637,$MKPN"
+            PMACRO="\includepdfmerge[$OPTIONS]{$PPPAGES}"
+
+    elif [ $PPNUM -eq 3 ]; then
+
+           OPTIONS="nup=2x2,frame=true,offset=5 0,
+                    delta=20 25,scale=.85,$MKPN"
+            PMACRO="\includepdfmerge[$OPTIONS]{$PPPAGES}"
+
+    elif [ $PPNUM -eq 4 ]; then
+
+           OPTIONS="nup=2x2,frame=true,offset=28.5 30,
+                    delta=10 10,scale=.61,$MKPN"
+            PMACRO="\includepdfmerge[$OPTIONS]{$PPPAGES}"
+
+    elif [ $PPNUM -eq 9 ]; then
+ 
+           OPTIONS="nup=3x3,scale=1.97,frame=true,offset=29 27.5,
+                    delta=10 10,$MKPN"
+            PMACRO="\includepdfmerge[$OPTIONS]{$PPPAGES}"
+    else
+           OPTIONS=`echo "nup=4x4,frame=true,offset=28.5 30,
+                    delta=10 10,scale=1.29,$MKPN" | #
+                    sed 's/,/,\n/g' | #
+                    egrep -v "$OPTIONFILTER"`",$MOREOPTIONS"
+            PMACRO="\includepdfmerge[$OPTIONS]{$PPPAGES}"
+    fi
+       echo $PMACRO >> $SRCDUMP
+)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------------------- #
+
+function TEXIN() {
+                          write2src "$*"
+}
+# KEEP FOR BACKWARDS COMPATIBILITY
 function TEXINJECT() {
                           write2src "$*"
 }

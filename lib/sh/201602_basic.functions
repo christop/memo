@@ -82,7 +82,7 @@
 
      THISFLAG=`echo "$*" | sed 's/^[ \t]*//'`
 
-     echo "${REFID}:$THISFLAG" >> $SHORTURLOG
+    #echo "${REFID}:$THISFLAG" >> $SHORTURLOG
      echo "$SHORTURLBASE/$REFID"
   }
 
@@ -109,7 +109,7 @@ function HREF() {
    if [ "X$O" == "XON"  ] ||
       [ "X$O" == "XOFF" ]
     then
-         HREFMODE=$O
+         HREFMODE="$O"
         #echo "HREFMODE: $HREFMODE"
     else
      if [ "X$HREFMODE" != "XOFF"  ]; then
@@ -428,12 +428,10 @@ function HREF() {
 
   sed -i "s/$EMPTYLINE//g"     $SRCDUMP  # RESTORE EMPTY LINES
   sed -i '/./,/^$/!d'          $SRCDUMP  # REMOVE CONSECUTIVE BLANK LINES
- #sed -i "/^%/s/\(%\)\(.*\)%$/$COMSTART \2 $COMCLOSE/" $SRCDUMP # ADJUST COMMENTS
-  sed -i "/^%/s/\(%\)\(.*\)[%]*$/$COMSTART \2 $COMCLOSE/" $SRCDUMP
 
- #sed -i -e :a  \
- #    -i -e "\$!N;s/\n*[ \t]*$APND//;ta" \
- #    -i -e 'P;D'                    $SRCDUMP  # APPEND & RM APPEND IDS
+ # SHOULD IGNORE SRCODE/QUAVERBATIM 
+ # sed -i "/^%/s/\(%\)\(.*\)[%]*$/$COMSTART \2 $COMCLOSE/" $SRCDUMP
+
   sed -i -e :a  \
       -i -e "\$!N;s/\(<[/]*.\{1,10\}>\)*\n\(<[/]*.\{1,10\}>\)*[ \t]*$APND//;ta" \
       -i -e 'P;D'                    $SRCDUMP  # APPEND & RM APPEND IDS
@@ -499,8 +497,11 @@ function INCLUDE() {
   REFCODE=`refsrc $WWWLINK       | #
            sed 's/\\\/\\\\\\\/g' | #
            sed 's/\//\\\\\//g'`    #
-  REFIDIN="$QRID"
+   IDINID=`echo $REFCODE | md5sum | cut -c 1-6`
+  REFIDIN="$IDINID"
+  if [ X"$HREFMODE" != "XOFF" ]; then
   write2src "HEREREF$REFIDIN"
+  fi
 
 # PROCESS INPUT !!!!!
 # --------------------------------------------------------
@@ -509,14 +510,12 @@ function INCLUDE() {
 # ADD REFERENCE IF NOT SKIPPED
 # --------------------------------------------------------
   if [ X"$SKIP"     != "XYES" ] &&
-     [ Y"$RUN"      == "YYES" ] &&
-     [ X"$HREFMODE" != "XOFF" ]; then
+     [ Y"$RUN"      == "YYES" ]; then
        sed -i "s,HEREREF$REFIDIN,$REFCODE," $SRCDUMP
   else
        sed -i "/^HEREREF${REFIDIN}$/d" $SRCDUMP
   fi
-
-  sed -i "/^HEREREF.*$/d" $SRCDUMP # EMERGENCY REMOVE
+       sed -i "/^HEREREF.*$/d" $SRCDUMP # EMERGENCY REMOVE
 
 # REMOVE ADDED FUNCTIONS
 # --------------------------------------------------------
