@@ -67,6 +67,9 @@ authors under copyleft licenses.
 
 % INCLUDE: http://github.com/christop/DOK/raw/d185293/EDIT/151126_lac08.mdsh 1-182
 % SRCODE:  http://github.com/christop/DOK/raw/a87be72/EDIT/151126_lac08.mdsh 1-182
+
+% SRCODE: https://gitlab.com/christophh/memo/raw/f09d95a/EDIT/160001.mdsh 70-100
+
 % SPREAD:  http://github.com/christop/A5x2/raw/4328cfc/EDIT/150118_allworknoplay.svg 1
 % SPREAD:  http://github.com/christop/A5x2/raw/4328cfc/EDIT/150118_allworknoplay.svg 2
 
@@ -77,12 +80,12 @@ authors under copyleft licenses.
 % CLEARTORIGHT:
 % TOCITEM: Nikolaj Hald Nielsen: From Consumer to Creator
 % --------------------------------------------------------------------------- %
-% TEXINJECT: \chapterfont{\fontfamily{bbe}\selectfont\relscale{.8}}
-% TEXINJECT:  \sectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
-% TEXINJECT:   \subsectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
-% TEXINJECT:    \renewcommand{\texttt}[1]{%
-% TEXINJECT:    {\fontfamily{\ttstandard}\selectfont%
-% TEXINJECT:      \seqsplit{#1}}}
+% TEXIN: \chapterfont{\fontfamily{bbe}\selectfont\relscale{.8}}
+% TEXIN:  \sectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
+% TEXIN:   \subsectionfont{\fontfamily{bbe}\selectfont\relscale{.9}}
+% TEXIN:    \renewcommand{\texttt}[1]{%
+% TEXIN:    {\fontfamily{\ttstandard}\selectfont%
+% TEXIN:      \seqsplit{#1}}}
 
 % TITLE: From Consumer to Creator
 % SUBTITLE: The Lego Generation in the Digital Age
