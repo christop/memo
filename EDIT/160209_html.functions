@@ -299,6 +299,27 @@ function WHITESPACE() {
 }
 
 
+# --------------------------------------------------------------------------- #
+
+function ANCHOR() {
+
+   if [ `echo $* | wc -w` -gt 5  ] ||  
+      [ `echo $* | wc -c` -gt 20 ]; then 
+   AID=`echo $*                   | # 
+        unaccent utf-8            | # 
+        sed 's/[^a-zA-Z1-9 _]//g' | # 
+        tr [:upper:] [:lower:]    | # 
+        tr -s ' ' | sed 's/ /_/g' | # 
+        sed 's/\(_*\)\([a-z0-9]\)\([^_.]*_*\)/\2/g'` 
+   else 
+   AID=`echo $*                 | # 
+        unaccent utf-8          | # 
+        sed 's/[^a-zA-Z1-9]//g' | # 
+        tr [:upper:] [:lower:]`   # 
+   fi
+
+   write2src "<div class=\"anchor\" id=\"$AID\"></div>"
+}
 
 
 
@@ -476,33 +497,33 @@ function WHITESPACE() {
         # MAKE IMAGE HREFS ABSOLUTE
         # ------------------------------------------------ #
     
-        # TODO: if image does not exist -> substitute
- 
-          IFHTTP=`echo $PDFSRC | grep "http.\?://" | wc -l`
-          if [ $IFHTTP -lt 1 ]; then
-          SRCPATH=`realpath $PDFSRC | rev | #
-                   cut -d "/" -f 2- | rev`
-          SRCSRC=`basename $PDFSRC`
-          cd $SRCPATH
-            for XLINK in `cat $SRCSRC            | #
-                          sed "s/$XLINKID/\n&/g" | #
-                          grep "$XLINKID"`         #
-             do
-               IMGSRC=`echo $XLINK         | #
-                       cut -d "\"" -f 2    | #
-                       cut -d "\"" -f 2    | #
-                       sed "s/$XLINKID//g" | #
-                       sed 's,file://,,g'`   #
-               IMG=`basename $IMGSRC`
-               IMGPATH=`realpath $IMGSRC | rev | # 
-                        cut -d "/" -f 2- | rev`  #
-               ABSPATH=`realpath $IMGPATH`
-               NEWXLINK="$XLINKID=\"$ABSPATH/$IMG\""
-               sed -i "s,$XLINK,$NEWXLINK,g" $SVGTMP
-               echo "$XLINK -> $NEWXLINK"
-            done
-          cd - > /dev/null
-         fi
+#        # TODO: if image does not exist -> substitute
+#                BUG: 160216_A5x2-dit-logo.svg
+#          IFHTTP=`echo $PDFSRC | grep "http.\?://" | wc -l`
+#          if [ $IFHTTP -lt 1 ]; then
+#          SRCPATH=`realpath $PDFSRC | rev | #
+#                   cut -d "/" -f 2- | rev`
+#          SRCSRC=`basename $PDFSRC`
+#          cd $SRCPATH
+#            for XLINK in `cat $SRCSRC            | #
+#                          sed "s/$XLINKID/\n&/g" | #
+#                          grep "$XLINKID"`         #
+#             do
+#               IMGSRC=`echo $XLINK         | #
+#                       cut -d "\"" -f 2    | #
+#                       cut -d "\"" -f 2    | #
+#                       sed "s/$XLINKID//g" | #
+#                       sed 's,file://,,g'`   #
+#               IMG=`basename $IMGSRC`
+#               IMGPATH=`realpath $IMGSRC | rev | # 
+#                        cut -d "/" -f 2- | rev`  #
+#               ABSPATH=`realpath $IMGPATH`
+#               NEWXLINK="$XLINKID=\"$ABSPATH/$IMG\""
+#               sed -i "s,$XLINK,$NEWXLINK,g" $SVGTMP
+#               echo "$XLINK -> $NEWXLINK"
+#            done
+#          cd - > /dev/null
+#         fi
               svglayers2pdfpages $SVGTMP $PDFGET
         fi
     
@@ -584,6 +605,7 @@ function SPREAD() {
 
  # TODO: if image -> do not export svg
 
+   THISCMD="% SPREAD:"
    PLUSCLASS=`echo $* | sed 's/class:/\nclass:/g' | # class: + NEWLINE
               grep "^class:" | cut -d ":" -f 2` # SELECT CLASS
 
@@ -760,7 +782,7 @@ function SPREAD() {
         else
 
         TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTBASE}* | #
-                  grep "${CNT}\."                 | #
+                  grep "_0*${CNT}\."                 | #
                   grep "$SELECTTYPE$"            | #
                   tail -n 1`                      #
              IMGPFAD=$HTMLSRCDIRNAME/`basename $TAKETHIS`
@@ -775,7 +797,7 @@ function SPREAD() {
    done
        if [ $CNT -le $PX ]; then
         TAKETHIS=`ls -S $HTMLSRCDIR/${EXPORTBASE}* | #
-                  grep "[0-9]*${CNT}\."           | #
+                  grep "_0*${CNT}\."              | #
                   grep "$SELECTTYPE$"            | #
                   tail -n 1`                      #
 
