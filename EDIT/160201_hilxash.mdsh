@@ -66,7 +66,7 @@ authors under copyleft licenses.
 % PP:
 
 % INCLUDE: http://github.com/christop/DOK/raw/4ffbf18/EDIT/151126_lac08.mdsh 1-182
-% SRCODE:  http://github.com/christop/DOK/raw/a87be72/EDIT/151126_lac08.mdsh 1-182
+% SRCODE:  http://github.com/christop/DOK/raw/4ffbf18/EDIT/151126_lac08.mdsh 1-182
 
 % SRCODE: https://gitlab.com/christophh/memo/raw/1772d8c/EDIT/160001.mdsh 70-100
 
@@ -207,19 +207,21 @@ authors under copyleft licenses.
 % INCLUDE: http://freeze.sh/etherpad/export/_/murtaugh.dry.mdsh/649 EDIT/151026_dry.functions 8-460
 % RESETALL:
 
+
 %  D O   I T   T O G E T H E R
 % --------------------------------------------------------------------------- %
 % HREF: OFF
-% INCLUDE: http://gitlab.com/christophh/DOK/raw/1baf105/EDIT/160214_dit.mdsh
+% INCLUDE: http://gitlab.com/christophh/DOK/raw/4ad2ed4/EDIT/160214_dit.mdsh
+
 
 %  A M R O   2 0 1 6 
 % --------------------------------------------------------------------------- %
-% INCLUDE: http://gitlab.com/christophh/DOK/raw/6afe87c/EDIT/160214_amroxiv.mdsh
+% INCLUDE: http://gitlab.com/christophh/DOK/raw/fe8989a/EDIT/160214_amroxiv.mdsh
 
 
-% FLUSHLOG:
 % --------------------------------------------------------------------------- %
 % FLUSHLICENSES:
+% FLUSHLOG:
 
 % TEXIN: \cleartofour
 % EOF!
