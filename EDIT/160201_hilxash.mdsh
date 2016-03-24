@@ -47,7 +47,7 @@ authors under copyleft licenses.
 
 % INTRODUCTION AS SOURCE CODE
 % --------------------------------------------------------------------------- %
-% SRCODE: EDIT/160001.mdsh 1-50
+% SRCODE: EDIT/160201_hilxash.mdsh 1-50
 
 
 %  T H I S   B O O K   S E T U P 
@@ -65,10 +65,10 @@ authors under copyleft licenses.
 % http://www.forkable.eu/generators/lacmachine/o/non-free/A3/plakatlac2008_A3_80.pdf
 % PP:
 
-% INCLUDE: http://github.com/christop/DOK/raw/d185293/EDIT/151126_lac08.mdsh 1-182
+% INCLUDE: http://github.com/christop/DOK/raw/4ffbf18/EDIT/151126_lac08.mdsh 1-182
 % SRCODE:  http://github.com/christop/DOK/raw/a87be72/EDIT/151126_lac08.mdsh 1-182
 
-% SRCODE: https://gitlab.com/christophh/memo/raw/f09d95a/EDIT/160001.mdsh 70-100
+% SRCODE: https://gitlab.com/christophh/memo/raw/1772d8c/EDIT/160001.mdsh 70-100
 
 % SPREAD:  http://github.com/christop/A5x2/raw/4328cfc/EDIT/150118_allworknoplay.svg 1
 % SPREAD:  http://github.com/christop/A5x2/raw/4328cfc/EDIT/150118_allworknoplay.svg 2
@@ -105,16 +105,17 @@ authors under copyleft licenses.
 % ------------------
 % http://www.forkable.eu/g/i-bd/o/non-free/fr/A3/recto/1016-004831.pdf
 % PP:
-% INCLUDE: http://github.com/christop/DOK/raw/62d83a8/EDIT/160214_i-bd.mdsh
+% INCLUDE: http://github.com/christop/DOK/raw/010d3ad/EDIT/160214_i-bd.mdsh
+
 
 %  H A C K E R S   A N D   T H E    F E A R    O F    W Y S I W Y G
 % --------------------------------------------------------------------------- %
 % HREF: OFF
+% CLEARTOLEFT:
 % SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151109_hcatfowysiwyg.svg 1
 % --------------------------------------------------------------------------- %
-
 % SUPERIMPOSE: https://github.com/christop/A5x2/raw/d94e703/EDIT/151109_hcatfowysiwyg.svg 2-22
-% INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 1-510 lib/sh/151109_hcatfowysiwyg.functions
+% INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 1-510 EDIT/151109_hcatfowysiwyg.functions
 
 % VFILL:
 
@@ -128,100 +129,98 @@ authors under copyleft licenses.
 % INCLUDE: http://freeze.sh/etherpad/export/_/schrijver.hcatfowysiwyg.mdsh/499 623-684
 % RESETALL:
 
+
 % --------------------------------------------------------------------------- %
 % SPREAD: http://github.com/christop/DOK/raw/d185293/EDIT/160310_A5x2-figletheadings.svg 1-3
 
 
+%  L G M:  R E A D / W R I T E
+% --------------------------------------------------------------------------- %
+% INCLUDE: https://gitlab.com/christophh/DOK/raw/d2d6321/EDIT/151128_rw.mdsh
+
+%  C H M O D   + X
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% INCLUDE: https://gitlab.com/christophh/DOK/raw/510cca9/EDIT/160214_chmodx.mdsh
 
 
+%  W H A T   T H E   F O R K ? !
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% INCLUDE: http://gitlab.com/christophh/DOK/raw/0a2199b/EDIT/160211_wtf.mdsh
+
+% FLUSHLOG:
 
 
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/151128_rw.mdsh
-%x 
-%x %  CHMOD +X
-%x % --------------------------------------------------------------------------- %
-%x % HREF: OFF
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160214_chmodx.mdsh
-%x 
-%x 
-%x %  WHAT THE FORK?!
-%x % --------------------------------------------------------------------------- %
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160211_wtf.mdsh
-%x 
-%x 
-%x 
-%x 
-%x 
-%x 
-%x %  A P P R O P R I A T I O N   A N D   T Y P E
-%x %  B E F O R E   A N D   T O D A Y
-%x % --------------------------------------------------------------------------- %
-%x % HREF: OFF
-%x % SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151110_aatbat.svg 2-3
-%x % --------------------------------------------------------------------------- %
-%x % TEXIN: ~\vfill
-%x % TEXIN: \chapterfont{\fontfamily{ima}\selectfont\relscale{1.5}}
-%x % TEXIN: \sectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
-%x % TEXIN: \subsectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
-%x % TEXIN: \fontsize{10pt}{11pt}\selectfont
-%x % SUPERIMPOSE: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151110_aatbat.svg 4
-%x % HREF: ON
-%x % TOCITEM: Ricardo Lafuente: Appropriation and Type -- Before and Today
-%x % INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 21-55
-%x % HREF: OFF
-%x % INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 56-630 lib/sh/151120_aatbat.functions
-%x % RESETALL:
-%x 
-%x % SPREAD: /home/christoph/0000_GIT/ch/000000_CURRENT/A5x2/EDIT/160310_A5x2-latinmodern.svg 1-2
-%x % SPREAD: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/151113_A5x2-fontaintexhowto.svg 3-22
-%x 
-%x 
-%x 
-%x 
-%x 
-%x 
-%x % GAMBIARRA AND THE PROTOTYPING PERSPECTIVE
-%x % --------------------------------------------------------------------------- %
-%x % C!LEARTORIGHT:
-%x % TOCITEM: Gabriel Menotti: _Gambiarra_ and The Prototyping Perspective
-%x % --------------------------------------------------------------------------- %
-%x % TEXIN: \chapterfont{\scalefont{1.2}\setstretch{1.0}}
-%x % TEXIN: \renewcommand{\by}[1]{\vspace{-0.6\baselineskip}
-%x % TEXIN:                       \scalefont{1.2} #1\vfill}
-%x % TEXIN: \renewcommand*{\rmdefault}{pju}\normalfont
-%x % TEXIN: \renewcommand*{\embody}{\fontfamily{grm}\selectfont\relscale{.85}}
-%x % TEXIN: \setlength{\parskip}{10pt plus 10pt minus 5pt}
-%x % TEXIN: \fontsize{11pt}{11pt}\selectfont
-%x % INCLUDE: http://freeze.sh/etherpad/export/_/menotti.gambiarra.mdsh/57
-%x % RESETALL:
-%x 
-%x 
-%x %  SWARM, PERFORM, EXPLORE
-%x % --------------------------------------------------------------------------- %
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160307_swaperex.mdsh
-%x 
-%x 
-%x %  D O   R E P E A T   Y O U R S E L F
-%x % --------------------------------------------------------------------------- %
-%x % SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_dry.svg 2-3
-%x % CLEARTORIGHT:
-%x % TOCITEM: Michael Murtaugh: Do (not) repeat yourself
-%x % --------------------------------------------------------------------------- %
-%x % SUPERIMPOSE: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_dry.svg 4-6
-%x % INCLUDE: http://freeze.sh/etherpad/export/_/murtaugh.dry.mdsh/649 lib/sh/151026_dry.functions 8-460
-%x % RESETALL:
-%x 
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160214_dit.mdsh
-%x 
-%x 
-%x 
-%x %  AMRO 2016 
-%x % --------------------------------------------------------------------------- %
-%x % INCLUDE: /home/christoph/0000_GIT/ch/000000_CURRENT/DOK/EDIT/160214_amroxiv.mdsh
-%x 
-%x 
-%x 
-%x 
-%x % --------------------------------------------------------------------------- %
-%x % FLUSHLICENSES:
+%  A P P R O P R I A T I O N   A N D   T Y P E
+%  B E F O R E   A N D   T O D A Y
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% SPREAD: https://github.com/christop/A5x2/raw/cf62fdc/EDIT/151110_aatbat.svg 2-3
+% --------------------------------------------------------------------------- %
+% TEXIN: ~\vfill
+% TEXIN: \chapterfont{\fontfamily{ima}\selectfont\relscale{1.5}}
+% TEXIN: \sectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
+% TEXIN: \subsectionfont{\fontfamily{ima}\selectfont\relscale{1.2}}
+% TEXIN: \fontsize{10pt}{11pt}\selectfont
+% SUPERIMPOSE: https://github.com/christop/A5x2/raw/cf62fdc/EDIT/151110_aatbat.svg 4
+% HREF: ON
+% TOCITEM: Ricardo Lafuente: Appropriation and Type -- Before and Today
+% INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 21-55
+% HREF: OFF
+% INCLUDE: http://freeze.sh/etherpad/export/_/floss+art.lafuente.aatbat.mdsh/276 56-630 EDIT/151120_aatbat.functions
+% RESETALL:
+
+
+% SPREAD:  http://github.com/christop/DOK/raw/614406d/EDIT/151113_A5x2-fontaintexhowto.svg 3-22
+
+% GAMBIARRA AND THE PROTOTYPING PERSPECTIVE
+% --------------------------------------------------------------------------- %
+% CLEARTOLEFT:
+% TOCITEM: Gabriel Menotti: _Gambiarra_ and The Prototyping Perspective
+% --------------------------------------------------------------------------- %
+% TEXIN: \chapterfont{\scalefont{1.2}\setstretch{1.0}}
+% TEXIN: \renewcommand{\by}[1]{\vspace{-0.6\baselineskip}
+% TEXIN:                       \scalefont{1.2} #1\vfill}
+% TEXIN: \renewcommand*{\rmdefault}{pju}\normalfont
+% TEXIN: \renewcommand*{\embody}{\fontfamily{grm}\selectfont\relscale{.85}}
+% TEXIN: \setlength{\parskip}{10pt plus 10pt minus 5pt}
+% TEXIN: \fontsize{11pt}{11pt}\selectfont
+% INCLUDE: http://freeze.sh/etherpad/export/_/menotti.gambiarra.mdsh/57
+% RESETALL:
+
+
+%  SWARM, PERFORM, EXPLORE
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% INCLUDE: http://github.com/christop/DOK/raw/614406d/EDIT/160307_swaperex.mdsh
+
+
+%  D O   R E P E A T   Y O U R S E L F
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% SPREAD: https://github.com/christop/A5x2/raw/11a5a9f/EDIT/151130_dry.svg 2-3
+% CLEARTORIGHT:
+% TOCITEM: Michael Murtaugh: Do (not) repeat yourself
+% --------------------------------------------------------------------------- %
+% SUPERIMPOSE: https://github.com/christop/A5x2/raw/05a387d/EDIT/151130_dry.svg 4-6
+% INCLUDE: http://freeze.sh/etherpad/export/_/murtaugh.dry.mdsh/649 EDIT/151026_dry.functions 8-460
+% RESETALL:
+
+%  D O   I T   T O G E T H E R
+% --------------------------------------------------------------------------- %
+% HREF: OFF
+% INCLUDE: http://gitlab.com/christophh/DOK/raw/1baf105/EDIT/160214_dit.mdsh
+
+%  A M R O   2 0 1 6 
+% --------------------------------------------------------------------------- %
+% INCLUDE: http://gitlab.com/christophh/DOK/raw/6afe87c/EDIT/160214_amroxiv.mdsh
+
+
+% FLUSHLOG:
+% --------------------------------------------------------------------------- %
+% FLUSHLICENSES:
+
+% TEXIN: \cleartofour
+% EOF!
 
