@@ -1,7 +1,7 @@
 
-
 # SAVE FOR NOW: BACKWARDS COMPATIBILITY
 # ---------------------------------------------------------------------------- #
+
 function mkqr(){ sleep 0; }
 function QR(){ HREF $* ;}
 
@@ -84,17 +84,6 @@ function QR(){ HREF $* ;}
        echo "qr graphic for $QURL already generated!"
   fi
   }
-# --------------------------------------------------------------------------- #
-
-
-
-
-
-
-
-
-# --------------------------------------------------------------------------- #
-# CLEAN UP / MAKE MORE REUSABLE
 # --------------------------------------------------------------------------- #
 
 # =========================================================================== #
@@ -188,9 +177,11 @@ function QR(){ HREF $* ;}
         HASCOLOR=`convert checkcolor.jpg -colorspace HSL \
                  -format '%[fx:maxima.g]' info: | sed 's/[^0-9]//g'`
         if [ $HASCOLOR -eq 0 ]; then
-              pdfxgs $CHECK
+             #pdfxgs $CHECK
+              sleep 0
         else
-              pdfxcmyk $CHECK
+             #pdfxcmyk $CHECK
+              sleep 0
         fi  
         rm checkcolor.jpg
       )
@@ -281,7 +272,6 @@ function QR(){ HREF $* ;}
    # ----------------------------------------------------------------------- #
    # CLEAN UP(OBSOLETE?)
    # ----------------------------------------------------------------------- #
-   # rm ${SUPERTMP} ${TMPID}_*.pdf $SVGLAYER
      rm ${TMPID}_*.pdf $SVGLAYER
  
   }
@@ -315,8 +305,8 @@ function QR(){ HREF $* ;}
          PAGES=- ; PAGECOMMAND=""
    fi
  
-   PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.pdf
-   SVGTMP=${TMPID}`echo $PDFSRC | md5sum | cut -c 5-9`.svg
+   PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-6`.pdf
+   SVGTMP=${TMPID}`echo $PDFSRC | md5sum | cut -c 4-9`.svg
  
    if [ -f $PDFGET ]; then
         echo "$PDFGET exists"
@@ -334,19 +324,16 @@ function QR(){ HREF $* ;}
     
                getFile $PDFSRC $PDFGET   
                conformColor $PDFGET
-
         fi
    fi
  }
 
 # =========================================================================== #
-# =========================================================================== #
-
 
 
 # --------------------------------------------------------------------------- #
 
-function QUAVERBATIM() {
+function QUAVERBATIM() {(
 
   listSrc $*
   getFileRange
@@ -375,11 +362,11 @@ function QUAVERBATIM() {
 
   if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
 
-}
+)}
 
 # --------------------------------------------------------------------------- #
 
-function SRCODE() {
+function SRCODE() {(
 
   listSrc $*
   getFileRange
@@ -428,7 +415,7 @@ function SRCODE() {
 
   if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
 
-}
+)}
 
 # --------------------------------------------------------------------------- #
 
@@ -442,11 +429,11 @@ function SOFTWAREUSED() {
 
     write2src "\end{quaverbatim}"
     rm ${TMPID}softwareused.tmp
- }
+}
 
 # --------------------------------------------------------------------------- #
 
-function PDF() {
+function PDF() {(
 
   listSrc $*
 
@@ -496,7 +483,7 @@ function PDF() {
 
   if [ -f $SRCLIST ]; then rm $SRCLIST ;fi
 
-}
+)}
 
 # --------------------------------------------------------------------------- #
 
@@ -616,6 +603,7 @@ function PP(){(
   #        sed 's/^[ \t]*//'   | # REMOVE LEADING WHITESPACE
   #        sed 's/[ \t]*$//'   | # REMOVE TRAILING WHITESPACE
   #        md5sum | cut -c 1-10` # CREATE UNIQUE ID
+
     MOREOPTIONS=`echo $*               | # START PIPE
                  sed 's/OPTIONS:/\n&/' | #
                  grep "^OPTIONS:"      | #
@@ -648,7 +636,7 @@ function PP(){(
              echo "do empty!"
              PPPAGES=$PPPAGES,
        else
-        PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.pdf
+        PDFGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-8`.pdf
 
         if [ ! -f $PDFGET ]; then
               getFile $PDFSRC $PDFGET
@@ -707,20 +695,6 @@ function PP(){(
     fi
        echo $PMACRO >> $SRCDUMP
 )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # --------------------------------------------------------------------------- #
 
@@ -819,6 +793,7 @@ function TITLE() {
 
 function FLUSHLOG(){
 
+  write2src "\newpage"
   write2src "\begin{logfile}"
   write2src "\textbf{Network Activity:}"
 
@@ -1122,3 +1097,5 @@ function SWAP(){
 }
 
 # --------------------------------------------------------------------------- #
+
+
