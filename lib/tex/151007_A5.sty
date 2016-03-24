@@ -20,7 +20,11 @@
   \usepackage{everypage}
   \usepackage{setspace}
   \usepackage{relsize}
-  \usepackage{nohyperref}
+
+  \usepackage{bophook}
+  \usepackage[x-1a]{pdfx}
+  \usepackage{hyperref}
+
   \usepackage[defaultlines=5,all]{nowidow}
   \usepackage{enumitem}
   \usepackage{afterpage}
@@ -545,8 +549,6 @@
                scale=1,pages=#2#3]{#1}
   }
 % --------------------------------------------------------------------------- %
-
-  \usepackage{bophook}
 
   \newif\ifdoimpose
   \newcounter{imposethis}

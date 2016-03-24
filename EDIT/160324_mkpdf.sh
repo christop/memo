@@ -63,9 +63,9 @@
 # --------------------------------------------------------------------------- #
   TMPTEXSANSEXT=`echo $TMPTEX | rev | cut -d "." -f 2- | rev`
 
-  echo "\documentclass[8pt,cleardoubleempty]{scrbook}" >  $TMPTEX
+  echo "\documentclass[8pt,cleardoubleempty]{scrbook}"  >  $TMPTEX
+  echo "\usepackage{lib/tex/151007_A5}"                 >> $TMPTEX
 # PDF/X COMPLIANCY
-  echo "\usepackage[x-1a]{pdfx}"                        >> $TMPTEX
   echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" > pdfx-1a.xmp
   cp lib/icc/FOGRA39L.icc .
   echo "\Keywords{pdfTeX\sep PDF/X-1a\sep PDF/A-b}
@@ -84,7 +84,6 @@
    /RegistryName (http://www.color.org/)
    >> ]
        }'                                               >> $TMPTEX
-  echo "\usepackage{lib/tex/151007_A5}"                 >> $TMPTEX
   echo "\bibliography{${TMPID}.bib}"                    >> $TMPTEX
   echo "\begin{document}"                               >> $TMPTEX
          cat   $SRCDUMP                                 >> $TMPTEX
