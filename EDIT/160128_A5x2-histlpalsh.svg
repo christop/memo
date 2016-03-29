@@ -48,10 +48,10 @@
      inkscape:window-height="480"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.1466004"
-     inkscape:cx="231.96459"
-     inkscape:cy="539.27533"
-     inkscape:current-layer="layer7"
+     inkscape:zoom="0.69527904"
+     inkscape:cx="921.55464"
+     inkscape:cy="668.94575"
+     inkscape:current-layer="layer10"
      units="mm"
      guidecolor="#ff0000"
      guideopacity="0.47058824"
@@ -247,6 +247,7 @@
 
 
 
+
 <path
    d="m 78.807421,36.295005 338.312509,0"
    style="fill:none;stroke:#ff00ff;stroke-width:0.24875;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
@@ -288,6 +289,7 @@
      x="500.60495"
      y="715.59247"
      id="tspan3137">2</tspan></text>
+
 
 
 
@@ -904,6 +906,7 @@
      id="tspan4271"
      x="-1579.0333"
      y="-316.12152">STRANGELOVE</tspan></text>
+
 
 
 
@@ -3847,6 +3850,7 @@
 
 
 
+
 <g
    id="g3771"
    transform="translate(160,280)"><path
@@ -6203,9 +6207,19 @@
    id="rect4878-5"
    style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#ff0000;stroke-width:1;display:inline;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS" /></g><g
      inkscape:groupmode="layer"
+     id="layer10"
+     inkscape:label="XX_010"
+     sodipodi:insensitive="true"
+     style="display:inline"><path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="canvas-3"
+       d="m 545.669,10.62935 524.4097,0 0,744.09449 -524.4097,0 z"
+       style="color:#000000;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline" /></g><g
+     inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="010"
-     style="display:none"><text
+     style="display:inline"><text
    xml:space="preserve"
    style="font-size:36px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;text-align:start;line-height:120.00000477%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#00ff00;fill-opacity:1;stroke:none;display:inline;font-family:Roboto Mono;-inkscape-font-specification:Roboto Mono Light"
    x="1134.855"
@@ -6216,6 +6230,7 @@
      x="1134.855"
      y="395.29181"
      id="tspan4592">S.1</tspan></text>
+
 
 
 
@@ -6279,6 +6294,7 @@
 
 
 
+
 <text
    xml:space="preserve"
    style="font-size:36px;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;text-align:start;line-height:120.00000477%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#00ff00;fill-opacity:1;stroke:none;display:inline;font-family:Roboto Mono;-inkscape-font-specification:Roboto Mono Light"
@@ -6290,6 +6306,7 @@
      x="614.85486"
      y="395.29181"
      id="tspan4592-5">S.3</tspan></text>
+
 
 
 
@@ -6315,11 +6332,12 @@
 
 
 
+
 </g><g
      inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="030"
-     style="display:inline">
+     style="display:none">
 
 
 
@@ -6403,6 +6421,7 @@
      y="395.29181"
      id="tspan4592-5-4">S.5</tspan></text>
 
+
 </g><g
      inkscape:groupmode="layer"
      id="layer8"
@@ -6470,6 +6489,7 @@
      y="-504.76624"
      x="-496.92743"
      sodipodi:role="line" /></text>
+
 
 <g
    style="display:inline"
@@ -6560,6 +6580,7 @@
      y="206.89183"
      x="672.85486"
      sodipodi:role="line">AND LOVE THE BASH </tspan></text>
+
 
 
 
@@ -7453,6 +7474,7 @@
      y="206.89182"
      x="-418.48367"
      sodipodi:role="line">AND LOVE THE BASH </tspan></text>
+
 
 
 <path
