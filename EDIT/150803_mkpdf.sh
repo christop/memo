@@ -79,7 +79,7 @@
 # --------------------------------------------------------------------------- #
 
   MAIN=${TMPID}.pdf
-  JACKET=EDIT/150725_jacket.pdf;
+  JACKET=_/150725_jacket.pdf;
   TMPTEX=${TMPID}final.tex
   LICENSE=${TMPID}license.pdf
   LURL="https://github.com/christop/licenses/raw/master/pdf/CC-BY-NC-SA_3.0.pdf"
@@ -102,7 +102,7 @@
   pdflatex -interaction=nonstopmode \
             $TMPTEX  # > /dev/null
 
-  mv ${TMPID}final.pdf $OUTDIR/150001.pdf
+  mv ${TMPID}final.pdf $OUTDIR/`date +%y%m%d`_clipoetics.pdf
 
 # =========================================================================== #
 # CLEAN UP
