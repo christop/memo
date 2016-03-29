@@ -1,6 +1,6 @@
+# http://freeze.sh/_/2016/preflight
 
-
- function pdfxgs() {
+  function pdfxgs() {
 
        #PDF=$1
         if [ `ls -a $1      | # SUPRESS IF  $1 IS EMPTY
@@ -8,7 +8,7 @@
               grep "\.pdf$" | # CHECK IF ENDS WITH .pdf
               wc -l` -gt 0  ]; then
           cp $1 tmp.pdf
-          gs                                     \
+            gs                                   \
             -o $1                                \
             -sDEVICE=pdfwrite                    \
             -sColorConversionStrategy=Gray       \
@@ -26,16 +26,16 @@
             -dEmbedAllFonts=true                 \
             -dAutoRotatePages=/None              \
             -sCannotEmbedFontPolicy=Error        \
+            -dPDFX \
+            -dCompatibility=1.3 \
             -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
             -f tmp.pdf > /dev/null
           rm tmp.pdf
-        else
-         echo "nothing to do!"
+        else echo "nothing to do!"
         fi
+  }
 
- }
-
- function pdfxcmyk() {
+  function pdfxcmyk() {
 
        #PDF=$1
         if [ `ls -a $1      | # SUPRESS IF  $1 IS EMPTY
@@ -60,11 +60,12 @@
              -dEmbedAllFonts=true                 \
              -dAutoRotatePages=/None              \
              -sCannotEmbedFontPolicy=Error        \
+             -dPDFX \
+             -dCompatibility=1.3 \
              -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
             -f tmp.pdf > /dev/null
           rm tmp.pdf
-        else
-         echo "nothing to do!"
+        else echo "nothing to do!"
         fi
- }
+  }
 
