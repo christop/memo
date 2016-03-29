@@ -6,7 +6,7 @@
   MAIN=`echo $1 | cut -d ":" -f 2-`
   MAIN="http://freeze.sh/etherpad/export/_/clipoetics.mdsh/6"
   TMPDIR=. ; TMPID=XYZ ; export $TMPID
-  OUTDIR=FREEZE
+  OUTDIR=_
   REFURL="http://freeze.sh/etherpad/export/_/references.bib/868"
   wget --no-check-certificate \
         -O ${TMPID}.bib $REFURL > /dev/null 2>&1
