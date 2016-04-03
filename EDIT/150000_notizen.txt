@@ -1,3 +1,49 @@
+
+ T A K I N G   N O T E S
+ =======================
+
+ taking notes, doing research,
+ not strumming guitar
+
+-----------
+
+
+ Duplicate the object with id="path1555",
+ rotate the duplicate 90 degrees, save SVG,
+ and quit:
+
+    inkscape filename.svg \
+    --select=path1555      \
+    --verb=EditDuplicate    \
+    --verb=ObjectRotate90    \
+    --verb=FileSave           \
+    --verb=FileClose
+
+-----------
+
+ INVERT SCREEN:
+ xcalib -invert -alter
+
+-----------
+  ____
+  VVVV
+  ====
+
+> vvvv is free for evaluation and non-commercial use.
+> For all commercial applications, you need to buy a license.
+> [^]{https://vvvv.org/documentation/licensing}
+
+> Software that is free only in the sense that you don't need
+> to pay to use it is hardly free at all. You may be forbidden
+> to pass it on, and you are almost certainly prevented from
+> improving it. Software licensed at no cost is usually a
+> weapon in a marketing campaign to promote a related product
+> or to drive a smaller competitor out of business.
+> There is no guarantee that it will stay free.
+> [^]{http://www.debian.org/intro/free}
+
+-----------
+
 > Doch wenn Bruder Williams Hände die zartesten Dinge
 > berührten, etwa gewisse Handschriften mit noch feuchten
 > Miniaturen, oder brüchige, vom Zahn der Zeit ganz
@@ -28,3 +74,265 @@
 > machines. Machines, he said, are an effect of art, which is
 > nature’s ape, and they reproduce not its forms but the operation itself.
 > [@eco:1983:nameoftherose]
+
+
+
+% --------------------------------------------------------------------------- %
+
+%>           CRISWELL
+> Greetings, my friend.  You are
+> interested in the unknown, the
+> mysterious, the unexplainable...
+> that is why you are here.
+% ED WOOD
+
+  Digital culture.
+  Operating on surfaces provided by multinational corporations.
+  Condemned to stay there (=outside?). Strict Borders. Non-Porous.
+  (Disneyfication. Exile on Main Street)
+  
+  Social media as in socialising. (Not as in social?)
+  
+  (The Digital as something overly complicated. Tired of the digital?)
+  
+  It IS complicated. Question the 'what' and 'why' and then the 'how'.
+  And here we go. The space to ask this is hard to find on the surface.
+  (<- the much bigger problem)
+
+  --------------
+
+  Why write? Why publish?
+  What now?
+  
+  disclose <-> open
+
+
+ ====
+
+
+%> Lex slides quickly into the command chair at Nedry's terminal.
+%> She stares at the screen for a moment - -
+%> 
+%> LEX
+>  This is a Unix system. I know this.
+%> It's the files for the whole park.
+%> It's like a phone book - it tells you everything.
+%> 
+%> [*](http://sfy.ru/?script=jurassic_park)
+
+
+
+% --------------------------------------------------------------------------- %
+
+  INDEPENDENT SOFTWARE CULTURE?
+  ALTERNATIVE?
+  Embrace instability?
+  Post-digital?
+  
+  Den Radiergummi schnitzen?[1]
+  Actually you can make 'eraser on steroids'!
+  The question is what (interface) kind of interaction is provided.
+  
+  PERIPHERIE
+  
+  [1] open <-> disclose
+  The rule of F/LOSS
+  --> Freedom has to be made
+  
+  user computing started in the [2] age of convenience [3]
+  
+  [3] dissapointments are wrong expectations
+  
+ ====
+  
+  [2] private public spaces shopping malls
+      -> expansion  of private space
+         destroys public space.
+
+
+% --------------------------------------------------------------------------- %
+
+  My personal approach to make something was never detached from technology.
+  In the sense of a pure idea breeding in my mind and when finished it just
+  needs to be materialised into the world. I enjoy the resistance of
+  technology just as a pen has a different resistance than a brush.
+
+ ====
+
+  I N D E P E N D E N T   C U L T U R E ?
+  
+  
+  
+  INTERDEPENDENT SOFTWARE CULTURE
+  
+  hardcoded ideologies.
+  practise of peripherals.
+ 
+ ====
+
+  software not as a service
+  - as cultural artifact
+  - as something that has a history
+  
+  And yes, it is complicated.
+  As reading is complicated.
+  As cooking is complicated.
+  And as wonderful when you start to master it.
+  
+  
+  Convenience Food?
+  Readonly culture?
+
+ ====
+
+  The point is not that you can do things with 
+  Free Software that you couldn't do without it.
+  The point is that you do thing differently.
+
+
+% =========================================================================== %
+% --------------------------------------------------------------------------- %
+
+  C O N T E M P O R A R Y   P R I N T M A K I N G
+
+  Although we work in design I prefer to talk of 'printmaking' in this case.
+  This shall set the focus on the technological aspect of producing visual
+  work. Although there is a (fair share of conceptual work) within doing
+  design the term 'printmaking' shall help to focus on technological aspects.
+ 'Printmaking' has a long history and (enormous richness) of innovative use
+  and appropriation of technology. For me there is big joy within the
+  creative engagement with tools much more complex and interesting than
+  operating on the surface of a cloud-based service.
+
+  ----
+
+  So it's 'printmaking' not in the sense of ... ?
+  but in the relation of technology and form.
+  
+  --
+  HAPPY HACKING!
+  --
+
+ ====
+
+  Technology is set aside as something inferior being disqualified as
+  'just a tool'. This seems (a bit) absured in a world where a lot of our
+  experiences are mediated by technology. While it seems reasonabale not
+  to fall for technical gimmicks it sounds wrong to ignore them in favour
+  of a consumer service.
+  
+  
+  
+                                    ?
+  Not art, not design but the technological creation of visual form.
+  Not a, maybe necessary, IF
+  but a, maybe not so simple, HOW
+  (Forg[eo]t the WHY)
+
+  
+  Printmaking/Druckgrafik
+
+% --------------------------------------------------------------------------- %
+
+  Auseinandersetzung mit dem Druckstock
+  nicht um den Willen der Reproduktion
+  (vg. Brunner S.30)
+  
+  ----
+  
+  Moveable Type: (instructions) technology
+  how ink is applied to paper (ink trapping)
+  (screens = bad paper)
+  
+  ----
+  
+  print nowadays is as much staying
+  on a surface as screens [1]
+  
+  ----
+  
+  control of the process
+  <-> transformation of a1 to a2
+      in the most exact way
+     (vgl. Farbprofil)
+  
+  ----
+  
+  Druckgrafik als erstes Beispiel des technisch reproduzierten Bildes ?
+
+ ====
+
+  So maybe it's not about printmaking in the (traditional)/anachronistic
+  sense of a ink trapped workshop but in the creative relation of
+  form and technology.
+  
+  Anyway. This is not the answer to a problem but the first step on journey
+
+  ----
+
+  [1] PARALLEL PUBLISHING
+
+      not just different output devices but embracing **media** specific
+      possibilities e.g. to edit, to transform, to change, ...
+
+
+% --------------------------------------------------------------------------- %
+% =========================================================================== %
+
+  T H E   C L O U D
+
+  Beside all political problems
+  it's superboring.
+
+
+  Make what you preach,
+  do as/how you think
+
+ ====
+
+  Tired of the Digital?
+  No. Tired of the current state of the Digital.
+
+  ----
+
+      Space?      Streamlined?
+  for innovation
+
+
+  The different
+
+% --------------------------------------------------------------------------- %
+
+  (Borders)Separations become porous. Hacks may become part of a setup,
+  as well as amateur and professional (things) (may) intertwingle.
+  Buggy may or may not be replaced,
+  temporary parts stabilize while stable parts dissapear. 
+  A unique offering of an environment where ink never dries and nothing is
+  ever finished. (The artificial)Established borders between this and that
+  may be traversed. (as you like.)
+
+  ----
+
+  Academic, hobbyist and software from the military/industrial complex merge.
+  For me, this is much more interesting than DesignDesign software.
+
+ ====
+
+  (I don't think the border between amateur and professional
+   are going to be erased.)
+
+
+% --------------------------------------------------------------------------- %
+
+
+
+
+
+
+
+
+
+
+
+
+
