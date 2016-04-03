@@ -129,14 +129,14 @@
   Embrace instability?
   Post-digital?
   
-  Den Radiergummi schnitzen?[1]
+  Den Radiergummi schnitzen? [1]
   Actually you can make 'eraser on steroids'!
   The question is what (interface) kind of interaction is provided.
   
   PERIPHERIE
   
   [1] open <-> disclose
-  The rule of F/LOSS
+      The rule of F/LOSS
   --> Freedom has to be made
   
   user computing started in the [2] age of convenience [3]
@@ -145,24 +145,23 @@
   
  ====
   
-  [2] private public spaces shopping malls
+  [2] private public spaces / e.g. shopping malls
       -> expansion  of private space
          destroys public space.
 
 
 % --------------------------------------------------------------------------- %
 
-  My personal approach to make something was never detached from technology.
-  In the sense of a pure idea breeding in my mind and when finished it just
-  needs to be materialised into the world. I enjoy the resistance of
-  technology just as a pen has a different resistance than a brush.
+  For me to make something was never detached from technology.
+  Not a pure idea breeding in my mind that just needs to be
+  materialised when finished. I enjoy the resistance of technology
+  just as a pen and a brush are different in resistance.
 
  ====
 
   I N D E P E N D E N T   C U L T U R E ?
   
-  
-  
+   
   INTERDEPENDENT SOFTWARE CULTURE
   
   hardcoded ideologies.
@@ -170,7 +169,7 @@
  
  ====
 
-  software not as a service
+  software not as a service but
   - as cultural artifact
   - as something that has a history
   
@@ -185,24 +184,20 @@
 
  ====
 
-  The point is not that you can do things with 
-  Free Software that you couldn't do without it.
-  The point is that you do thing differently.
-
+  The point is not that you can do things with Free Software that you
+  could not do without it. The point is that you do thing differently.
 
 % =========================================================================== %
 % --------------------------------------------------------------------------- %
 
   C O N T E M P O R A R Y   P R I N T M A K I N G
 
-  Although we work in design I prefer to talk of 'printmaking' in this case.
-  This shall set the focus on the technological aspect of producing visual
-  work. Although there is a (fair share of conceptual work) within doing
-  design the term 'printmaking' shall help to focus on technological aspects.
- 'Printmaking' has a long history and (enormous richness) of innovative use
-  and appropriation of technology. For me there is big joy within the
-  creative engagement with tools much more complex and interesting than
-  operating on the surface of a cloud-based service.
+
+  Talking of 'printmaking' and not of 'graphic design' is to set the focus
+  on the technological aspect of producing visual work. 'Printmaking' has a
+  long history and (enormous richness) of innovative use and appropriation of
+  technology. a creative relation with tools more complicated and interesting
+  than operating on the surface of a cloud-based service.
 
   ----
 
@@ -216,13 +211,12 @@
  ====
 
   Technology is set aside as something inferior being disqualified as
-  'just a tool'. This seems (a bit) absured in a world where a lot of our
-  experiences are mediated by technology. While it seems reasonabale not
-  to fall for technical gimmicks it sounds wrong to ignore them in favour
-  of a consumer service.
+  'just a tool'. This seems (a bit) absurd in a world where a lot of our
+  experiences are mediated by technology. While it seems reasonable not
+  to fall for technical gimmicks it seems wrong to ignore technology in
+  favour of a consumer service.
   
-  
-  
+   
                                     ?
   Not art, not design but the technological creation of visual form.
   Not a, maybe necessary, IF
@@ -303,7 +297,7 @@
 
 % --------------------------------------------------------------------------- %
 
-  (Borders)Separations become porous. Hacks may become part of a setup,
+  (Borders) Separations become porous. Hacks may become part of a setup,
   as well as amateur and professional (things) (may) intertwingle.
   Buggy may or may not be replaced,
   temporary parts stabilize while stable parts dissapear. 
@@ -314,7 +308,7 @@
   ----
 
   Academic, hobbyist and software from the military/industrial complex merge.
-  For me, this is much more interesting than DesignDesign software.
+  Sounds much more interesting than DesignDesign software.
 
  ====
 
@@ -323,16 +317,5 @@
 
 
 % --------------------------------------------------------------------------- %
-
-
-
-
-
-
-
-
-
-
-
 
 
