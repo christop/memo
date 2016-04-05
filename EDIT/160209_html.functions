@@ -60,6 +60,7 @@
        SRCURL=`echo $THISSRC | sed 's/ /\n/g'   | # SPACES TO NEWLINES
                sed "/\.functions$/s/^/XXX/g"    | # MARK LINES WITH .functions EXTENSION
                sed "/\.[a-z]\{2,4\}$/s/^/XXX/g" | # MARK LINES WITH 2-4 CHAR EXT
+               sed "/\/[0-9]*$/s/^/XXX/g"       | # MARK LINES WITH ENDING WITH /0000
                grep "^XXX" | sed 's/^XXX//'     | # SELECT AND REMOVE MARK
                head -n 1`                         # SELECT FIRST
         LINES=`echo $THISSRC | sed "s/ /\n/g"   | # SPACES TO NEWLINES
