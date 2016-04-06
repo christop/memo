@@ -12,7 +12,7 @@
 
   TMPDIR=.
   REFURL="http://freeze.sh/etherpad/export/_/references.bib"
-  PANDOCACTION="pandoc --ascii -r markdown -w html"
+  PANDOCACTION="pandoc --ascii -r markdown -w html -S"
   COMSTART='<!--'; COMCLOSE='-->'
   HEADMARK="= FROM MDSH START ="
   FOOTMARK="= FROM MDSH END ="
@@ -109,20 +109,10 @@
   cp $HTML `echo $SRCDUMP | sed 's/\.[a-z]*$/.html/'`
   touch ${TMPID}.splitlist # MAKE EXIST
 
-## GET REFERENCE FILE
-#  BIBTMP=${TMPID}.bibtmp
-#  wget --no-check-certificate \
-#       -q -O - $REFURL     | #
-#  sed 's/@movie/@misc/g'   | #
-#  bib2xml                  | #
-#  sed ":a;N;\$!ba;s/\n//g" | #
-#  sed 's/>[ ]*</></g'      | #
-#  sed 's/<mods /\n&/g'     | #
-#  sed 's/<\/mods>/&\n/g'   | #
-#  tee > $BIBTMP
 # GET REFERENCE FILE
   BIBTMP=${TMPID}.bibtmp
-  cat JUNK/references.bib  | #
+  wget --no-check-certificate \
+       -q -O - $REFURL     | #
   sed 's/@movie/@misc/g'   | #
   bib2xml                  | #
   sed ":a;N;\$!ba;s/\n//g" | #
@@ -130,6 +120,17 @@
   sed 's/<mods /\n&/g'     | #
   sed 's/<\/mods>/&\n/g'   | #
   tee > $BIBTMP
+
+# GET REFERENCE FILE
+# BIBTMP=${TMPID}.bibtmp
+# cat JUNK/references.bib  | #
+# sed 's/@movie/@misc/g'   | #
+# bib2xml                  | #
+# sed ":a;N;\$!ba;s/\n//g" | #
+# sed 's/>[ ]*</></g'      | #
+# sed 's/<mods /\n&/g'     | #
+# sed 's/<\/mods>/&\n/g'   | #
+# tee > $BIBTMP
 
 
   for THISDUMP in $SRCDUMP `cat ${TMPID}.splitlist | sort -u`
