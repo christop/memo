@@ -188,27 +188,23 @@
 
       tac $HTML | #
       sed -n "/<!--.*${HEADMARK}.*-->$/,\$p" | #
-      tac > ${HTML}.tmp
-      echo "" >> ${HTML}.tmp
+      tac                                            >  ${HTML}.tmp
+      echo ""                                        >> ${HTML}.tmp
 
     # BUG: INCLUDES INTERPUNCTUATION
     # sed -i '/^<!-- /!s,\([>]*\)\(http.\?://[^ <]*\),\1<a href="\2" class="linkify">\2</a>,g' $THISDUMP
 
-      cat $THISDUMP               | #
-      sed "s/[ \t]*$APND//g"      | # DOUBLED FROM FUNCTIONS (BUG?!)
-      sed "s/[ \t]*$ESC//g"       | # DOUBLED FROM FUNCTIONS (BUG?!)
-      sed "/^${COMSTART}.*${COMCLOSE}$/s/---/-_/g" | #
-     #tidy -config tc.txt         | #
-     #sed -e :a \
-     #    -e '$!N;s/=[ ]*\n"/="/;ta' \
-     #    -e 'P;D'                | # REAPPEND UNTIDY TIDY BREAK (=")
-      tee >> ${HTML}.tmp
+      cat $THISDUMP                                     | #
+      sed "s/[ \t]*$APND//g"                            | # DOUBLED FROM FUNCTIONS (BUG?!)
+      sed "s/[ \t]*$ESC//g"                             | # DOUBLED FROM FUNCTIONS (BUG?!)
+      sed "/^${COMSTART}.*${COMCLOSE}$/s/---/-_/g"      | #
+      sed -e :a -e '$!N;s/[ ]*\n<!--/<!--/;ta' -e 'P;D' | # RM EMPTY LINES BETWEEN COMMENTS
+      tee                                            >> ${HTML}.tmp
     
+      echo ""                                        >> ${HTML}.tmp
       sed -n "/<!--.*${FOOTMARK}.*-->$/,\$p" ${HTML} >> ${HTML}.tmp
     
       mv ${HTML}.tmp $HTML
-
-
 
       rm $THISDUMP
 
