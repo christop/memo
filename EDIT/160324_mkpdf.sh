@@ -3,7 +3,7 @@
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.                                #
 # --------------------------------------------------------------------------- #
 
-  MAIN=EDIT/160201_hilxash.mdsh
+  MAIN=EDIT/160201_hilxalsh.mdsh
 
   TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
   SRCDUMP=${TMPID}.maindump
