@@ -26,8 +26,6 @@
             -dEmbedAllFonts=true                 \
             -dAutoRotatePages=/None              \
             -sCannotEmbedFontPolicy=Error        \
-            -dPDFX \
-            -dCompatibility=1.3 \
             -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
             -f tmp.pdf > /dev/null
           rm tmp.pdf
@@ -60,8 +58,6 @@
              -dEmbedAllFonts=true                 \
              -dAutoRotatePages=/None              \
              -sCannotEmbedFontPolicy=Error        \
-             -dPDFX \
-             -dCompatibility=1.3 \
              -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
             -f tmp.pdf > /dev/null
           rm tmp.pdf
