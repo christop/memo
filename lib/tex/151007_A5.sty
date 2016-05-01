@@ -618,6 +618,18 @@
     \fontsize{6pt}{7pt}\selectfont
   }{\end{alltt}}
 
+
+
+  % TODO!
+  \newenvironment{fillbatim}
+  {\newpage
+    \addtolength{\baselineskip}{\fill}
+     \VerbatimEnvironment%
+      \begin{Verbatim}[fontsize=\relsize{-2},fontseries=b]}%
+      {\end{Verbatim}}
+
+
+
  % \newenvironment{werbatim}%
  % {\vskip\baselineskip\VerbatimEnvironment
  %  \scalefont{.5}
