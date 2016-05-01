@@ -185,7 +185,7 @@
  ====
 
   The point is not that you can do things with Free Software that you
-  could not do without it. The point is that you do thing differently.
+  could not do without it. The point is that you do things different.
 
 % =========================================================================== %
 % --------------------------------------------------------------------------- %
@@ -256,9 +256,9 @@
 
  ====
 
-  So maybe it's not about printmaking in the (traditional)/anachronistic
-  sense of a ink trapped workshop but in the creative relation of
-  form and technology.
+  Maybe it's not about printmaking
+  in the (traditional)/anachronistic sense of a ink trapped workshop
+  but in the creative relation of form and technology.
   
   Anyway. This is not the answer to a problem but the first step on journey
 
