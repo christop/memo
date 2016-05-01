@@ -19,7 +19,7 @@
 # INCLUDE/COMBINE FUNCTIONS
 # --------------------------------------------------------------------------- #
   FUNCTIONSBASIC="lib/sh/201602_basic.functions"
-   FUNCTIONSPLUS="EDIT/160127_pdf.functions"
+   FUNCTIONSPLUS="EDIT/160127_pdf.functions EDIT/160418_demo.functions"
        FUNCTIONS=$TMPID.functions
   cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
   source $FUNCTIONS
