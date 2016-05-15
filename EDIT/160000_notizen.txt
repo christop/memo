@@ -1,7 +1,4 @@
 
-
-----
-
 > 24. Avoid software. The problem with software is that everyone has it.
 > 22. Make your own tools. Hybridize your tools in order to build unique things.
 >     Even simple tools that are your own can yield entirely new avenues of exploration.
@@ -54,13 +51,36 @@
 
 ----
 
-Gated platforms -> http://automatist.org/blog/rip-rss
+  Gated platforms -> http://automatist.org/blog/rip-rss
 
-http://en.wikipedia.org/wiki/Gated_community
-http://en.wikipedia.org/wiki/Fortification
-http://en.wikipedia.org/wiki/Privately_owned_public_space
+  http://en.wikipedia.org/wiki/Gated_community
+  http://en.wikipedia.org/wiki/Fortification
+  http://en.wikipedia.org/wiki/Privately_owned_public_space
 
 ----
+
+  aeon.co/essays/innovation-is-overvalued-maintenance-often-matters-more
+  -> en.wikipedia.org/wiki/Micro-innovation
+  new <-> adapted ?
+
+----
+
+  a zine as a frontend
+  computing culture
+
+----
+
+  Felix Stalder:
+  Kultur der Digitalität
+
+  http://www.suhrkamp.de/download/Blickinsbuch/9783518126790.pdf
+
+> Diese sind in der Alltagserfahrung jedoch kaum sichtbar
+> und werden daher oft ignoriert, ohne dass sie deswegen
+> verschwinden oder an Bedeutung verlieren.
+
+----
+
 
 
 
