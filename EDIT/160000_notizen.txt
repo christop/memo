@@ -223,6 +223,70 @@ scalability?
 > a unique set of needs.
 > [*](https://en.wikipedia.org/wiki/Situational_application)
 
-
 -------
+
+% INTERNATIONALIZATION
+
+> The questions of "otherness" are rarely posed in relation to
+> software. This is because universality figures so large in
+> software. Software makes historically and materially specific
+> claims to universality (think of Java's "Write once, run anywhere"
+> promise). This tends to push questions of otherness in software
+> aside. By virtue of the notions of universality attached to
+> numbering systems (such as decimal and binary), to computation
+> (Universal Turing Machine), and to global technoculture itself,
+> software seems virulently universal. When figures of otherness
+> appear around software, they tend to be pathological.
+> Pathological software forms such as viruses, worms, trojan horses,
+> or even bugs are one facet of otherness marked in software.
+> Much of the architecture and design, as well as much everyday
+> work, pivots on security measures meant to regulate the entry and
+> presence of these others, and at the same time to permit software
+> to translate smoothly between institutional, political, linguistic
+> and economic contexts.
+> [@[p.153]mackenzie:2006:internationalization]
+
+> Technically universal yet abstractly local,
+> commercial internationalization focuses
+> on consumption and use of software,
+> not its distribution or production
+> [@[p.155]mackenzie:2006:internationalization]
+
+
+% INTERFACE
+
+> In computing, interfaces link software and hardware to each other
+> and to their human users or other sources of data. A typology of
+> interfaces thus reads:
+> 
+> 1. hardware that connects users to hardware; typically input/output
+>    devices such as keyboards or sensors, and feedback devices such
+>    as screens or loudspeakers;
+> 2. hardware that connects hardware to hardware; such as network
+>    interconnection points and bus systems;
+> 3. software, or hardware-embedded logic, that connects hardware to
+>    software; the instruction set of a processor or device drivers,
+>    for example.
+> 4. specifications and protocols that determine relations between 
+>    software and software, that is, application programming
+>    interfaces (APIs);
+> 5. symbolic handles, which, in conjunction with (a), make software
+>    accessible to users; that is, "user interfaces", often mistaken
+>    in media studies for "interface" as a whole.
+> [@[p.155]cramerfuller:2006:interface]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
