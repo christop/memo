@@ -276,7 +276,13 @@ scalability?
 > [@[p.155]cramerfuller:2006:interface]
 
 
+----
 
+> Computers are developed for a business function, because it speeds up
+> the process of developing designs for commerce. Drawing on the other hand,
+> has to do with transforming the mind. The two things have nothing to do
+> with one another.
+> [*](http://www.itsnicethat.com/features/milton-glaser-ethics-design-170516)
 
 
 
