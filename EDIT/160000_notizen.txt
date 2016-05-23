@@ -284,13 +284,26 @@ scalability?
 > with one another.
 > [*](http://www.itsnicethat.com/features/milton-glaser-ethics-design-170516)
 
+----
 
+> There are technical and cultural aspects to the producing maps.
+> In this sense, maps are biased
+> [*](https://en.wikipedia.org/wiki/Cartography#Deconstruction)
 
+> The basic process of wayfinding involves four stages:
+>
+> 1. Orientation is the attempt to determine one's location,
+>    in relation to objects that may be nearby and the
+>    desired destination.
+> 2. Route decision is the selection of a course of direction
+>    to the destination.
+> 3. Route monitoring is checking to make sure that the selected
+>    route is heading towards to the destination.
+> 4. Destination recognition is when the destination is recognized.
+>
+> [*](https://en.wikipedia.org/wiki/Wayfinding)
 
-
-
-
-
+[->](https://en.wikipedia.org/wiki/Waymarking)
 
 
 
