@@ -1,6 +1,5 @@
 
   \usepackage[utf8]{inputenc}
- %\usepackage[utf8x]{inputenc}
   \renewcommand{\encodingdefault}{T1}
 
 % \usepackage[showframe]{geometry}
@@ -36,9 +35,8 @@
   \usepackage{fancyhdr}
   \usepackage{fancyvrb}
   \usepackage{csquotes}
- %\usepackage[style=fiwi,natbib=true,backend=biber]{biblatex}
   \usepackage{bibentry}
-  \nobibliography*
+ %\nobibliography*
   \usepackage{mflogo}
   \usepackage{xspace}
   \usepackage[activate={true,nocompatibility},
@@ -67,7 +65,6 @@
   \newunicodechar{⎈}{\hspace{-.2em}
              \includegraphics[trim=2cm 2cm 2cm 2cm,clip,height=.6\baselineskip]%
              {lib/v/symbols/2388.pdf}}
-
 
 % --------------------------------------------------------------------------- %
 %  B A S I C 
@@ -117,19 +114,14 @@
 %  T A B L E   O F   C O N T E N T
 % --------------------------------------------------------------------------- %
   \setlength{\cftbeforetoctitleskip}{-3em}
- %\setlength{\cftaftertoctitleskip}{1.5em}
   \setlength{\cftaftertoctitleskip}{0pt}
- %\setlength{\cftbeforechapskip}{.6em}
   \renewcommand{\contentsname}{}
   \setlength{\cftparskip}{\fill} % FILL PAGE
   \tocloftpagestyle{empty}
 
   \newcommand{\tocfontstyle}{\scalefont{.75}}
   \renewcommand\cftchapfont{\tocfontstyle}
- %\renewcommand\cftsecfont{\LARGE}
   \renewcommand\cftchappagefont{\tocfontstyle}
- %\renewcommand\cftsecpagefont{\LARGE}
-
 
 % --------------------------------------------------------------------------- %
 %  F O O T N O T E S 
@@ -169,9 +161,6 @@
   \let\Subsubsection\subsubsection
   \renewcommand\subsubsection[1]{\hxtrue\Subsubsection*{#1}\hxfalse}
 
-
-
-
 % \index produces error if within \section{} <- fancyhdr
   \let\INDEX\index
   \renewcommand\index[1]{%
@@ -185,7 +174,6 @@
   \begingroup%
   \footnotetrue\Footnote{#1}%
   \endgroup}
-
 
 % --------------------------------------------------------------------------- %
 %  P A G E   C O M M A N D S
@@ -222,12 +210,6 @@
   \ifthispageodd{}{\emptypage}
  }
 % --------------------------------------------------------------------------- %
-
-% --------------------------------------------------------------------------- %
-%  Q R
-% --------------------------------------------------------------------------- %
-
-
 
 % --------------------------------------------------------------------------- %
 %  F O R M A T
@@ -280,12 +262,6 @@
   % http://www.forkosh.com/pstex/latexcommands.htm
    \normalfont\normalsize%
   }
-
- %\newcommand{\rmstandard}{iqc} % Quattrocento
- %\newcommand{\sfstandard}{iqc} % Quattrocento
-
-
-
 
 % =========================================================================== %
   \newcommand{\setstandardfonts}{ % DEFINE STANDARD FONTS
@@ -351,14 +327,10 @@
    %\renewcommand{\AtEndQuote}{}
 % ........................................................................... %
   }
-
-
 % =========================================================================== %
-
 % --------------------------------------------------------------------------- %
 % L I S T S
 % --------------------------------------------------------------------------- %
-
 % =========================================================================== %
   \newcommand{\setstandarditemize}{ % DEFINE STANDARD ITEMIZE ENVIRONMENT
 % ........................................................................... %
@@ -369,9 +341,6 @@
 % ........................................................................... %
   }
 % =========================================================================== %
-
-
-
 % --------------------------------------------------------------------------- %
 % P A G E   H E A D E R /  F O O T E R
 % --------------------------------------------------------------------------- %
@@ -400,47 +369,8 @@
  %\usepackage[style=authortitle-icomp,natbib=true,backend=biber]{biblatex}
   \usepackage[style=verbose-ibid,natbib=true,backend=biber]{biblatex}
 
-
   \AtEveryCitekey{\clearfield{url}}
   \AtEveryCitekey{\clearfield{note}}
-
-  %\renewbibmacro*{director}{
-  %\ifpunct{}{}\printnames[director]{author}
-  %}
-  %\DeclareFieldFormat{season}{ {\textsc\emph{season}} #1}
-  %\DeclareFieldFormat{episode}{ {\textsc\emph{episode}} #1}
-
-% \renewcommand\cite[1]{%
-%  \iffootnote 
-%   { \mbox{\tiny\fullcite{#1}}}
-%  \else
-%   \footnote{\fullcite{#1}}%
-%  \fi
-% }
-
-% \let\oldcitep\citealp
-% \makeatletter
-% \renewcommandtwoopt\citep[3][][]{%
-% \iffootnote 
-%  \begingroup\protected\def\harvardand{\&}%
-%  \@ifmtarg{#1}%
-%  { {\tiny\fullcite{#3}}}%
-%  {\@ifmtarg{#2}%
-%  { {\tiny\fullcite{#3}, #1}}%
-%  { {\tiny\fullcite{#3}, #1, #2}}}%
-%  \endgroup%
-% \else
-%  \begingroup\protected\def\harvardand{\&}%
-%  \@ifmtarg{#1}%
-%  {\footnote{\fullcite{#3}}}%
-%  {\@ifmtarg{#2}%
-%  {\footnote{\fullcite{#3}, #1}}%
-%  {\footnote{\fullcite{#3}, #1, #2}}}%
-%  \endgroup%
-% \fi
-% }
-% \makeatother
-% \protected\def\harvardand{and}
 
    \let\CITE\cite
    \renewcommand\cite[1]{%
@@ -471,8 +401,7 @@
   }
   \makeatother
 
-
-
+% =========================================================================== %
 % --------------------------------------------------------------------------- %
 %  .MDSH  C O M M A N D S
 % --------------------------------------------------------------------------- %
@@ -481,9 +410,6 @@
   \small{\vspace{-0.5\baselineskip} #1}
   \vspace{10pt plus 20pt minus 5pt}
   }
-
-
-
 % --------------------------------------------------------------------------- %
    \newcommand\spread[3]{%
    #3
@@ -491,10 +417,7 @@
                scale=1,pages=#2]{#1}
   }
 % --------------------------------------------------------------------------- %
-
-% --------------------------------------------------------------------------- %
   \usepackage{bophook}
-
   \newif\ifdoimpose
   \newcounter{imposethis}
   \newcounter{stopimpose}
@@ -524,31 +447,7 @@
   \setcounter{didimpose}{\value{page}}%          % REMEMBER IF DONE
   \fi\fi}%
   }}\makeatother
-
-
 % --------------------------------------------------------------------------- %
-%  .MDSH  E N V I R O N M E N T S
-% --------------------------------------------------------------------------- %
-
- 
-
-
-
-% http://tex.stackexchange.com/questions/1082/defining-a-custom-wrapfig-environment?rq=1
-  \newenvironment{wrapinfo}
-  {\wrapfigure{i}{0.25\textwidth}\scalefont{.6}\vspace{-5pt}}
-  {\vspace{-10pt}\endwrapfigure}
-
-  \setlength{\wrapoverhang}{.15\marginparwidth}
-
-
-
-
-
-
-
-
-
   \newcommand{\intro}{
 
   \sectionfont{\fontfamily{phk}\selectfont\relscale{1.5}\setstretch{0.7}\mdseries}
@@ -557,12 +456,9 @@
  %\RaggedRight
   \raggedright % Flattersatz
   }
-
+% --------------------------------------------------------------------------- %
   \newcommand\blank{ }
-
-
-% +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
-
+% --------------------------------------------------------------------------- %
   \newcommand{\resetall}{
    \justifying % ragged2e
    \setstandardfonts
@@ -575,8 +471,15 @@
    \flushbottom
    \resetfont
   }
-
-% +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+% --------------------------------------------------------------------------- %
+%  .MDSH  E N V I R O N M E N T S
+% --------------------------------------------------------------------------- %
+% http://tex.stackexchange.com/questions/1082/defining-a-custom-wrapfig-environment?rq=1
+  \newenvironment{wrapinfo}
+  {\wrapfigure{i}{0.25\textwidth}\scalefont{.6}\vspace{-5pt}}
+  {\vspace{-10pt}\endwrapfigure}
+  \setlength{\wrapoverhang}{.15\marginparwidth}
+% --------------------------------------------------------------------------- %
+% =========================================================================== %
   \resetall % <- START WITH STANDARDS
-
 
