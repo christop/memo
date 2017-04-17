@@ -5,7 +5,7 @@
 % DOCUMENTCLASS: [12pt,cleardoubleempty]{scrbook}
 % USEPACKAGE: 170416_A5
 
-% PDFXTITLE: $(echo echo) echo $(echo): commandline poetics
+% PDFXTITLE: $(echo echo) echo $(echo): Command Line Poetics
 % PDFXAUTHOR: Christoph Haag
 % PDFXORG: LAFKON Publishing
 % MKPDFXCOMPLIANT:
