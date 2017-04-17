@@ -1,0 +1,24 @@
+
+% ----------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170416_A5.functions
+% ----------------------------------------------------------- %
+% DOCUMENTCLASS: [12pt,cleardoubleempty]{scrbook}
+% USEPACKAGE: 170416_A5
+
+% PDFXTITLE: $(echo echo) echo $(echo): commandline poetics
+% PDFXAUTHOR: Christoph Haag
+% PDFXORG: LAFKON Publishing
+% MKPDFXCOMPLIANT:
+% ----------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170417_pdf.functions
+
+% ----------------------------------------------------------- %
+% FRONTCOVER: 170416_clipoetics-A5-cover.svg
+% =========================================================== %
+% INCLUDE: 150730_clipoetics.mdsh
+
+% =========================================================== %
+% BACKCOVER: 170416_clipoetics-A5-cover.svg
+% ----------------------------------------------------------- %
+
+

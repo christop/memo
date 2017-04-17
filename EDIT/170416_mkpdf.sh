@@ -2,37 +2,30 @@
 
 # THIS IS A FRAGILE SYSTEM, HANDLE WITH CARE.
 # --------------------------------------------------------------------------- #
-
-  MAIN=Behind_The_Smart_World.mdsh
-
-
-  TMPDIR=. ;  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
-  SRCDUMP=${TMPID}.maindump
-  OUTDIR=FREEZE
-  SELECTLINES="tee"
-  TMPTEX=${TMPID}.tex
+  MAIN="$1";PDF="$2"
+# --------------------------------------------------------------------------- #
+  SHDIR=`dirname \`realpath $0\``;cd $SHDIR
+  if [ ! -f "$MAIN" ]; then exit 0; fi
+  if [ `echo $PDF | grep "\.pdf$" | #
+        wc -c` -lt 2 ]; then exit 0; fi
+  PDF=`basename $2`
 
 # =========================================================================== #
-# CONFIGURATION                                                               #
-# --------------------------------------------------------------------------- #
-  source lib/sh/prepress.functions
-
-# INCLUDE/COMBINE FUNCTIONS
-# --------------------------------------------------------------------------- #
-  FUNCTIONSBASIC=lib/sh/201512_basic.functions
-   FUNCTIONSPLUS=lib/sh/151208_pdf.functions
-       FUNCTIONS=$TMPID.functions
-  cat $FUNCTIONSBASIC $FUNCTIONSPLUS > $FUNCTIONS
-  source $FUNCTIONS
-
-# --------------------------------------------------------------------------- #
-# GET BIBREF FILE
-# --------------------------------------------------------------------------- #
+# CONFIGURE                                                                   #
+# =========================================================================== #
+  FUNCTIONSBASIC="../lib/sh/201701_basic.functions"
+  OUTDIR="../_" ; TMPDIR="."
   REFURL="http://freeze.sh/etherpad/export/_/references.bib"
-  # wget --no-check-certificate \
-  #      -O ${TMPID}.bib $REFURL > /dev/null 2>&1
-  getFile $REFURL ${TMPID}.bib
-
+  SELECTLINES="tee"
+# -------------------------------------------------------------------------- #
+  TMPID=$TMPDIR/TMP`date +%Y%m%H``echo $RANDOM | cut -c 1-4`
+  SRCDUMP=${TMPID}.maindump ; TMPTEX=${TMPID}.tex
+  FUNCTIONS="$TMPID.functions"; cat $FUNCTIONSBASIC > $FUNCTIONS
+# -------------------------------------------------------------------------- #
+# INCLUDE                                                                     #
+# -------------------------------------------------------------------------- #
+  source ../lib/sh/prepress.functions
+  source $FUNCTIONS
 # --------------------------------------------------------------------------- #
 # DEFINITIONS SPECIFIC TO OUTPUT
 # --------------------------------------------------------------------------- #
@@ -49,127 +42,57 @@
   CITEOPEN="\cite{"   ; CITECLOSE="}"
 # --------------------------------------------------------------------------- #
   CITEPOPEN="\citep[" ; CITEPCLOSE="]{"
-# =========================================================================== #
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # --------------------------------------------------------------------------- #
-# ACTION STARTS HERE!
+
+# =========================================================================== #
+# ACTION STARTS NOW!
+# =========================================================================== #
+# GET BIBREF FILE
+# --------------------------------------------------------------------------- #
+  getFile $REFURL ${TMPID}.bib
+# --------------------------------------------------------------------------- #
+# DO CONVERSION
 # --------------------------------------------------------------------------- #
   mdsh2src $MAIN
-
 
   if [ `ls $SRCDUMP 2>/dev/null | wc -l` -gt 0 ]; then
 # --------------------------------------------------------------------------- #
 # WRITE TEX SOURCE
 # --------------------------------------------------------------------------- #
-  TMPTEXSANSEXT=`echo $TMPTEX | rev | cut -d "." -f 2- | rev`
+  echo "\documentclass[10pt,cleardoubleempty]{scrbook}"         >  $TMPTEX
+  cat   ${TMPID}.preamble                                       >> $TMPTEX
+  echo "\bibliography{${TMPID}.bib}"                            >> $TMPTEX
+  echo "\begin{document}"                                       >> $TMPTEX
+  cat   $SRCDUMP                                                >> $TMPTEX
+  echo "\end{document}"                                         >> $TMPTEX
 
-  echo "\documentclass[10pt,cleardoubleempty]{scrbook}" >  $TMPTEX
-  echo "\usepackage{lib/tex/151208_A5}"                 >> $TMPTEX
-  echo "\bibliography{${TMPID}.bib}"                    >> $TMPTEX
-# PDF/X COMPLIANCY
-  echo "\usepackage[x-1a]{pdfx}"                        >> $TMPTEX
-  echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" > pdfx-1a.xmp
-  cp lib/icc/FOGRA39L.icc .
-  echo "\Keywords{pdfTeX\sep PDF/X-1a\sep PDF/A-b}
-  \Title{Behind the Smart World}
-  \Author{LAFKON Publishing}
-  \Org{servus.at, Linz}
-  \Doi{123456789}" > ${TMPTEXSANSEXT}.xmpdata
-  echo '\pdfpageattr{/MediaBox [0 0 436 612]
-               /TrimBox [8 8 428 604]}
-        \pdfcatalog{
-        /OutputIntents [ <<
-       /Info (none)
-      /Type /OutputIntent
-     /S /GTS_PDFX
-    /OutputConditionIdentifier (OFCOM_PO_P1_F60_95)
-   /RegistryName (http://www.color.org/)
-   >> ]
-       }'                                               >> $TMPTEX
-  echo "\begin{document}"                               >> $TMPTEX
-# --------------------------------------------------------------------------- #
-# LAST MINUTE CORRECTIONS (NOT SO NICE)
-# --------------------------------------------------------------------------- #
-  sed -i -e 's/\(\([0-9]\)\+\)\(st\|nd\|rd\|th\)\+\b/\1\\ts{\3}/g' $SRCDUMP
-  sed -i "s/--\\\textgreater{}/\\\ding{222}/g"                     $SRCDUMP
-
- # STILL DEBUGGING <- CLEAN THIS UP
- #sed -i '/http.\?:\/\//s/\\index{[a-zA-Z,. ]*}//g' $SRCDUMP
-  sed -i '/http.\?:\/\//s/\\index{[^}]*}//g' $SRCDUMP
-# sed -i 's/\(\bhttp.\?:[^ }]*\)[ $]*/\\urlsplit{\1}/g' $SRCDUMP # SEEMED TO WORK?
-# sed -i 's/\(\bhttp.\?:[^ }$]*\)/\\urlsplit{\1}/g' $SRCDUMP
-  sed -i 's/\(\bhttp.\?:[^ }$]*\)\(.\)/\\urlsplit{\1}\2/g' $SRCDUMP
-
-
-  cat   $SRCDUMP                                        >> $TMPTEX
-  echo "\end{document}"                                 >> $TMPTEX
- 
+  if [ `echo $THISDOCUMENTCLASS | wc -c` -gt 2 ]; then
+  sed -i "s/^\\\documentclass.*}$/\\\documentclass$THISDOCUMENTCLASS/" $TMPTEX
+  fi
 # --------------------------------------------------------------------------- #
 # MAKE PDF
 # --------------------------------------------------------------------------- #
-
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-  biber `echo ${TMPTEX} | rev | cut -d "." -f 2- | rev`
-  makeindex -s ${TMPID}.ist ${TMPTEXSANSEXT}.idx
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-  pdflatex -interaction=nonstopmode \
-            $TMPTEX  # > /dev/null
-
-
-
-  cp ${TMPID}.pdf debug.pdf
-  mv ${TMPID}.pdf __/BTSW_`date +%y%m%d`.pdf
-
-  else 
-
-  echo "not existing"
-
+  pdflatex -interaction=nonstopmode $TMPTEX     # > /dev/null
+  biber --nodieonerror `echo ${TMPTEX} | rev  | #
+                        cut -d "." -f 2- | rev` #
+  makeindex -s ${TMPID}.ist ${TMPID}.idx
+  pdflatex -interaction=nonstopmode $TMPTEX     # > /dev/null
+  pdflatex -interaction=nonstopmode $TMPTEX     # > /dev/null
+  mv ${TMPID}.pdf $OUTDIR/$PDF
+# --------------------------------------------------------------------------- #
+  else echo "not existing"; 
+# --------------------------------------------------------------------------- #
   fi
-
 # =========================================================================== #
-# CLEAN UP
+# CLEAN UP (MAKE SURE $TMPID IS SET FOR WILDCARD DELETE)
 
-# SHOULD HAVE rmif FUNCTION
-  rm $SRCDUMP
-  rm ${TMPID}*.[1-9]*.*
-  rm ${TMPID}*.functions
-  rm ${TMPID}*.included
-  rm ${TMPID}.tex
-  rm ${TMPID}.aux
- #rm ${TMPID}.pdf
-  rm ${TMPID}.log
-  rm ${TMPID}*.pdf
-  rm ${TMPID}*.bib
-  rm ${TMPID}*.wget
-  rm ${TMPID}*.info
-  rm ${TMPID}*.toc
-  rm ${TMPID}*.licenses
-  rm ${TMPID}*.qrurls
-  rm ${TMPID}SRC*.*
-# BIBER
-  rm ${TMPID}*.bbl
-  rm ${TMPID}*.bcf
-  rm ${TMPID}*.blg
- #rm ${TMPID}*.out
-  rm ${TMPID}*.run.xml
-# INDEX  
-  rm ${TMPID}.keywords
-  rm ${TMPID}.idx
-  rm ${TMPID}.ist
-  rm ${TMPID}.ilg
-  rm ${TMPID}.ind
-
-  rm ${TMPID}.xmpdata
-  rm FOGRA39L.icc
-  rm pdfx-1a.xmp*
-
-  if [ `ls ${TMPID}.fid 2>/dev/null | wc -l` -gt 0 ];then
-  rm ${TMPID}.fid
+  if [ `echo ${TMPID} | wc -c` -ge 4 ] && 
+     [ `ls ${TMPID}*.* 2>/dev/null | wc -l` -gt 0 ]
+  then
+        rm ${TMPID}*.*
   fi
+  rm FOGRA39L.icc pdfx-1a.xmp*
+
 
 exit 0;
-
 

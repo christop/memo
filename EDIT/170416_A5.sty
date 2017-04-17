@@ -1,0 +1,165 @@
+% ---------------------- %
+% BASED ON 150720_A5.sty %
+% ---------------------- %
+
+ \usepackage[utf8]{inputenc}
+ \usepackage{geometry}
+ \usepackage{pdfpages}
+ \usepackage{scalefnt}
+ \usepackage{pifont}
+
+% A5 + CROP (online-druck.biz)
+ \geometry{paperwidth=154mm,paperheight=216mm}
+
+ \setlength\oddsidemargin{.02\paperwidth}
+ \setlength\evensidemargin{-.05\paperwidth}
+ \setlength\topmargin{-.11\paperheight}
+ \setlength\textheight{.82\paperheight}
+ \setlength\textwidth{.7\paperwidth}
+
+% Keine "Schusterjungen"
+  \clubpenalty = 10000
+% Keine "Hurenkinder"
+  \widowpenalty = 100000
+  \displaywidowpenalty = 100000
+  \looseness=1
+
+% PREVENT HYPHENATION FOR WORDS STARTING WITH UPPERCASE
+  \uchyph=0
+
+  \renewcommand{\encodingdefault}{T1}
+
+  \newcommand{\ttstandard}{asc}
+  \newcommand{\rmstandard}{pju}
+  \newcommand{\sfstandard}{pju}
+
+  \renewcommand{\ttdefault}{\ttstandard}
+  \renewcommand{\rmdefault}{\rmstandard}
+  \renewcommand{\sfdefault}{\sfstandard}
+
+  \let\OldTexttt\texttt
+  \renewcommand{\texttt}[1]{%
+  \OldTexttt{\fontfamily{asc}%
+              \selectfont{%
+               \textbf{\scalefont{.8}{#1}}}}}
+
+% FOOTNOTES
+  \usepackage[hang,multiple]{footmisc}
+  \renewcommand{\footnotelayout}{\raggedright}
+
+% SMALLER DISTANCE FOOTNOTENUMBER AND TEXT
+  \let\oldfootnote\footnote
+% \, = small non-breaking space
+   \renewcommand\footnote[1]{\,\oldfootnote{#1}}
+
+  \setlength{\footnotemargin}{1em}
+
+  \setlength{\footskip}{15mm}
+ % ABSTAND TRENNLINIE FUSSNOTEN
+   \renewcommand{\footnoterule}{
+    \vspace*{5mm}
+     \noindent
+      \rule{\textwidth}{0.5pt}{
+       \vspace*{-3pt}
+  }}
+
+
+% HEADLINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \usepackage{sectsty}
+
+ \renewcommand*{\chapterheadstartvskip}{\vspace{10pt}}
+ \renewcommand*{\chapterheadendvskip}{\vspace{.5cm plus 5pt minus 5pt}}
+ 
+ \renewcommand*\thechapter{\hspace{-.5em}} % ?
+ \renewcommand*\thesection{\hspace{-.5em}}
+ \renewcommand*\thesubsection{\hspace{-.5em}}
+
+  \sectionfont{\fontfamily{aau}\selectfont\small}
+
+  \renewcommand\subsection[1]{
+   \bigskip\bigskip
+    \sloppy%
+    {\fontfamily{lju}\selectfont%
+      \large #1 }%
+       \bigskip%
+        \fussy%
+   }
+
+ \addtokomafont{subsubsection}{\medskip}
+  \subsubsectionfont{\fontfamily{pgd}\selectfont}
+
+ \parindent=0pt
+ \pagestyle{empty}
+
+ \newif\iffootnote
+ \let\Footnote\footnote
+ \renewcommand\footnote[1]{\begingroup\footnotetrue\Footnote{#1}\endgroup}
+
+% -------------------------------------------------------------------- %
+  \newcommand{\resetfont}{
+  % http://www.forkosh.com/pstex/latexcommands.htm
+    \normalfont%
+    \normalsize%
+   }
+% -------------------------------------------------------------------- %
+  \newcommand{\emptypage}{
+   \twocolumn[]\thispagestyle{empty}
+    \onecolumn}
+% -------------------------------------------------------------------- %
+
+% MAKE PAGE AMOUNT DIVIDABLE BY FOUR (-2 FOR BACK COVER)
+% https://groups.google.com/forum/#!topic/de.comp.text.tex/j8wWMv8lZaM
+\newcount\vs
+\newcount\vsi
+\newcommand\clearforend{
+  \mbox{}\clearpage
+  \pagestyle{empty}
+  \vs\thepage
+  \advance\vs by 1
+  \vsi\vs
+  \divide\vs by 4
+  \multiply\vs by 4
+  \ifnum\vs=\vsi\else\clearforend\fi
+}
+
+% --------------------------------------------------------------------------- %
+%  C I T A T I O N (FROM:151208_A5.sty)
+% --------------------------------------------------------------------------- %
+
+  \usepackage{twoopt,ifmtarg}
+ % https://www.sharelatex.com/learn/Biblatex_citation_styles
+  \usepackage[style=verbose-ibid,natbib=true,backend=biber]{biblatex}
+
+  \AtEveryCitekey{\clearfield{url}}
+  \AtEveryCitekey{\clearfield{note}}
+
+   \let\CITE\cite
+   \renewcommand\cite[1]{%
+    \iffootnote 
+     {\mbox{\tiny\CITE{#1}}}
+    \else
+     \footnote{\CITE{#1}}%
+    \fi
+   }
+
+  % NEEDS TESTING !!!
+  \let\oldcitep\citealp
+  \makeatletter
+  \renewcommandtwoopt\citep[3][][]{%
+  \iffootnote 
+   \@ifmtarg{#1}%
+   { {\CITE{#3}}}%
+   {\@ifmtarg{#2}%
+   { {\CITE{#3} \mbox{\ding{222} #1}}}%
+   { {\CITE{#3} \mbox{\ding{222} #1}, #2}}}%
+  \else
+   \@ifmtarg{#1}%
+   {\footnote{\CITE{#3}}}%
+   {\@ifmtarg{#2}%
+   {\footnote{\CITE{#3} \mbox{\ding{222} #1}}}%
+   {\footnote{\CITE{#3} \mbox{\ding{222} #1}, #2}}}%
+  \fi
+  }
+  \makeatother
+
