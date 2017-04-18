@@ -3,6 +3,7 @@
 % EXTENDFUNCTIONS: 170416_A5.functions
 % ----------------------------------------------------------- %
 % DOCUMENTCLASS: [12pt,cleardoubleempty]{scrbook}
+% USEPACKAGE: 150720_A5
 % USEPACKAGE: 170416_A5
 
 % PDFXTITLE: $(echo echo) echo $(echo): Command Line Poetics
@@ -10,7 +11,7 @@
 % PDFXORG: LAFKON Publishing
 % MKPDFXCOMPLIANT:
 % ----------------------------------------------------------- %
-% EXTENDFUNCTIONS: 170417_pdf.functions
+% EXTENDFUNCTIONS: 150720_pdf.functions
 
 % ----------------------------------------------------------- %
 % FRONTCOVER: 170416_clipoetics-A5-cover.svg
