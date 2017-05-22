@@ -1,6 +1,11 @@
+  THISFUNCTIONS="151026_dry.functions"
 
-   echo "\newcommand\drycc[1]{\mbox{\texttt{\upshape#1}}}" >> $SRCDUMP
- 
+  if [ `grep "% INCLUDED $THISFUNCTIONS" $SRCDUMP | #
+        wc -l` -lt 1 ];then  
+  write2src "% INCLUDED $THISFUNCTIONS"
+  echo "\newcommand\drycc[1]{\mbox{\texttt{\upshape#1}}}" >> $SRCDUMP
+  fi 
+
 # --------------------------------------------------------------------------- #
 
 function TREATCAMELCASE(){
