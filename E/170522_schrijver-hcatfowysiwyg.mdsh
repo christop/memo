@@ -6,7 +6,7 @@
 % USEPACKAGE: 151007_howix
 % USEPACKAGE: 170416_A5
 
-% ADD2PREAMBLE: \uchyph=1
+% ADD2PREAMBLE: \uchyph=0
 
 % PDFXTITLE: Eric Schrijver: Hacker Culture and the Fear of WYSIWYG
 % PDFXAUTHOR: Christoph Haag
