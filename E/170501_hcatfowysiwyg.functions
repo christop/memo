@@ -1,4 +1,11 @@
 
+# --------------------------------------------------------------------------- #
+# DO ONLY WRITE ONCE !!!
+# --------------------------------------------------------------------------- #
+  if [ `grep "% INCLUDED 170501_hcatfowysiwyg.functions" $SRCDUMP | #
+        wc -l` -lt 1 ];then
+
+  write2src "% INCLUDED 170501_hcatfowysiwyg.functions"
   write2src "\renewcommand*{\rmdefault}{pju}\normalfont"
   write2src "\renewcommand*{\embody}{\fontfamily{grm}\selectfont\relscale{.85}}"
   write2src "\renewcommand{\texttt}[1]{%
@@ -39,6 +46,7 @@
    write2src "\addtolength{\skip\footins}{\fill}"
    write2src "\raggedbottom"
 
+   fi
 
 # --------------------------------------------------------------------------- #
 
