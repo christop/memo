@@ -53,6 +53,12 @@ function DOCUMENTCLASS() {
 
 # --------------------------------------------------------------------------- #
 
+function ADD2PREAMBLE() { echo "$*" >> ${TMPID}.preamble ; }
+
+# --------------------------------------------------------------------------- #
+
+
+
 # =========================================================================== #
 # SHARED SVG FUNCTIONS
 # =========================================================================== #
@@ -88,37 +94,41 @@ function DOCUMENTCLASS() {
 
 function FRONTCOVER() {
 
-  XSHIFT="524.40925"
-  TRANSFORM="transform=\"translate($XSHIFT,0)\""
-
-  SVG="$1"
-  OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
+  CROP="10.63"
+  CANVASWIDTH="545.66876"
+  SVG="$1"; OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
+  if [ ! -f $OUT ]; then svgonlines $SVG $OUT ; fi
 
   if [ ! -f $OUT ]; then
        svgonlines $SVG $OUT 
   fi
 
-  SHIFT=""
+  XSHIFT=-`python -c "print $CANVASWIDTH - $CROP"`
+  TRANSFORM="transform=\"translate($XSHIFT,0)\""
   head -n 1 $OUT              >  supertmp.svg
-  echo "<g $SHIFT>"           >> supertmp.svg
+  echo "<g $TRANSFORM>"       >> supertmp.svg
   grep 'label=\"AUSSEN' $OUT  >> supertmp.svg
   echo "</g></svg>"           >> supertmp.svg
   sed -i "s/$BFOO/\n/g" supertmp.svg
   sed -i "s/$SFOO/ /g"  supertmp.svg
   inkscape --export-pdf=1.pdf \
            --export-text-to-path supertmp.svg
-  SHIFT="$TRANSFORM"
+  conformColor 1.pdf
+  XSHIFT="-$CROP"
+  TRANSFORM="transform=\"translate($XSHIFT,0)\""
   head -n 1 $OUT              >  supertmp.svg
-  echo "<g $SHIFT>"           >> supertmp.svg
+  echo "<g $TRANSFORM>"       >> supertmp.svg
   grep 'label=\"INNEN' $OUT   >> supertmp.svg
   echo "</g></svg>"           >> supertmp.svg
   sed -i "s/$BFOO/\n/g" supertmp.svg
   sed -i "s/$SFOO/ /g"  supertmp.svg
   inkscape --export-pdf=2.pdf \
            --export-text-to-path supertmp.svg
+  conformColor 2.pdf
   pdftk 1.pdf 2.pdf cat output ${TMPID}frontcover.pdf
 
   write2src "\includepdf[scale=1,pages=1-2]{${TMPID}frontcover.pdf}"
+  write2src "\setcounter{page}{1}"
 
   rm supertmp.svg 1.pdf 2.pdf
 }
@@ -127,35 +137,34 @@ function FRONTCOVER() {
 
 function BACKCOVER() {
 
-  XSHIFT="524.40925"
+  CROP="10.63"
+  CANVASWIDTH="545.66876"
+  SVG="$1"; OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
+  if [ ! -f $OUT ]; then svgonlines $SVG $OUT ; fi
+
+  XSHIFT=-`python -c "print $CANVASWIDTH - $CROP"`
   TRANSFORM="transform=\"translate($XSHIFT,0)\""
-
-  SVG="$1"
-  OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
-
-  if [ ! -f $OUT ]; then
-       svgonlines $SVG $OUT 
-  fi
-
-  SHIFT="$TRANSFORM"
   head -n 1 $OUT              >  supertmp.svg
-  echo "<g $SHIFT>"           >> supertmp.svg
-  grep 'label=\"AUSSEN' $OUT  >> supertmp.svg
+  echo "<g $TRANSFORM>"       >> supertmp.svg
+  grep 'label=\"INNEN' $OUT   >> supertmp.svg
   echo "</g></svg>"           >> supertmp.svg
   sed -i "s/$BFOO/\n/g" supertmp.svg
   sed -i "s/$SFOO/ /g"  supertmp.svg
   inkscape --export-pdf=2.pdf \
            --export-text-to-path supertmp.svg
-  SHIFT=""
+  conformColor 2.pdf
+  XSHIFT="-$CROP"
+  TRANSFORM="transform=\"translate($XSHIFT,0)\""
   head -n 1 $OUT              >  supertmp.svg
-  echo "<g $SHIFT>"           >> supertmp.svg
-  grep 'label=\"INNEN' $OUT   >> supertmp.svg
+  echo "<g $TRANSFORM>"       >> supertmp.svg
+  grep 'label=\"AUSSEN' $OUT  >> supertmp.svg
   echo "</g></svg>"           >> supertmp.svg
   sed -i "s/$BFOO/\n/g" supertmp.svg
   sed -i "s/$SFOO/ /g"  supertmp.svg
   inkscape --export-pdf=1.pdf \
            --export-text-to-path supertmp.svg
-  pdftk 1.pdf 2.pdf cat output ${TMPID}backcover.pdf
+  conformColor 1.pdf
+  pdftk 2.pdf 1.pdf cat output ${TMPID}backcover.pdf
 
   write2src "\clearforend"
   write2src "\includepdf[scale=1,pages=1-2]{${TMPID}backcover.pdf}"

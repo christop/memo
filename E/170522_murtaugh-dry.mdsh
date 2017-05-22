@@ -1,0 +1,32 @@
+
+% ---------------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170416_A5.functions
+% ---------------------------------------------------------------- %
+% DOCUMENTCLASS: [8pt,cleardoubleempty]{scrbook}
+% USEPACKAGE: 151007_howix
+% USEPACKAGE: 170416_A5
+
+% PDFXTITLE: Michael Murtaugh: Do (not) Repeat Yourself
+% PDFXAUTHOR: Christoph Haag
+% PDFXORG: LAFKON Publishing
+% MKPDFXCOMPLIANT:
+% ---------------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170418_howix.functions
+
+% ---------------------------------------------------------------- %
+% FRONTCOVER: 170522_dry-A5x2.svg
+% ================================================================ %
+
+% EXTENDFUNCTIONS: 151026_dry.functions
+
+% SUPERIMPOSE: 170522_dry-A5x2.svg 4-11
+% EMPTYPAGE:
+% EMPTYPAGE:
+% INCLUDE: 150930_murtaugh-dry.mdsh 56-284
+% EMPTYPAGE:
+% INCLUDE: 150930_murtaugh-dry.mdsh 287-460
+
+% ================================================================ %
+% BACKCOVER: 170522_dry-A5x2.svg
+% ---------------------------------------------------------------- %
+

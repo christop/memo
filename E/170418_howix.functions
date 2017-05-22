@@ -6,3 +6,72 @@ function TEXIN() { write2src "$*"; }
 
 # --------------------------------------------------------------------------- #
 
+function SUPERIMPOSE() {
+
+  
+( SVGSRC=`echo $* | sed 's/ /\n/g'    | # SPACES TO NEWLINES
+          grep "\.svg$" | head -n 1`    # SELECT FIRST ENDING WITH .pdf 
+   PAGES=`echo $* | sed "s/#/\n#/g"   | # HASH TO NEWLINES
+          grep -v "^#"                | # IGNORE LINES STARTING WITH HASH
+          sed 's/ /\n/g'              | # SPACES TO NEWLINES
+          sed "/[^0-9\\-]/d"          | # NO LINES WITH MORE THAN NUMS AND -
+          grep -v "^[ ]*$" | tail -n 1` # IGNORE EMPTY LINES, TAKE LAST MATCH
+  if [ `echo $PAGES | wc -c` -le 1 ]; then
+        PAGES=1
+  fi
+
+  P1=`echo $PAGES | cut -d "-" -f 1`
+  P2=`echo $PAGES | cut -d "-" -f 2`
+
+     PDF=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.pdf
+  SVGTMP=${TMPID}`echo $SVGSRC | md5sum | cut -c 1-4`.svg
+   MACRO="% something went wrong with $SVGSRC"
+
+    if [ -f $PDF ]; then
+      #echo "$PDF exists"
+       MACRO="\superimpose{$PDF}{$P1}{$P2}"
+  else
+
+  ISSVG=`echo $SVGSRC | grep "\.svg$" | wc -l`
+  if [ $ISSVG -gt 0 ]; then
+
+    getFile $SVGSRC $SVGTMP
+
+    if [ "X$SUCCESS" == "XYES" ]; then
+
+    svglayers2pdfpages $SVGTMP $PDF
+
+  # ----------------------------------------------------------------------- #
+  # INCLUDE IN DOCUMENT
+  # ----------------------------------------------------------------------- #
+    MACRO="\superimpose{$PDF}{$P1}{$P2}"
+
+   fi
+  fi
+ fi
+
+ write2src "$MACRO" ;)
+
+}
+
+# --------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------- #
+
+function EMPTYPAGE(){
+                          write2src "\emptypage"
+}
+
+# --------------------------------------------------------------------------- #
+
+function CLEARTORIGHT(){
+                          write2src "\cleartoright"
+}
+
+# --------------------------------------------------------------------------- #
+
+function CLEARTOLEFT(){
+                          write2src "\cleartoleft"
+}
+
+# --------------------------------------------------------------------------- #
+

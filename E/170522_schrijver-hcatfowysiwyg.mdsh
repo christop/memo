@@ -1,0 +1,31 @@
+
+% ---------------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170416_A5.functions
+% ---------------------------------------------------------------- %
+% DOCUMENTCLASS: [8pt,cleardoubleempty]{scrbook}
+% USEPACKAGE: 151007_howix
+% USEPACKAGE: 170416_A5
+
+% ADD2PREAMBLE: \uchyph=1
+
+% PDFXTITLE: Eric Schrijver: Hacker Culture and the Fear of WYSIWYG
+% PDFXAUTHOR: Christoph Haag
+% PDFXORG: LAFKON Publishing
+% MKPDFXCOMPLIANT:
+% ---------------------------------------------------------------- %
+% EXTENDFUNCTIONS: 170418_howix.functions
+
+% ---------------------------------------------------------------- %
+% FRONTCOVER: 170522_hcatfowysiwyg-A5x2.svg
+% ================================================================ %
+
+% EXTENDFUNCTIONS: 170501_hcatfowysiwyg.functions
+% SUPERIMPOSE: 170522_hcatfowysiwyg-A5x2.svg 2-20
+% TEXIN:   . \vspace{5cm} \vfill
+% INCLUDE: 160128_schrijver-hcatfowysiwyg.mdsh 1-510 
+
+% ================================================================ %
+% BACKCOVER: 170522_hcatfowysiwyg-A5x2.svg
+% ---------------------------------------------------------------- %
+
+

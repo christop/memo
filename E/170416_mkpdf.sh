@@ -25,6 +25,7 @@
 # INCLUDE                                                                     #
 # -------------------------------------------------------------------------- #
   source ../lib/sh/prepress.functions
+  source ../lib/sh/page.functions
   source $FUNCTIONS
 # --------------------------------------------------------------------------- #
 # DEFINITIONS SPECIFIC TO OUTPUT
