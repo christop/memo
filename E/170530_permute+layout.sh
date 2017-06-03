@@ -20,8 +20,8 @@
 # --------------------------------------------------------------------------- #
 # CONFIGURATION 
 # --------------------------------------------------------------------------- #
-  OUTDIR=../_
-  LAYOUT=EBL30NEU
+  LAYOUT="$2";PDFFINAL="$3"
+  SHDIR=`dirname \`realpath $0\``;OUTDIR=$SHDIR/../_
   TMPDIR=.;TMPID=$TMPDIR/XXX
 # --------------------------------------------------------------------------- #
 # VALIDATE (PROVIDED) INPUT 
@@ -159,8 +159,6 @@
   e "\end{document}"
 # --------------------------------------------------------------------------- #
   pdflatex -output-directory=$TMPDIR $TMPTEX # > /dev/null
-
-  PDFFINAL="drysticker.pdf"
   mv `echo $TMPTEX | sed 's/\.tex$/\.pdf/'` $OUTDIR/$PDFFINAL
 
 # --------------------------------------------------------------------------- #
