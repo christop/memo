@@ -21,7 +21,7 @@
 # CONFIGURATION 
 # --------------------------------------------------------------------------- #
   LAYOUT="$2";PDFFINAL="$3"
-  SHDIR=`dirname \`realpath $0\``;OUTDIR=$SHDIR/../_
+  SHDIR=`dirname \`realpath $0\``;OUTDIR=$SHDIR/../E
   TMPDIR=.;TMPID=$TMPDIR/XXX
 # --------------------------------------------------------------------------- #
 # VALIDATE (PROVIDED) INPUT 

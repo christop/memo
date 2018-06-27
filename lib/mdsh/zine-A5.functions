@@ -1,3 +1,14 @@
+# --------------------------------------------------------------------------- %
+#  ADD FORMAT FOR TEX
+# --------------------------------------------------------------------------- %
+# A5 + CROP (online-druck.biz)
+  if [ `grep -s "% SIZE IS SET" ${TMPID}.preamble | wc -l` -lt 1 ]
+  then
+  echo "% SIZE IS SET"                                 >> ${TMPID}.preamble
+  echo "\usepackage{geometry}"                         >> ${TMPID}.preamble
+  echo "\geometry{paperwidth=154mm,paperheight=216mm}" >> ${TMPID}.preamble
+  fi
+# --------------------------------------------------------------------------- %
 
 # --------------------------------------------------------------------------- #
 
@@ -6,12 +17,14 @@ function PDFXAUTHOR() { THISPDFXAUTHOR="$*"; }
 function PDFXORG()    { THISPDFXORG="$*";    }
 function MKPDFXCOMPLIANT() {
 
+  COLORPROFILE="$INCLUDEPATH/../lib/icc/FOGRA39L.icc"
+
 # PDF/X COMPLIANCY
 # ---------------- #
   echo "\usepackage[x-1a]{pdfx}"                       >> ${TMPID}.preamble
-  echo "<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>" > pdfx-1a.xmp
-  cp ../lib/icc/FOGRA39L.icc .
-
+  echo "<?xpacket begin=''
+         id='W5M0MpCehiHzreSzNTczkc9d'?>"              > $TMPDIR/pdfx-1a.xmp
+  cp "$COLORPROFILE" $TMPDIR
   echo "\Keywords{pdfTeX\sep PDF/X-1a\sep PDF/A-b}
   \Title{${THISPDFXTITLE}}
   \Author{${THISPDFXAUTHOR}}
@@ -35,8 +48,18 @@ function MKPDFXCOMPLIANT() {
 
 function USEPACKAGE() {
 
-  PACKAGE=`echo $1 | sed 's/ //g'`
-  echo "\usepackage{$PACKAGE}" >> ${TMPID}.preamble
+  PACKAGENAME=`echo $1 | sed 's/ //g'`
+  PACKAGEFILE=`ls ${INCLUDEPATH}/${PACKAGENAME}.* | #
+               grep "\.sty$" | head -n 1`
+
+  if [ -f "$PACKAGEFILE" ]
+   then
+       PACKAGETMP=${TMPID}.`basename ${PACKAGEFILE}`
+       cp "$PACKAGEFILE" ${PACKAGETMP}
+       PACKAGENAME=`basename ${PACKAGETMP} | sed 's/\.[a-z]*$//'`
+       echo "\usepackage{$PACKAGENAME}" >> ${TMPID}.preamble
+  fi 
+
 }
 
 # --------------------------------------------------------------------------- #
@@ -56,8 +79,26 @@ function DOCUMENTCLASS() {
 function ADD2PREAMBLE() { echo "$*" >> ${TMPID}.preamble ; }
 
 # --------------------------------------------------------------------------- #
+  if [ `grep -s "% MAKE PAGE AMOUNT DIVIDABLE BY 4" ${TMPID}.preamble | #
+        wc -l` -lt 1 ];then
+        echo "% MAKE PAGE AMOUNT DIVIDABLE BY 4 
+              % (-2 FOR BACK COVER)" >> ${TMPID}.preamble
+      # https://groups.google.com/forum/#!topic/de.comp.text.tex/j8wWMv8lZaM
+        echo '\newcount\vs
+              \newcount\vsi
+              \newcommand\clearforend{
+               \mbox{}\clearpage
+               \pagestyle{empty}
+               \vs\thepage
+               \advance\vs by 3
+               \vsi\vs
+               \divide\vs by 4
+               \multiply\vs by 4
+              \ifnum\vs=\vsi\else\clearforend\fi
+        }' >> ${TMPID}.preamble
+  fi
 
-
+# --------------------------------------------------------------------------- #
 
 # =========================================================================== #
 # SHARED SVG FUNCTIONS
@@ -88,20 +129,16 @@ function ADD2PREAMBLE() { echo "$*" >> ${TMPID}.preamble ; }
   }
 # =========================================================================== #
 
-
-
 # --------------------------------------------------------------------------- #
 
 function FRONTCOVER() {
 
-  CROP="10.63"
-  CANVASWIDTH="545.66876"
-  SVG="$1"; OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
-  if [ ! -f $OUT ]; then svgonlines $SVG $OUT ; fi
-
-  if [ ! -f $OUT ]; then
-       svgonlines $SVG $OUT 
-  fi
+  CROP="10.63";CANVASWIDTH="545.66"
+  SVGSRC="$1";SVGGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.svg
+  if [ ! -f $SVGGET ]; then getFile $SVGSRC $SVGGET ;fi
+  OUT=$TMPID`echo $SVGGET | md5sum | cut -c 1-8`.lines
+ 
+  if [ ! -f $OUT ]; then svgonlines $SVGGET $OUT ; fi
 
   XSHIFT=-`python -c "print $CANVASWIDTH - $CROP"`
   TRANSFORM="transform=\"translate($XSHIFT,0)\""
@@ -131,16 +168,19 @@ function FRONTCOVER() {
   write2src "\setcounter{page}{1}"
 
   rm supertmp.svg 1.pdf 2.pdf
+
 }
 
 # --------------------------------------------------------------------------- #
 
 function BACKCOVER() {
 
-  CROP="10.63"
-  CANVASWIDTH="545.66876"
-  SVG="$1"; OUT=$TMPID`echo $SVG | md5sum | cut -c 1-8`.lines
-  if [ ! -f $OUT ]; then svgonlines $SVG $OUT ; fi
+  CROP="10.63";CANVASWIDTH="545.66876"
+  SVGSRC="$1";SVGGET=${TMPID}`echo $PDFSRC | md5sum | cut -c 1-4`.svg
+  if [ ! -f $SVGGET ]; then getFile $SVGSRC $SVGGET ;fi
+  OUT=$TMPID`echo $SVGGET | md5sum | cut -c 1-8`.lines
+ 
+  if [ ! -f $OUT ]; then svgonlines $SVGGET $OUT ; fi
 
   XSHIFT=-`python -c "print $CANVASWIDTH - $CROP"`
   TRANSFORM="transform=\"translate($XSHIFT,0)\""

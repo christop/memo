@@ -1,2 +1,10 @@
 *.*.swp
 *.*.autosave
+*.*.[0-9]+
+E/*.pdf
+E/*.html
+
+src/**/*.*
+!src/**/*.xmp
+!src/**/*.remote
+

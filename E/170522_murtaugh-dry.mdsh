@@ -1,30 +1,34 @@
 
 % ---------------------------------------------------------------- %
-% EXTENDFUNCTIONS: 170416_A5.functions
+% EXTENDFUNCTIONS: ../lib/mdsh/zine-A5.functions
 % ---------------------------------------------------------------- %
 % DOCUMENTCLASS: [8pt,cleardoubleempty]{scrbook}
-% USEPACKAGE: 151007_howix
-% USEPACKAGE: 170416_A5
-
 % PDFXTITLE: Michael Murtaugh: Do (not) Repeat Yourself
 % PDFXAUTHOR: Christoph Haag
 % PDFXORG: LAFKON Publishing
-% MKPDFXCOMPLIANT:
+% ---------------------------------------------------------------- %
+% USEPACKAGE: ../lib/tex/conditions
+% USEPACKAGE: ../lib/tex/lstlanguages
+% --
+% USEPACKAGE: 170727_hilxalsh
 % ---------------------------------------------------------------- %
 % EXTENDFUNCTIONS: 170418_howix.functions
-
+% EXTENDFUNCTIONS: 151026_dry.functions
 % ---------------------------------------------------------------- %
+% EXTENDFUNCTIONS: ../lib/mdsh/bibref.functions
+% BIBREF: http://freeze.sh/etherpad/export/_/references.bib
+% ---------------------------------------------------------------- %
+% MKPDFXCOMPLIANT:
+
 % FRONTCOVER: 170522_dry-A5x2.svg
 % ================================================================ %
 
-% EXTENDFUNCTIONS: 151026_dry.functions
-
-% SUPERIMPOSE: 170522_dry-A5x2.svg 4-11
+% SUPERIMPOSE: 170522_dry-A5x2.svg 8-15
 % EMPTYPAGE:
 % EMPTYPAGE:
-% INCLUDE: 150930_murtaugh-dry.mdsh 56-284
+% INCLUDE: ../src/etherpad/150930_murtaugh-dry.mdsh 56-284
 % EMPTYPAGE:
-% INCLUDE: 150930_murtaugh-dry.mdsh 287-460
+% INCLUDE: ../src/etherpad/150930_murtaugh-dry.mdsh 287-460
 
 % ================================================================ %
 % BACKCOVER: 170522_dry-A5x2.svg

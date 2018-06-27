@@ -1,6 +1,5 @@
-# --------------------------------------------------------------------------- #
 # http://freeze.sh/_/2016/preflight
-# --------------------------------------------------------------------------- #
+
   function pdfxgs() {
 
        #PDF=$1
@@ -26,6 +25,7 @@
             -dSubsetFonts=true                   \
             -dEmbedAllFonts=true                 \
             -dAutoRotatePages=/None              \
+            -dHaveTransparency=false             \
             -sCannotEmbedFontPolicy=Error        \
             -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
             -f tmp.pdf > /dev/null
@@ -33,7 +33,7 @@
         else echo "nothing to do!"
         fi
   }
-# --------------------------------------------------------------------------- #
+
   function pdfxcmyk() {
 
        #PDF=$1
@@ -57,6 +57,7 @@
              -sMonoImageResolution=1200           \
              -dSubsetFonts=true                   \
              -dEmbedAllFonts=true                 \
+             -dHaveTransparency=false             \
              -dAutoRotatePages=/None              \
              -sCannotEmbedFontPolicy=Error        \
              -c ".setpdfwrite<</NeverEmbed[ ]>> setdistillerparams" \
@@ -65,8 +66,10 @@
         else echo "nothing to do!"
         fi
   }
-# --------------------------------------------------------------------------- #
-  function conformColor() {
+
+
+
+ function conformColor() {
 
       ( CHECK=$1
         gs -dNumRenderingThreads=4 \
@@ -80,14 +83,11 @@
                  -format '%[fx:maxima.g]' info: | sed 's/[^0-9]//g'`
         if [ $HASCOLOR -eq 0 ]; then
               pdfxgs $CHECK
-             #sleep 0
         else
               pdfxcmyk $CHECK
-             #sleep 0
         fi
         rm checkcolor.jpg
       )
   }
-# --------------------------------------------------------------------------- #
 
 
